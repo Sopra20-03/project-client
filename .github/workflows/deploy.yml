@@ -9,7 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # auto-generated
       HEROKU_KEY: ${{ secrets.HEROKU_API_KEY }}
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}  
@@ -17,8 +16,6 @@ jobs:
     steps:
     # checkout repository code
     - uses: actions/checkout@v1
-   
-
     
     # create .netrc file for heroku authentication
     # https://devcenter.heroku.com/articles/authentication
@@ -37,6 +34,6 @@ jobs:
       
     # deploy code
     - run: heroku git:remote -a $HEROKU_APP_NAME 
-    - run: git push heroku HEAD:refs/heads/master
+    - run: git push -f heroku HEAD:refs/heads/master
 
 
