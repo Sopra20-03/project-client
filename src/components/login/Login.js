@@ -76,7 +76,8 @@ class Login extends React.Component {
     super();
     this.state = {
       name: null,
-      username: null
+      username: null,
+      password: null
     };
   }
   /**
@@ -86,9 +87,28 @@ class Login extends React.Component {
    */
   async login() {
     try {
+
+
+      //Check if all values are filled!
+      if(this.state.name == null){
+        alert("Name cannot be empty!")
+        return;
+      } 
+
+      if(this.state.username == null){
+        alert("Username cannot be empty!")
+        return;
+      } 
+
+      if(this.state.password == null){
+        alert("Password cannot be empty!")
+        return;
+      } 
+      
       const requestBody = JSON.stringify({
+        name: this.state.name,
         username: this.state.username,
-        name: this.state.name
+        password: this.state.password
       });
       const response = await api.post('/users', requestBody);
 
@@ -132,21 +152,32 @@ class Login extends React.Component {
           <Form>
             <Label>Username</Label>
             <InputField
-              placeholder="Enter here.."
+              placeholder="Enter Username"
+              required
               onChange={e => {
                 this.handleInputChange('username', e.target.value);
               }}
             />
             <Label>Name</Label>
             <InputField
-              placeholder="Enter here.."
+              placeholder="Enter Name"
+              required
               onChange={e => {
                 this.handleInputChange('name', e.target.value);
               }}
             />
+            <Label>Password</Label>
+            <InputField
+              type="password"
+              required
+              placeholder="Enter Password"
+              onChange={e => {
+                this.handleInputChange('password', e.target.value);
+              }}
+            />
             <ButtonContainer>
               <Button
-                disabled={!this.state.username || !this.state.name}
+                disabled={!this.state.username || !this.state.name || !this.state.password}
                 width="50%"
                 onClick={() => {
                   this.login();
