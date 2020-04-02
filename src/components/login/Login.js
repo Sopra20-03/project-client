@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BaseContainer } from '../../helpers/layout';
-import { api, handleError } from '../../helpers/api';
+import {BaseContainer} from '../../helpers/layout';
+import {api, handleError} from '../../helpers/api';
 import User from '../shared/models/User';
-import { withRouter } from 'react-router-dom';
-import { Button } from '../../views/design/Button';
+import {withRouter} from 'react-router-dom';
+import {Button} from '../../views/design/Button';
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -16,18 +16,15 @@ const FormContainer = styled.div`
 `;
 
 const Form = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 60%;
-  height: 375px;
-  font-size: 16px;
-  font-weight: 300;
-  padding-left: 37px;
-  padding-right: 37px;
-  border-radius: 5px;
-  background: linear-gradient(rgb(27, 124, 186), rgb(2, 46, 101));
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  WebkitBorderRadius: '10px 10px 10px 10px',
+  borderRadius: '5px 5px 5px 5px',
+  background: '#ffffff',
+  padding: '1.2rem',
+  width: '90%',
+  maxWidth: '450px',
+  position: 'relative',
+  boxShadow: '0 30px 60px 0 rgba(0,0,0,0.3)',
+  textAlign: 'center'
 `;
 
 const InputField = styled.input`
