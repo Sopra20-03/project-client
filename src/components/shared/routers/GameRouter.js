@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Redirect, Route } from "react-router-dom";
-import Game from "../../game/Game";
+import Game from "../../game/GameBoard";
 
 const Container = styled.div`
   display: flex;

@@ -1,7 +1,7 @@
 /**
- * JustOneGame model
+ * Game model
  */
-class JustOneGame {
+class Game {
     constructor(data = {}) {
         this.id = null;
         this.gameName = null;
@@ -15,4 +15,4 @@ class JustOneGame {
         Object.assign(this, data);
     }
 }
-export default JustOneGame;
+export default Game;

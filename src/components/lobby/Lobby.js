@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import Player from '../../views/Player';
-import { Spinner } from '../../views/design/Spinner';
-import { Button } from '../../views/design/Button';
+import {Spinner} from '../../views/design/Spinner/Spinner';
+import {Button} from '../../views/design/Button/Button';
 import { withRouter } from 'react-router-dom';
-import GameItem from "../../views/GameItem";
+import GameItem from "./GameItem";
 
 const Container = styled(BaseContainer)`
   color: white;
