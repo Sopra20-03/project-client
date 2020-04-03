@@ -57,18 +57,6 @@ const TextInput = styled.input`
   }
 `;
 
-const Label = styled.label`
-  color: white;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
 const textOrange = {
   color: '#ff7b00'
 };
@@ -188,9 +176,9 @@ class Login extends React.Component {
                 <span style={textBlack}>w</span>
               </FormHeader>
 
-              <TextInput type='text' placeholder='Name'></TextInput>
-              <TextInput type='text' placeholder='Username'></TextInput>
-              <TextInput type='text' placeholder='Password'></TextInput>
+              <TextInput onChange={e => {this.handleInputChange('name', e.target.value);}} type='text' placeholder='Name'></TextInput>
+              <TextInput onChange={e => {this.handleInputChange('username', e.target.value);}} type='text' placeholder='Username'></TextInput>
+              <TextInput onChange={e=> {this.handleInputChange('password', e.target.value);}} type='text' placeholder='Password'></TextInput>
               <Button>Login</Button>
             </FormContent>
           </FormContainer>
