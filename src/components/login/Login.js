@@ -178,7 +178,7 @@ class Login extends React.Component {
 
               <TextInput onChange={e => {this.handleInputChange('name', e.target.value);}} type='text' placeholder='Name'></TextInput>
               <TextInput onChange={e => {this.handleInputChange('username', e.target.value);}} type='text' placeholder='Username'></TextInput>
-              <TextInput onChange={e=> {this.handleInputChange('password', e.target.value);}} type='text' placeholder='Password'></TextInput>
+              <TextInput onChange={e=> {this.handleInputChange('password', e.target.value);}} type='password' placeholder='Password'></TextInput>
               <Button>Login</Button>
             </FormContent>
           </FormContainer>
