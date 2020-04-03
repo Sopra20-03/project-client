@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactLogo } from "./ReactLogo";
 
 /**
  * Using styled-components you can visual HTML primitives and use props with it!
@@ -32,8 +31,6 @@ const Title = styled.h1`
 const Header = props => {
   return (
     <Container height={props.height}>
-      <Title>Group 03 rocks!</Title>
-      <ReactLogo width={60} height={60} />
     </Container>
   );
 };

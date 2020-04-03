@@ -9,6 +9,7 @@ body {
   font-family: "Open Sans", sans-serif;
   background: #f3ead8 url('just-one-board-game-logo.png') no-repeat top left;
   background-size: contain;
+  text-decoration: none;
 }
 
 input,
