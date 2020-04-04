@@ -167,7 +167,14 @@ class GameDetails extends React.Component {
                         </FormHeader>
 
                         <TextInput onChange={e => {this.handleInputChange('gameName', e.target.value);}} type='text' placeholder='Game Name'></TextInput>
-                        <Button>Create Game</Button>
+                        <Button
+                            width="50%"
+                            onClick={() => {
+                                this.createGame();
+                            }}
+                        >
+                            Create Game
+                        </Button>
                     </FormContent>
                 </FormContainer>
             </BaseContainer>
