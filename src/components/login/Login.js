@@ -13,7 +13,7 @@ export const FormContainer = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  width: 75%;
+  width: 40%;
   align-self: flex-start;
   align-self: flex-end;
 `;
@@ -93,38 +93,24 @@ class Login extends React.Component {
         };
     }
 
-    /**
-     * HTTP POST request is sent to the backend.
-     * If the request is successful, a new user is returned to the front-end
-     * and its token is stored in the localStorage.
-     */
-    // TODO implement login method
     async login() {
         try {
             const requestBody = JSON.stringify({
                 username: this.state.username,
-                name: this.state.name
+                password: this.state.password
             });
-            const response = await api.post('/users', requestBody);
+            const response = await api.put('/login', requestBody);
 
-            // Get the returned user and update a new object.
             const user = new User(response.data);
 
-            // Store the token into the local storage.
             localStorage.setItem('token', user.token);
 
-            // Login successfully worked --> navigate to the route /game in the GameRouter
-            this.props.history.push(`/game`);
+            this.props.history.push(`/games`);
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
         }
     }
 
-    /**
-     *  Every time the user enters something in the input field, the state gets updated.
-     * @param key (the key of the state for identifying the field that needs to be updated)
-     * @param value (the value that gets assigned to the identified state key)
-     */
     handleInputChange(key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
         // this.setState({'username': value});
@@ -143,33 +129,37 @@ class Login extends React.Component {
 
     render() {
         return (
-            <BaseContainer>
-                <FormContainer>
-                    <FormContent>
-                        <FormHeader>
-                            <span style={Colors.textOrange}>L</span>
-                            <span style={Colors.textRed}>o</span>
-                            <span style={Colors.textPink}>g</span>
-                            <span style={Colors.textViolet}>i</span>
-                            <span style={Colors.textBlue}>n </span>
-                            <span style={Colors.textGreen}>N</span>
-                            <span style={Colors.textYellow}>o</span>
-                            <span style={Colors.textBlack}>w</span>
-                        </FormHeader>
+          <BaseContainer>
+              <FormContainer>
+                  <FormContent>
+                      <FormHeader>
+                          <span style={Colors.textOrange}>L</span>
+                          <span style={Colors.textRed}>o</span>
+                          <span style={Colors.textPink}>g</span>
+                          <span style={Colors.textViolet}>i</span>
+                          <span style={Colors.textBlue}>n </span>
+                          <span style={Colors.textGreen}>N</span>
+                          <span style={Colors.textYellow}>o</span>
+                          <span style={Colors.textBlack}>w</span>
+                      </FormHeader>
 
-                        <TextInput onChange={e => {
-                            this.handleInputChange('username', e.target.value);
-                        }} type='text' placeholder='Username'></TextInput>
-                        <TextInput onChange={e => {
-                            this.handleInputChange('password', e.target.value);
-                        }} type='password' placeholder='Password'></TextInput>
-                        <br></br>
-                        <Button>Login</Button>
-                        <br></br>
-                        <Link href="/register">Don't have an account yet? Register here!</Link>
-                    </FormContent>
-                </FormContainer>
-            </BaseContainer>
+                      <TextInput onChange={e => {
+                          this.handleInputChange('username', e.target.value);
+                      }} type='text' placeholder='Username'></TextInput>
+                      <TextInput onChange={e => {
+                          this.handleInputChange('password', e.target.value);
+                      }} type='password' placeholder='Password'></TextInput>
+                      <br></br>
+                      <Button
+                        disabled={!this.state.username || !this.state.password}
+                        onClick={() => {
+                            this.login();
+                        }}>Login</Button>
+                      <br></br>
+                      <Link href="/register">Don't have an account yet? Register here!</Link>
+                  </FormContent>
+              </FormContainer>
+          </BaseContainer>
         );
     }
 }
