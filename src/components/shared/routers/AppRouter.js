@@ -1,11 +1,12 @@
 import React from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { GameGuard } from "../routeProtectors/GameGuard";
+import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
+import {GameGuard} from "../routeProtectors/GameGuard";
 import GameRouter from "./GameRouter";
-import { LoginGuard } from "../routeProtectors/LoginGuard";
+import {LoginGuard} from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
 import Lobby from "../../lobby/Lobby";
 import GameDetails from "../../lobby/GameDetails";
+import Register from "../../login/Register";
 
 /**
  * Main router of your application.
@@ -38,6 +39,13 @@ class AppRouter extends React.Component {
                   <Login />
                 </LoginGuard>
               )}
+            />
+            <Route
+                path="/register"
+                exact
+                render={() => (
+                  <Register/>
+                )}
             />
               <Route
                   path="/lobby"
