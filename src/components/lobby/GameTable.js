@@ -8,11 +8,18 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import {withStyles} from '@material-ui/core/styles'
 import {Button} from '@material-ui/core';
+import styled from "styled-components";
+
+const HeaderRow = styled.div`
+  color: rgba(0, 0, 0, 0.87);
+  font-weight: bold;
+  line-height: 1.5rem;
+`;
 
 const ColorButton = withStyles((theme) => ({
     root: {
         color: theme.palette.getContrastText('#00a839'),
-        backgroundColor: '#00a839',
+        backgroundColor: 'rgba(0,168,57,0.75)',
         '&:hover': {
             backgroundColor: '#00a839',
         },
@@ -37,7 +44,7 @@ const rows = [
     createData(5, 'game5', 'tay1', '1 of 5', 'Play'),
 ];
 
-export default function DenseTable() {
+export default function GameTable({ games }) {
     const classes = useStyles();
     return (
 
@@ -53,15 +60,15 @@ export default function DenseTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.name}>
+                    {games.map((game) => (
+                        <TableRow key={games.gameId}>
                             <TableCell component="th" scope="row" align="center">
-                                {row.id}
+                                {game.gameId}
                             </TableCell>
-                            <TableCell align="center">{row.name}</TableCell>
-                            <TableCell align="center">{row.creator}</TableCell>
-                            <TableCell align="center">{row.players}</TableCell>
-                            <TableCell align="center">{<ColorButton color='#00a839'>{row.button}</ColorButton>}</TableCell>
+                            <TableCell align="center">{game.gameName}</TableCell>
+                            <TableCell align="center">{game.creator}</TableCell>
+                            <TableCell align="center">{'4 of 5'}</TableCell>
+                            <TableCell align="center">{<ColorButton color='#00a839'>{'Play'}</ColorButton>}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

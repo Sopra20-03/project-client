@@ -5,8 +5,7 @@ import { api, handleError } from '../../helpers/api';
 import {Spinner} from '../../views/design/Spinner/Spinner';
 import {Button} from '../../views/design/Button/Button';
 import { withRouter } from 'react-router-dom';
-import GameItem from "./GameItem";
-import DenseTable from "./GameTable";
+import GameTable from "./GameTable";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -19,6 +18,7 @@ const BoxHeader = styled.div`
   text-transform: uppercase;
   letter-spacing: 10px;
   margin: auto;
+  margin-bottom: 20px;
 `;
 
 const LobbyContainer = styled.div`
@@ -119,7 +119,13 @@ class Lobby extends React.Component {
                         <span style={textBlack}>b</span>
                         <span style={textOrange}>y</span>
                     </BoxHeader>
-                    <DenseTable/>
+
+                    {!this.state.games ? (
+                        <div/>
+                    ) : (
+                        <GameTable games={this.state.games}/>
+                    )}
+
                     <Button
                         width="50%"
                         onClick={() => {
@@ -128,6 +134,7 @@ class Lobby extends React.Component {
                     >
                         Create Game
                     </Button>
+
                     <Button
                         width="50%"
                         onClick={() => {
@@ -136,22 +143,9 @@ class Lobby extends React.Component {
                     >
                         Logout
                     </Button>
+
+
                 </LobbyContainer>
-                {/*{!this.state.games ? (
-                    <Spinner />
-                ) : (
-                    <div>
-                        <Games>
-                            {this.state.games.map(games => {
-                                return (
-                                    <GameContainer key={games.id}>
-                                        <GameItem game={games} />
-                                    </GameContainer>
-                                );
-                            })}
-                        </Games>
-                    </div>
-                )}*/}
 
             </Container>
         );
