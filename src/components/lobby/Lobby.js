@@ -2,28 +2,69 @@ import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
-import Player from '../../views/Player';
 import {Spinner} from '../../views/design/Spinner/Spinner';
 import {Button} from '../../views/design/Button/Button';
 import { withRouter } from 'react-router-dom';
 import GameItem from "./GameItem";
+import DenseTable from "./GameTable";
 
 const Container = styled(BaseContainer)`
   color: white;
   text-align: center;
 `;
 
-const Games = styled.ul`
-  list-style: none;
-  padding-left: 0;
+const BoxHeader = styled.div`
+  font-size: 50px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 10px;
+  margin: auto;
 `;
 
-const GameContainer = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+const LobbyContainer = styled.div`
+    margin-top: 2em;
+    --webkit-border-radius: 10px 10px 10px 10px;
+    border-radius: 5px 5px 5px 5px;
+    background: #ffffff;
+    padding: 1.2rem;
+    width: 90%;
+    maxwidth: 450px;
+    position: relative;
+    box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+    text-align: center;
 `;
+
+const textOrange = {
+    color: '#ff7b00'
+};
+
+const textRed = {
+    color: '#de0006'
+};
+
+const textPink = {
+    color: '#ff0091'
+};
+
+const textViolet = {
+    color: '#80228f'
+};
+
+const textBlue = {
+    color: '#00a3e9'
+};
+
+const textGreen = {
+    color: '#00a839'
+};
+
+const textYellow = {
+    color: '#ffd700'
+};
+
+const textBlack = {
+    color: '#000000'
+};
 
 class Lobby extends React.Component {
     constructor() {
@@ -66,9 +107,37 @@ class Lobby extends React.Component {
     render() {
         return (
             <Container>
-                <h2>Just One Game Lobby! </h2>
-                <p>Get all games:</p>
-                {!this.state.games ? (
+                <LobbyContainer>
+                    <BoxHeader>
+                        <span style={textOrange}>G</span>
+                        <span style={textRed}>a</span>
+                        <span style={textPink}>m</span>
+                        <span style={textViolet}>e </span>
+                        <span style={textBlue}>L</span>
+                        <span style={textGreen}>o</span>
+                        <span style={textYellow}>b</span>
+                        <span style={textBlack}>b</span>
+                        <span style={textOrange}>y</span>
+                    </BoxHeader>
+                    <DenseTable/>
+                    <Button
+                        width="50%"
+                        onClick={() => {
+                            this.props.history.push(`/gamedetails`);
+                        }}
+                    >
+                        Create Game
+                    </Button>
+                    <Button
+                        width="50%"
+                        onClick={() => {
+                            this.logout();
+                        }}
+                    >
+                        Logout
+                    </Button>
+                </LobbyContainer>
+                {/*{!this.state.games ? (
                     <Spinner />
                 ) : (
                     <div>
@@ -81,16 +150,9 @@ class Lobby extends React.Component {
                                 );
                             })}
                         </Games>
-                        <Button
-                            width="100%"
-                            onClick={() => {
-                                this.logout();
-                            }}
-                        >
-                            Logout
-                        </Button>
                     </div>
-                )}
+                )}*/}
+
             </Container>
         );
     }
