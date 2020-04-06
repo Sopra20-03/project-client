@@ -3,7 +3,7 @@
  */
 class Game {
     constructor(data = {}) {
-        this.id = null;
+        this.gameId = null;
         this.gameName = null;
         this.creator = null;
         this.rounds = null;
@@ -11,6 +11,7 @@ class Game {
         this.currentRound = null;
         this.score = null;
         this.status = null;
+        this.mode=null;
         //this.token = null;
         Object.assign(this, data);
     }
