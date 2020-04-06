@@ -5,6 +5,7 @@ import {api, handleError} from '../../helpers/api';
 import {withRouter} from 'react-router-dom';
 import {Button} from '../../views/design/Button/Button';
 import Game from "../shared/models/Game";
+import SimpleSelect from "../../views/design/Input/DropDown";
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -101,7 +102,8 @@ class GameDetails extends React.Component {
     constructor() {
         super();
         this.state = {
-            gameName: null
+            gameName: null,
+            gameMode: null
         };
     }
     /**
@@ -113,7 +115,8 @@ class GameDetails extends React.Component {
         try {
             //Make sure current user is included as the creator on the server side
             const requestBody = JSON.stringify({
-                gameName: this.state.gameName
+                gameName: this.state.gameName,
+                gameMode: this.state.gameMode
             });
             const response = await api.post('/games', requestBody);
 
@@ -166,7 +169,11 @@ class GameDetails extends React.Component {
                             <span style={textPink}>s</span>
                         </FormHeader>
 
-                        <TextInput onChange={e => {this.handleInputChange('gameName', e.target.value);}} type='text' placeholder='Game Name'></TextInput>
+                        <TextInput onChange={e => {
+                            this.handleInputChange('gameName', e.target.value);}
+                        } type='text' placeholder='Game Name'>
+                        </TextInput>
+                        <SimpleSelect/>
                         <Button
                             width="50%"
                             onClick={() => {
