@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BaseContainer } from '../../helpers/layout';
-import { api, handleError } from '../../helpers/api';
-import {Spinner} from '../../views/design/Spinner/Spinner';
-import {Button} from '../../views/design/Button/Button';
-import { withRouter } from 'react-router-dom';
+
+import {BaseContainer} from '../../helpers/layout';
+import {api, handleError} from '../../helpers/api';
+import Button from '../../views/design/Button';
+import {withRouter} from 'react-router-dom';
 import GameTable from "./GameTable";
 
 const Container = styled(BaseContainer)`
