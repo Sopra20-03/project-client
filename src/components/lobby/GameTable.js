@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import {withStyles} from '@material-ui/core/styles'
 import {Button} from '@material-ui/core';
 import styled from "styled-components";
+import GameRow from "./GameRow";
 
 const HeaderRow = styled.div`
   color: rgba(0, 0, 0, 0.87);
@@ -32,19 +33,7 @@ const useStyles = makeStyles({
     },
 });
 
-function createData(id, name, creator, players, button) {
-    return { id, name, creator, players, button};
-}
-
-const rows = [
-    createData(1, 'game1', 'tay1', '4 of 5', 'Play'),
-    createData(2, 'game2', 'tay1', '4 of 5', 'Play'),
-    createData(3, 'game3', 'tay1', '3 of 5', 'Play'),
-    createData(4, 'game4', 'tay1', '2 of 5', 'Play'),
-    createData(5, 'game5', 'tay1', '1 of 5', 'Play'),
-];
-
-export default function GameTable({ games }) {
+function GameTable(props) {
     const classes = useStyles();
     return (
 
@@ -60,19 +49,13 @@ export default function GameTable({ games }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {games.map((game) => (
-                        <TableRow key={games.gameId}>
-                            <TableCell component="th" scope="row" align="center">
-                                {game.gameId}
-                            </TableCell>
-                            <TableCell align="center">{game.gameName}</TableCell>
-                            <TableCell align="center">{game.creator}</TableCell>
-                            <TableCell align="center">{'4 of 5'}</TableCell>
-                            <TableCell align="center">{<ColorButton color='#00a839'>{'Play'}</ColorButton>}</TableCell>
-                        </TableRow>
+                    {props.games.map((game) => (
+                        <GameRow game={game} usersGameId={1}/>
                     ))}
                 </TableBody>
             </Table>
         </TableContainer>
     );
 }
+
+export default GameTable;
