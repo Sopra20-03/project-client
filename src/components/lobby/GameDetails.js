@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {BaseContainer} from '../../helpers/layout';
 import {api, handleError} from '../../helpers/api';
 import {withRouter} from 'react-router-dom';
-import {Button} from '../../views/design/Button/Button';
+import Button from '../../views/design/Button';
 import Game from "../shared/models/Game";
 
 const FormContainer = styled.div`

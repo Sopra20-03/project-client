@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-export const Button = styled.button`
-  display: inline-block;
-  padding: 1rem 4rem;
+const Button = styled.button`
+  display: table-cell;
+  vertical-align: middle;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 13px;
@@ -18,3 +18,5 @@ export const Button = styled.button`
   transition: all 0.3s ease;
   
 `;
+
+export default Button;
