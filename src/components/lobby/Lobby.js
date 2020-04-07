@@ -1,11 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {BaseContainer} from '../../helpers/layout';
-import {api, handleError} from '../../helpers/api';
-import Button from '../../views/design/Button';
-import {withRouter} from 'react-router-dom';
+import { BaseContainer } from '../../helpers/layout';
+import { api, handleError } from '../../helpers/api';
+import Button from "../../views/design/Button";
+import { withRouter } from 'react-router-dom';
+
 import GameTable from "./GameTable";
+import Colors from "../../views/design/Colors";
+import {FormHeader} from "../login/Login";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -28,43 +31,11 @@ const LobbyContainer = styled.div`
     background: #ffffff;
     padding: 1.2rem;
     width: 90%;
-    maxwidth: 450px;
+    width: 60%;
     position: relative;
     box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
     text-align: center;
 `;
-
-const textOrange = {
-    color: '#ff7b00'
-};
-
-const textRed = {
-    color: '#de0006'
-};
-
-const textPink = {
-    color: '#ff0091'
-};
-
-const textViolet = {
-    color: '#80228f'
-};
-
-const textBlue = {
-    color: '#00a3e9'
-};
-
-const textGreen = {
-    color: '#00a839'
-};
-
-const textYellow = {
-    color: '#ffd700'
-};
-
-const textBlack = {
-    color: '#000000'
-};
 
 class Lobby extends React.Component {
     constructor() {
@@ -109,15 +80,15 @@ class Lobby extends React.Component {
             <Container>
                 <LobbyContainer>
                     <BoxHeader>
-                        <span style={textOrange}>G</span>
-                        <span style={textRed}>a</span>
-                        <span style={textPink}>m</span>
-                        <span style={textViolet}>e </span>
-                        <span style={textBlue}>L</span>
-                        <span style={textGreen}>o</span>
-                        <span style={textYellow}>b</span>
-                        <span style={textBlack}>b</span>
-                        <span style={textOrange}>y</span>
+                        <span style={Colors.textOrange}>G</span>
+                        <span style={Colors.textRed}>a</span>
+                        <span style={Colors.textPink}>m</span>
+                        <span style={Colors.textViolet}>e </span>
+                        <span style={Colors.textBlue}>L</span>
+                        <span style={Colors.textGreen}>o</span>
+                        <span style={Colors.textYellow}>b</span>
+                        <span style={Colors.textBlack}>b</span>
+                        <span style={Colors.textOrange}>y</span>
                     </BoxHeader>
 
                     {!this.state.games ? (
@@ -127,7 +98,6 @@ class Lobby extends React.Component {
                     )}
 
                     <Button
-                        width="50%"
                         onClick={() => {
                             this.props.history.push(`/gamedetails`);
                         }}
@@ -136,7 +106,6 @@ class Lobby extends React.Component {
                     </Button>
 
                     <Button
-                        width="50%"
                         onClick={() => {
                             this.logout();
                         }}

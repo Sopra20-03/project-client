@@ -102,6 +102,7 @@ class GameDetails extends React.Component {
     constructor() {
         super();
         this.state = {
+            gameId: null,
             gameName: null,
             gameMode: null
         };
