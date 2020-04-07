@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     },
 });
 
-const ColorButton = withStyles((theme) => ({
+const PlayButton = withStyles((theme) => ({
     root: {
         color: theme.palette.getContrastText('#00a839'),
         backgroundColor: 'rgba(0,168,57,0.75)',
@@ -21,25 +21,36 @@ const ColorButton = withStyles((theme) => ({
     },
 }))(Button);
 
+const LeaveButton = withStyles((theme) => ({
+    root: {
+        color: theme.palette.getContrastText('#de0006'),
+        backgroundColor: 'rgba(222,0,6,0.59)',
+        '&:hover': {
+            backgroundColor: '#de0006',
+        },
+    },
+}))(Button);
+
 
 
 function GameRow(props){
 
-    const classes = useStyles();
+    const isGameSelected = props.selectedGameId === props.game.gameId;
 
    return (
-        <TableRow key={props.game.gameId} className={props.usersGameId === props.game.gameId ? 'gameJoined' : undefined}>
+        <TableRow key={props.game.gameId} className={isGameSelected ? 'gameJoined' : undefined}>
             <TableCell component="th" scope="row" align="center"> {props.game.gameId} </TableCell>
             <TableCell align = "center" > {props.game.gameName} </TableCell>
             <TableCell align="center"> {props.game.creator} </TableCell>
             <TableCell align="center">{'4 of 5'} </TableCell>
             <TableCell align="center">{
-                <ColorButton color={props.usersGameId === props.game.gameId ? '#a8260e' : '#00a839'}
-                    onClick={() => {
-
-                    }}
-                >{'Play'}
-                </ColorButton>}
+                isGameSelected ?
+                    <LeaveButton onClick={() => props.onLeaveGame(props.game.gameId)}>
+                        Leave
+                    </LeaveButton> :
+                    <PlayButton onClick={() => props.onJoinGame(props.game.gameId)}>
+                        Play
+                    </PlayButton>}
             </TableCell>
         </TableRow>
     );

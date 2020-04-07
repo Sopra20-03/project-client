@@ -1,8 +1,8 @@
 import React from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { GameGuard } from "../routeProtectors/GameGuard";
+import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
+import {GameGuard} from "../routeProtectors/GameGuard";
 import GameRouter from "./GameRouter";
-import { LoginGuard } from "../routeProtectors/LoginGuard";
+import {LoginGuard} from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
 import Lobby from "../../lobby/Lobby";
 import GameDetails from "../../lobby/GameDetails";
@@ -39,22 +39,27 @@ class AppRouter extends React.Component {
                 </LoginGuard>
               )}
             />
+            <Route
+                path="/register"
+                exact
+                render={() => (
+                <LoginGuard>
+                  <Register/>
+                </LoginGuard>
+                )}
+            />
               <Route
                   path="/lobby"
                   exact
                   render={() => (
-                      <LoginGuard>
-                          <Lobby />
-                      </LoginGuard>
+                      <Lobby />
                   )}
               />
               <Route
                   path="/gameDetails"
                   exact
                   render={() => (
-                      <LoginGuard>
-                          <GameDetails />
-                      </LoginGuard>
+                      <GameDetails />
                   )}
               />
             <Route path="/" exact render={() => <Redirect to={"/game"} />} />
