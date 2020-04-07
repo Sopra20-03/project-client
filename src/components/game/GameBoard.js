@@ -4,8 +4,9 @@ import {BaseContainer} from '../../helpers/layout';
 import {api, handleError} from '../../helpers/api';
 import Player from '../../views/Player';
 import {Spinner} from '../../views/design/Spinner/Spinner';
-import {Button} from '../../views/design/Button/Button';
 import {withRouter} from 'react-router-dom';
+import Button from '../../views/design/Button';
+
 
 const Container = styled(BaseContainer)`
   color: white;

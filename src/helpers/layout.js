@@ -6,9 +6,9 @@ export const TABLETS_WIDTH = 750;
 export const SMALL_WIDTH = 768;
 
 export const BaseContainer = styled.div`
-  margin-left: auto;
-  padding-left: 15px;
-  margin-right: auto;
-  padding-right: 15px;
-  max-width: ${DESKTOP_WIDTH}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%
 `;
