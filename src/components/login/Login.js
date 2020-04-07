@@ -105,7 +105,7 @@ class Login extends React.Component {
 
             localStorage.setItem('token', user.token);
 
-            this.props.history.push(`/games`);
+            this.props.history.push(`/lobby`);
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
         }
