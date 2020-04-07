@@ -5,7 +5,7 @@ import {api, handleError} from '../../helpers/api';
 import {withRouter} from 'react-router-dom';
 import Button from '../../views/design/Button';
 import Game from "../shared/models/Game";
-import SimpleSelect from "../../views/design/Input/DropDown";
+import Colors from "../../views/design/Colors";
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -18,12 +18,13 @@ const FormContainer = styled.div`
 `;
 
 const FormContent = styled.div`
+    margin-top: 2em;
     --webkit-border-radius: 10px 10px 10px 10px;
     border-radius: 5px 5px 5px 5px;
     background: #ffffff;
     padding: 1.2rem;
     width: 90%;
-    maxwidth: 450px;
+    width: 60%;
     position: relative;
     box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
     text-align: center;
@@ -58,38 +59,6 @@ const TextInput = styled.input`
     border-radius: 5px;
   }
 `;
-
-const textOrange = {
-    color: '#ff7b00'
-};
-
-const textRed = {
-    color: '#de0006'
-};
-
-const textPink = {
-    color: '#ff0091'
-};
-
-const textViolet = {
-    color: '#80228f'
-};
-
-const textBlue = {
-    color: '#00a3e9'
-};
-
-const textGreen = {
-    color: '#00a839'
-};
-
-const textYellow = {
-    color: '#ffd700'
-};
-
-const textBlack = {
-    color: '#000000'
-};
 
 /**
  * @Class
@@ -157,26 +126,25 @@ class GameDetails extends React.Component {
                 <FormContainer>
                     <FormContent>
                         <FormHeader>
-                            <span style={textOrange}>G</span>
-                            <span style={textRed}>a</span>
-                            <span style={textPink}>m</span>
-                            <span style={textViolet}>e </span>
-                            <span style={textBlue}>D</span>
-                            <span style={textGreen}>e</span>
-                            <span style={textYellow}>t</span>
-                            <span style={textBlack}>a</span>
-                            <span style={textOrange}>i</span>
-                            <span style={textRed}>l</span>
-                            <span style={textPink}>s</span>
+                            <span style={Colors.textOrange}>G</span>
+                            <span style={Colors.textRed}>a</span>
+                            <span style={Colors.textPink}>m</span>
+                            <span style={Colors.textViolet}>e </span>
+                            <span style={Colors.textBlue}>D</span>
+                            <span style={Colors.textGreen}>e</span>
+                            <span style={Colors.textYellow}>t</span>
+                            <span style={Colors.textBlack}>a</span>
+                            <span style={Colors.textOrange}>i</span>
+                            <span style={Colors.textRed}>l</span>
+                            <span style={Colors.textPink}>s</span>
                         </FormHeader>
 
                         <TextInput onChange={e => {
                             this.handleInputChange('gameName', e.target.value);}
                         } type='text' placeholder='Game Name'>
                         </TextInput>
-                        <SimpleSelect/>
                         <Button
-                            width="50%"
+                            width="25%"
                             onClick={() => {
                                 this.createGame();
                             }}
