@@ -5,7 +5,7 @@ class Game {
     constructor(data = {}) {
         this.gameId = null;
         this.gameName = null;
-        this.creator = null;
+        this.creatorUsername = null;
         this.rounds = null;
         this.players = null;
         this.currentRound = null;

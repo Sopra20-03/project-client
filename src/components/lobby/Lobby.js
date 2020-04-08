@@ -8,7 +8,6 @@ import { withRouter } from 'react-router-dom';
 
 import GameTable from "./GameTable";
 import Colors from "../../views/design/Colors";
-import {FormHeader} from "../login/Login";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -47,6 +46,8 @@ class Lobby extends React.Component {
 
     logout() {
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
         this.props.history.push('/login');
     }
 

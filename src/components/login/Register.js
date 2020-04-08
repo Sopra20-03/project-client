@@ -33,6 +33,8 @@ class Register extends React.Component {
       const user = new User(response.data);
 
       localStorage.setItem('token', user.token);
+      localStorage.setItem('userId', user.id);
+      localStorage.setItem('username', user.username);
 
       this.props.history.push(`/lobby`);
     } catch (error) {

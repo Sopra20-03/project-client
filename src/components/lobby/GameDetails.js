@@ -71,7 +71,6 @@ class GameDetails extends React.Component {
     constructor() {
         super();
         this.state = {
-            gameId: null,
             gameName: null,
             gameMode: null
         };
@@ -86,7 +85,8 @@ class GameDetails extends React.Component {
             //Make sure current user is included as the creator on the server side
             const requestBody = JSON.stringify({
                 gameName: this.state.gameName,
-                gameMode: this.state.gameMode
+                gameMode: this.state.gameMode,
+                creatorUsername: localStorage.getItem('username')
             });
             const response = await api.post('/games', requestBody);
 

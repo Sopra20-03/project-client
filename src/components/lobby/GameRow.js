@@ -5,12 +5,6 @@ import {withStyles} from '@material-ui/core/styles'
 import {Button} from '@material-ui/core';
 import TableRow from "@material-ui/core/TableRow";
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-});
-
 const PlayButton = withStyles((theme) => ({
     root: {
         color: theme.palette.getContrastText('#00a839'),
@@ -41,7 +35,7 @@ function GameRow(props){
         <TableRow key={props.game.gameId} className={isGameSelected ? 'gameJoined' : undefined}>
             <TableCell component="th" scope="row" align="center"> {props.game.gameId} </TableCell>
             <TableCell align = "center" > {props.game.gameName} </TableCell>
-            <TableCell align="center"> {props.game.creator} </TableCell>
+            <TableCell align="center"> {props.game.creatorUsername} </TableCell>
             <TableCell align="center">{'4 of 5'} </TableCell>
             <TableCell align="center">{
                 isGameSelected ?
