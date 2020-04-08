@@ -71,10 +71,30 @@ class GameDetails extends React.Component {
     constructor() {
         super();
         this.state = {
+            gameId: null,
             gameName: null,
             gameMode: null
         };
     }
+
+    /**
+     * HTTP POST request is sent to the backend.
+     * If the request is successful, the game is returned to the front-end.
+     */
+    async addPlayer() {
+        try {
+            const requestBody = JSON.stringify({
+                userId: localStorage.getItem('userId')
+            });
+
+            const response = await api.put(`/games/${this.state.gameId}/players`, requestBody);
+            console.log(response.data);
+
+        } catch (error) {
+            alert(handleError(error));
+        }
+    }
+
     /**
      * HTTP POST request is sent to the backend.
      * If the request is successful, a new game is returned to the front-end
@@ -92,6 +112,12 @@ class GameDetails extends React.Component {
 
             // Get the returned game and update a new object.
             const game = new Game(response.data);
+
+            // Set gameId in state of GameDetails
+            this.state.gameId = game.gameId;
+
+            // Add current user as player to game they just created
+            this.addPlayer();
 
             // Game creation successfully worked --> navigate to the route /lobby in the GameRouter
             this.props.history.push(`/lobby`);
