@@ -28,6 +28,7 @@ class Register extends React.Component {
       });
 
       const response = await api.post('/users', requestBody);
+      console.log(response.data);
 
       const user = new User(response.data);
 
