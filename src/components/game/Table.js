@@ -41,7 +41,7 @@ export default class Table extends Component {
                         <GuessCard />
                     </ContainerRow>
 
-                    <ContainerRow style={{"justify-content":"center"}}>
+                    <ContainerRow style={{"justifyContent":"center"}}>
                         <WordCard />
                     </ContainerRow>
                 </Container>
