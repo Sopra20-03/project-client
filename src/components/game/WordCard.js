@@ -4,10 +4,10 @@ import Colors from "../../views/design/Colors";
 
 export const CardContainer = styled.div`
   display: flex;
-  flex-direction: column
+  flex-direction: column;
   width: 10rem;
   height: 20 rem;
-  background-color: white
+  background-color: white;
   border-radius: 5px;
   border: 2px solid black;
   margin: 2rem;
@@ -30,7 +30,7 @@ export default class WordCard extends Component {
             <div>
                     <CardContainer>
                         <Word>
-                            <h2 style={{"margin":"0","color":"#de0006"}}>WORD 1</h2>
+                            <h2 style={{"margin":"0","color":"#de0006"}}>WORD 2</h2>
                         </Word>
                         <Word>
                             <h2 style={{"margin":"0","color":"#00a3e9"}}>WORD 2</h2>

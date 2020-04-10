@@ -95,12 +95,14 @@ class Login extends React.Component {
 
     async login() {
         try {
-            const requestBody = JSON.stringify({
-                username: this.state.username,
-                password: this.state.password
-            });
-            const response = await api.put('/login', requestBody);
+            const formData = new FormData();
+            formData.append('username',this.state.username);
+            formData.append('password',this.state.password);
 
+            const response = await api.post('/login', formData, {
+                withCredentials: true
+            });
+            console.log(response.data);
             const user = new User(response.data);
 
             localStorage.setItem('token', user.token);

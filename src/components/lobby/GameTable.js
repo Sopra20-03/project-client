@@ -36,7 +36,7 @@ class GameTable extends React.Component {
                     </TableHead>
                     <TableBody>
                         {this.props.games.map((game) => (
-                            <GameRow key={game.gameId} game={game} selectedGameId={this.state.selectedGameId} onJoinGame={this.handleJoinGame} onLeaveGame={this.handleLeaveGame}/>
+                            <GameRow game={game} selectedGameId={this.state.selectedGameId} onJoinGame={this.handleJoinGame} onLeaveGame={this.handleLeaveGame}/>
                         ))}
                     </TableBody>
                 </Table>

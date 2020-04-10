@@ -8,8 +8,8 @@ import GuessCard from './GuessCard';
 
 export const Container = styled.div`
     display: flex;
-    flex-direction: column
-    width: fit-content
+    flex-direction: column;
+    width: fit-content;
     height: fit-content;
     background-color: #00a839;
     border-radius: 100px;

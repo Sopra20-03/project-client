@@ -21,20 +21,20 @@ class Register extends React.Component {
 
   async register() {
     try {
-      const requestBody = JSON.stringify({
+      const requestBody = {
         name: this.state.name,
         username: this.state.username,
         password: this.state.password
-      });
+      };
 
       const response = await api.post('/users', requestBody);
       console.log(response.data);
 
       const user = new User(response.data);
 
-      localStorage.setItem('token', user.token);
+      //localStorage.setItem('token', user.token);
 
-      this.props.history.push(`/lobby`);
+      this.props.history.push(`/login`);
     } catch (error) {
       alert(handleError(error));
     }

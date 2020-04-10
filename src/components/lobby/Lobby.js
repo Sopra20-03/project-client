@@ -52,14 +52,16 @@ class Lobby extends React.Component {
 
     async componentDidMount() {
         try {
-            const response = await api.get('/games');
+            const response = await api.get('/games',{
+                withCredentials: true
+            });
             // delays continuous execution of an async operation for 1 second.
             // This is just a fake async call, so that the spinner can be displayed
             // feel free to remove it :)
             await new Promise(resolve => setTimeout(resolve, 1000));
 
             // Get the returned games and update the state.
-            this.setState({ games: response.data });
+            //this.setState({ games: response.data });
 
             // This is just some data for you to see what is available.
             // Feel free to remove it.
