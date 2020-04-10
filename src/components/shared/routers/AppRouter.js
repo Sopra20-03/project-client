@@ -1,8 +1,7 @@
 import React from "react";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-import {GameGuard} from "../routeProtectors/GameGuard";
-import GameRouter from "./GameRouter";
 import {LoginGuard} from "../routeProtectors/LoginGuard";
+import {RouteGuard} from "../routeProtectors/RouteGuard";
 import Login from "../../login/Login";
 import Lobby from "../../lobby/Lobby";
 import GameDetails from "../../lobby/GameDetails";
@@ -27,7 +26,9 @@ class AppRouter extends React.Component {
               path="/gameplay"
               exact
               render={() => (
-                <Gameplay />
+                  <RouteGuard>
+                      <Gameplay />
+                  </RouteGuard>
               )}
             />
             <Route
@@ -43,30 +44,36 @@ class AppRouter extends React.Component {
                 path="/register"
                 exact
                 render={() => (
-                  <Register/>
+                    <LoginGuard>
+                        <Register/>
+                    </LoginGuard>
                 )}
             />
               <Route
                   path="/lobby"
                   exact
                   render={() => (
-                      <LoginGuard>
+                      <RouteGuard>
                           <Lobby />
-                      </LoginGuard>
+                      </RouteGuard>
                   )}
               />
               <Route
                   path="/gameDetails"
                   exact
                   render={() => (
-                      <LoginGuard>
+                      <RouteGuard>
                           <GameDetails />
-                      </LoginGuard>
+                      </RouteGuard>
                   )}
               />
 
 
-            <Route path="/" exact render={() => <Redirect to={"/game"} />} />
+            <Route path="/" exact render={() => (
+                <RouteGuard>
+                    <Redirect to={"/gameplay"} />
+                </RouteGuard>
+            )} />
         
         </Switch>
       </BrowserRouter>
