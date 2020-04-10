@@ -7,9 +7,11 @@ import { Redirect } from "react-router-dom";
  */
 export const LoginGuard = props => {
   console.log(localStorage.getItem("token"))
+
   if (!localStorage.getItem("token")) {
+    //User is not logged-in, Load Login
     return props.children;
   }
-  // if user is already logged in, redirects to the main /app
-  return <Redirect to={"/game"} />;
+  // If user is already logged in, return to Lobby page
+  return <Redirect to={"/lobby"} />;
 };
