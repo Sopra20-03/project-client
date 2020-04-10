@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 
 /**
  *
- * Another way to export directly your functional component.
+ * Guard for Login
  */
 export const LoginGuard = props => {
   console.log(localStorage.getItem("token"))
