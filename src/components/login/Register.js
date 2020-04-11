@@ -4,8 +4,7 @@ import {BaseContainer} from "../../helpers/layout";
 import {FormContainer, FormContent, FormHeader, Link, TextInput} from "./Login";
 import Colors from "../../views/design/Colors";
 import Button from "../../views/design/Button";
-import User from "../shared/models/User";
-import {api, handleError} from "../../helpers/api";
+import {handleError} from "../../helpers/api";
 import PropTypes from 'prop-types';
 //Redux
 import { connect } from 'react-redux';

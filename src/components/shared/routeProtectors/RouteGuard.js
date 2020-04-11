@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 //Redux
-import store from '../../../store';
+import {store} from '../../../store';
 
 export const RouteGuard = props => {
 
