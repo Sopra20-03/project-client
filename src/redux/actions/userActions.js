@@ -1,4 +1,4 @@
-import { USER_REGISTER, USER_LOGIN } from "./types";
+import { USER_REGISTER, USER_LOGIN, USER_LOGOUT } from "./types";
 import { api, handleError } from "../../helpers/api";
 import User from "../../components/shared/models/User";
 
@@ -6,7 +6,6 @@ export const registerUser = (userData) => async (dispatch) => {
   try {
     const response = await api.post("/users", userData);
     const user = new User(response.data);
-    console.log(user);
     dispatch({
       type: USER_REGISTER,
       payload: user,
@@ -22,10 +21,22 @@ export const loginUser = (userData) => async (dispatch) => {
       withCredentials: true,
     });
     const user = new User(response.data);
-    console.log(user);
     dispatch({
       type: USER_LOGIN,
       payload: user,
+    });
+  } catch (error) {
+    alert(handleError(error));
+  }
+};
+
+export const logoutUser = () => async (dispatch) => {
+  try {
+    const response = await api.post("/logout", {
+      withCredentials: true,
+    });
+    dispatch({
+      type: USER_LOGOUT,
     });
   } catch (error) {
     alert(handleError(error));
