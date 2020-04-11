@@ -31,7 +31,7 @@ class Register extends React.Component {
         password: this.state.password
       };
 
-      this.props.registerUser(requestBody);
+      await this.props.registerUser(requestBody);
 
       this.props.history.push(`/login`);
     } catch (error) {

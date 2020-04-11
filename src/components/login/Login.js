@@ -104,7 +104,7 @@ class Login extends React.Component {
             formData.append('username',this.state.username);
             formData.append('password',this.state.password);
 
-            this.props.loginUser(formData);
+            await this.props.loginUser(formData);
 
             this.props.history.push(`/lobby`);
         } catch (error) {

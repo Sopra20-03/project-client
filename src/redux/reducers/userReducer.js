@@ -10,10 +10,12 @@ export default function(state = initialState, action) {
         case USER_REGISTER:
             return {
                 ...state,
-                user: action.payload
+                //Do not store Registered User in state
+                //user: action.payload
             }
         
         case USER_LOGIN:
+            console.log("reducer update state login()")
             return {
                 ...state,
                 user: action.payload

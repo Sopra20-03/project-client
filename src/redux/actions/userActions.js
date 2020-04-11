@@ -6,6 +6,7 @@ export const registerUser =  userData => async dispatch => {
     try {
         const response =  await api.post('/users', userData);
         const user = new User(response.data);
+        console.log(user)
         dispatch({
             type: USER_REGISTER,
             payload: user
@@ -17,7 +18,7 @@ export const registerUser =  userData => async dispatch => {
 
 export const loginUser =  userData => async dispatch => {
   try {
-      const response = await api.post('/login', userData, {
+      const response =  await api.post('/login', userData, {
         withCredentials: true
       });
       const user = new User(response.data);
