@@ -6,6 +6,10 @@ import Colors from "../../views/design/Colors";
 import Button from "../../views/design/Button";
 import User from "../shared/models/User";
 import {api, handleError} from "../../helpers/api";
+import PropTypes from 'prop-types';
+//Redux
+import { connect } from 'react-redux';
+import { registerUser } from '../../redux/actions/userActions';
 
 class Register extends React.Component {
 
@@ -27,12 +31,7 @@ class Register extends React.Component {
         password: this.state.password
       };
 
-      const response = await api.post('/users', requestBody);
-      console.log(response.data);
-
-      const user = new User(response.data);
-
-      //localStorage.setItem('token', user.token);
+      this.props.registerUser(requestBody);
 
       this.props.history.push(`/login`);
     } catch (error) {
@@ -86,4 +85,7 @@ class Register extends React.Component {
   }
 }
 
-export default withRouter(Register);
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired
+};
+export default withRouter(connect(null, {registerUser})(Register));
