@@ -6,6 +6,11 @@ import User from '../shared/models/User';
 import {withRouter} from 'react-router-dom';
 import Button from '../../views/design/Button';
 import Colors from "../../views/design/Colors";
+import PropTypes from 'prop-types';
+
+//Redux
+import { connect } from 'react-redux';
+import { loginUser } from '../../redux/actions/userActions';
 
 export const FormContainer = styled.div`
   display: inline-flex;
@@ -99,13 +104,7 @@ class Login extends React.Component {
             formData.append('username',this.state.username);
             formData.append('password',this.state.password);
 
-            const response = await api.post('/login', formData, {
-                withCredentials: true
-            });
-            console.log(response.data);
-            const user = new User(response.data);
-
-            localStorage.setItem('token', user.token);
+            this.props.loginUser(formData);
 
             this.props.history.push(`/lobby`);
         } catch (error) {
@@ -170,4 +169,8 @@ class Login extends React.Component {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default withRouter(Login);
+
+Login.propTypes = {
+    loginUser: PropTypes.func.isRequired
+  };
+export default withRouter(connect(null,{loginUser})(Login));
