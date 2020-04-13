@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import styled from 'styled-components';
+import React, { Component } from "react";
+import styled from "styled-components";
 
-import Player from "./Player"
-import TimerInfo from "./TimerInfo"
-import PointsInfo from "./PointsInfo"
-import Table from "./Table"
+import Player from "./Player";
+import TimerInfo from "./TimerInfo";
+import PointsInfo from "./PointsInfo";
+import Table from "./Table";
 
 import Colors from "../../views/design/Colors";
 
@@ -33,23 +33,22 @@ const TableContainer = styled.div`
 `;
 
 export default class Gameplay extends Component {
-    render() {
-        return (
-            <div>
-                <Container>
-                    <div>
-                    </div>
-                    <TableContainer>
-                        <Table />
-                    </TableContainer>
+  render() {
+    return (
+      <div>
+        <Container>
+          <div></div>
+          <TableContainer>
+            <Table />
+          </TableContainer>
 
-                    <InfoContainer>
-                        <PointsInfo />
-                        <div></div>
-                        <TimerInfo />
-                    </InfoContainer>
-                </Container>    
-            </div>
-        )
-    }
+          <InfoContainer>
+            <PointsInfo />
+            <div></div>
+            <TimerInfo />
+          </InfoContainer>
+        </Container>
+      </div>
+    );
+  }
 }
