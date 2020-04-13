@@ -8,25 +8,24 @@ import Table from "./Table"
 
 import Colors from "../../views/design/Colors";
 
-export const Container = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  justify-content: space-between
+  justify-content: space-between;
   border-radius: 5px;
   border: 2px solid black;
-  min-width: fit-content
-  min-height: git-contant
+  min-width: fit-content;
 `;
 
-export const InfoContainer = styled.div`
+const InfoContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 `;
 
-export const TableContainer = styled.div`
+const TableContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;

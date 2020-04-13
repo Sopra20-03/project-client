@@ -4,8 +4,11 @@ import {BaseContainer} from "../../helpers/layout";
 import {FormContainer, FormContent, FormHeader, Link, TextInput} from "./Login";
 import Colors from "../../views/design/Colors";
 import Button from "../../views/design/Button";
-import User from "../shared/models/User";
-import {api, handleError} from "../../helpers/api";
+import {handleError} from "../../helpers/api";
+import PropTypes from 'prop-types';
+//Redux
+import { connect } from 'react-redux';
+import { registerUser } from '../../redux/actions/userActions';
 
 class Register extends React.Component {
 
@@ -21,22 +24,15 @@ class Register extends React.Component {
 
   async register() {
     try {
-      const requestBody = JSON.stringify({
+      const requestBody = {
         name: this.state.name,
         username: this.state.username,
         password: this.state.password
-      });
+      };
 
-      const response = await api.post('/users', requestBody);
-      console.log(response.data);
+      await this.props.registerUser(requestBody);
 
-      const user = new User(response.data);
-
-      localStorage.setItem('token', user.token);
-      localStorage.setItem('userId', user.id);
-      localStorage.setItem('username', user.username);
-
-      this.props.history.push(`/lobby`);
+      this.props.history.push(`/login`);
     } catch (error) {
       alert(handleError(error));
     }
@@ -88,4 +84,7 @@ class Register extends React.Component {
   }
 }
 
-export default withRouter(Register);
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired
+};
+export default withRouter(connect(null, {registerUser})(Register));
