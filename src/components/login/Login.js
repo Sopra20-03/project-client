@@ -1,11 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
-import {BaseContainer} from '../../helpers/layout';
-import {api, handleError} from '../../helpers/api';
-import User from '../shared/models/User';
-import {withRouter} from 'react-router-dom';
-import Button from '../../views/design/Button';
+import React from "react";
+import styled from "styled-components";
+import { BaseContainer } from "../../helpers/layout";
+import { handleError } from "../../helpers/api";
+import { withRouter } from "react-router-dom";
+import Button from "../../views/design/Button";
 import Colors from "../../views/design/Colors";
+import PropTypes from "prop-types";
+
+//Redux
+import { connect } from "react-redux";
+import { loginUser } from "../../redux/actions/userActions";
 
 export const FormContainer = styled.div`
   display: inline-flex;
@@ -19,16 +23,16 @@ export const FormContainer = styled.div`
 `;
 
 export const FormContent = styled.div`
-    --webkit-border-radius: 10px 10px 10px 10px;
-    border-radius: 5px 5px 5px 5px;
-    background: #ffffff;
-    opacity: 0.9;
-    padding: 1.2rem;
-    width: 90%;
-    maxwidth: 450px;
-    position: relative;
-    box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
-    text-align: center;
+  --webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 5px 5px 5px 5px;
+  background: #ffffff;
+  opacity: 0.9;
+  padding: 1.2rem;
+  width: 90%;
+  maxwidth: 450px;
+  position: relative;
+  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  text-align: center;
 `;
 
 export const FormHeader = styled.div`
@@ -62,7 +66,7 @@ export const TextInput = styled.input`
 
 export const Link = styled.a`
   text-decoration: none;
-  
+
   &:hover {
     text-decoration: underline;
     transition-duration: 1s;
@@ -79,93 +83,105 @@ export const Link = styled.a`
  * @Class
  */
 class Login extends React.Component {
-    /**
-     * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
-     * The constructor for a React component is called before it is mounted (rendered).
-     * In this case the initial state is defined in the constructor. The state is a JS object containing two fields: name and username
-     * These fields are then handled in the onChange() methods in the resp. InputFields
-     */
-    constructor() {
-        super();
-        this.state = {
-            username: null,
-            password: null
-        };
+  /**
+   * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
+   * The constructor for a React component is called before it is mounted (rendered).
+   * In this case the initial state is defined in the constructor. The state is a JS object containing two fields: name and username
+   * These fields are then handled in the onChange() methods in the resp. InputFields
+   */
+  constructor() {
+    super();
+    this.state = {
+      username: null,
+      password: null,
+    };
+  }
+
+  async login() {
+    try {
+      const formData = new FormData();
+      formData.append("username", this.state.username);
+      formData.append("password", this.state.password);
+
+      await this.props.loginUser(formData);
+
+      this.props.history.push(`/lobby`);
+    } catch (error) {
+      alert(`Something went wrong during the login: \n${handleError(error)}`);
     }
+  }
 
-    async login() {
-        try {
-            const requestBody = JSON.stringify({
-                username: this.state.username,
-                password: this.state.password
-            });
-            const response = await api.put('/login', requestBody);
+  handleInputChange(key, value) {
+    // Example: if the key is username, this statement is the equivalent to the following one:
+    // this.setState({'username': value});
+    this.setState({ [key]: value });
+  }
 
-            const user = new User(response.data);
+  /**
+   * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
+   * Initialization that requires DOM nodes should go here.
+   * If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
+   * You may call setState() immediately in componentDidMount().
+   * It will trigger an extra rendering, but it will happen before the browser updates the screen.
+   */
+  componentDidMount() {}
 
-            localStorage.setItem('token', user.token);
+  render() {
+    return (
+      <BaseContainer>
+        <FormContainer>
+          <FormContent>
+            <FormHeader>
+              <span style={Colors.textOrange}>L</span>
+              <span style={Colors.textRed}>o</span>
+              <span style={Colors.textPink}>g</span>
+              <span style={Colors.textViolet}>i</span>
+              <span style={Colors.textBlue}>n </span>
+              <span style={Colors.textGreen}>N</span>
+              <span style={Colors.textYellow}>o</span>
+              <span style={Colors.textBlack}>w</span>
+            </FormHeader>
 
-            this.props.history.push(`/lobby`);
-        } catch (error) {
-            alert(`Something went wrong during the login: \n${handleError(error)}`);
-        }
-    }
-
-    handleInputChange(key, value) {
-        // Example: if the key is username, this statement is the equivalent to the following one:
-        // this.setState({'username': value});
-        this.setState({[key]: value});
-    }
-
-    /**
-     * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
-     * Initialization that requires DOM nodes should go here.
-     * If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
-     * You may call setState() immediately in componentDidMount().
-     * It will trigger an extra rendering, but it will happen before the browser updates the screen.
-     */
-    componentDidMount() {
-    }
-
-    render() {
-        return (
-          <BaseContainer>
-              <FormContainer>
-                  <FormContent>
-                      <FormHeader>
-                          <span style={Colors.textOrange}>L</span>
-                          <span style={Colors.textRed}>o</span>
-                          <span style={Colors.textPink}>g</span>
-                          <span style={Colors.textViolet}>i</span>
-                          <span style={Colors.textBlue}>n </span>
-                          <span style={Colors.textGreen}>N</span>
-                          <span style={Colors.textYellow}>o</span>
-                          <span style={Colors.textBlack}>w</span>
-                      </FormHeader>
-
-                      <TextInput onChange={e => {
-                          this.handleInputChange('username', e.target.value);
-                      }} type='text' placeholder='Username'></TextInput>
-                      <TextInput onChange={e => {
-                          this.handleInputChange('password', e.target.value);
-                      }} type='password' placeholder='Password'></TextInput>
-                      <br></br>
-                      <Button
-                        disabled={!this.state.username || !this.state.password}
-                        onClick={() => {
-                            this.login();
-                        }}>Login</Button>
-                      <br></br>
-                      <Link href="/register">Don't have an account yet? Register here!</Link>
-                  </FormContent>
-              </FormContainer>
-          </BaseContainer>
-        );
-    }
+            <TextInput
+              onChange={(e) => {
+                this.handleInputChange("username", e.target.value);
+              }}
+              type="text"
+              placeholder="Username"
+            ></TextInput>
+            <TextInput
+              onChange={(e) => {
+                this.handleInputChange("password", e.target.value);
+              }}
+              type="password"
+              placeholder="Password"
+            ></TextInput>
+            <br></br>
+            <Button
+              disabled={!this.state.username || !this.state.password}
+              onClick={() => {
+                this.login();
+              }}
+            >
+              Login
+            </Button>
+            <br></br>
+            <Link href="/register">
+              Don't have an account yet? Register here!
+            </Link>
+          </FormContent>
+        </FormContainer>
+      </BaseContainer>
+    );
+  }
 }
 
 /**
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default withRouter(Login);
+
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+};
+export default withRouter(connect(null, { loginUser })(Login));

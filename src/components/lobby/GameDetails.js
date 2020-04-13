@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import {BaseContainer} from '../../helpers/layout';
-import {api, handleError} from '../../helpers/api';
-import {withRouter} from 'react-router-dom';
-import Button from '../../views/design/Button';
+import React from "react";
+import styled from "styled-components";
+import { BaseContainer } from "../../helpers/layout";
+import { api, handleError } from "../../helpers/api";
+import { withRouter } from "react-router-dom";
+import Button from "../../views/design/Button";
 import Game from "../shared/models/Game";
 import Colors from "../../views/design/Colors";
 
@@ -18,16 +18,16 @@ const FormContainer = styled.div`
 `;
 
 const FormContent = styled.div`
-    margin-top: 2em;
-    --webkit-border-radius: 10px 10px 10px 10px;
-    border-radius: 5px 5px 5px 5px;
-    background: #ffffff;
-    padding: 1.2rem;
-    width: 90%;
-    width: 60%;
-    position: relative;
-    box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
-    text-align: center;
+  margin-top: 2em;
+  --webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 5px 5px 5px 5px;
+  background: #ffffff;
+  padding: 1.2rem;
+  width: 90%;
+  width: 60%;
+  position: relative;
+  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  text-align: center;
 `;
 
 const FormHeader = styled.div`
@@ -39,7 +39,7 @@ const FormHeader = styled.div`
 `;
 
 const TextInput = styled.input`
-    background-color: #f3ead8;
+  background-color: #f3ead8;
   border: none;
   color: #0d0d0d;
   padding: 0.5rem 0.8rem;
@@ -64,98 +64,103 @@ const TextInput = styled.input`
  * @Class
  */
 class GameDetails extends React.Component {
-    /**
-     * The initial state is defined in the constructor. The state is a JS object containing two fields: gameName and creator
-     * These fields are then handled in the onChange() methods in the resp. InputFields
-     */
-    constructor() {
-        super();
-        this.state = {
-            gameId: null,
-            gameName: null,
-            gameMode: null
-        };
+  /**
+   * The initial state is defined in the constructor. The state is a JS object containing two fields: gameName and creator
+   * These fields are then handled in the onChange() methods in the resp. InputFields
+   */
+  constructor() {
+    super();
+    this.state = {
+      gameId: null,
+      gameName: null,
+      gameMode: null,
+    };
+  }
+  /**
+   * HTTP POST request is sent to the backend.
+   * If the request is successful, a new game is returned to the front-end
+   * and its token is stored in the localStorage.
+   */
+  async createGame() {
+    try {
+      //Make sure current user is included as the creator on the server side
+      const requestBody = {
+        gameName: this.state.gameName,
+        gameMode: this.state.gameMode,
+      };
+      const response = await api.post("/games", requestBody);
+
+      // Get the returned game and update a new object.
+      const game = new Game(response.data);
+
+      // Game creation successfully worked --> navigate to the route /lobby in the GameRouter
+      this.props.history.push(`/lobby`);
+    } catch (error) {
+      alert(
+        `Something went wrong during the game creation: \n${handleError(error)}`
+      );
     }
-    /**
-     * HTTP POST request is sent to the backend.
-     * If the request is successful, a new game is returned to the front-end
-     * and its token is stored in the localStorage.
-     */
-    async createGame() {
-        try {
-            //Make sure current user is included as the creator on the server side
-            const requestBody = JSON.stringify({
-                gameName: this.state.gameName,
-                gameMode: this.state.gameMode
-            });
-            const response = await api.post('/games', requestBody);
+  }
 
-            // Get the returned game and update a new object.
-            const game = new Game(response.data);
+  /**
+   *  Every time the user enters something in the input field, the state gets updated.
+   * @param key (the key of the state for identifying the field that needs to be updated)
+   * @param value (the value that gets assigned to the identified state key)
+   */
+  handleInputChange(key, value) {
+    // Example: if the key is gameName, this statement is the equivalent to the following one:
+    // this.setState({'gameName': value});
+    this.setState({ [key]: value });
+  }
 
-            // Game creation successfully worked --> navigate to the route /lobby in the GameRouter
-            this.props.history.push(`/lobby`);
-        } catch (error) {
-            alert(`Something went wrong during the game creation: \n${handleError(error)}`);
-        }
-    }
+  /**
+   * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
+   * Initialization that requires DOM nodes should go here.
+   * If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
+   * You may call setState() immediately in componentDidMount().
+   * It will trigger an extra rendering, but it will happen before the browser updates the screen.
+   */
+  componentDidMount() {}
 
-    /**
-     *  Every time the user enters something in the input field, the state gets updated.
-     * @param key (the key of the state for identifying the field that needs to be updated)
-     * @param value (the value that gets assigned to the identified state key)
-     */
-    handleInputChange(key, value) {
-        // Example: if the key is gameName, this statement is the equivalent to the following one:
-        // this.setState({'gameName': value});
-        this.setState({ [key]: value });
-    }
+  render() {
+    return (
+      <BaseContainer>
+        <FormContainer>
+          <FormContent>
+            <FormHeader>
+              <span style={Colors.textOrange}>G</span>
+              <span style={Colors.textRed}>a</span>
+              <span style={Colors.textPink}>m</span>
+              <span style={Colors.textViolet}>e </span>
+              <span style={Colors.textBlue}>D</span>
+              <span style={Colors.textGreen}>e</span>
+              <span style={Colors.textYellow}>t</span>
+              <span style={Colors.textBlack}>a</span>
+              <span style={Colors.textOrange}>i</span>
+              <span style={Colors.textRed}>l</span>
+              <span style={Colors.textPink}>s</span>
+            </FormHeader>
 
-    /**
-     * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
-     * Initialization that requires DOM nodes should go here.
-     * If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
-     * You may call setState() immediately in componentDidMount().
-     * It will trigger an extra rendering, but it will happen before the browser updates the screen.
-     */
-    componentDidMount() {}
-
-    render() {
-        return (
-            <BaseContainer>
-                <FormContainer>
-                    <FormContent>
-                        <FormHeader>
-                            <span style={Colors.textOrange}>G</span>
-                            <span style={Colors.textRed}>a</span>
-                            <span style={Colors.textPink}>m</span>
-                            <span style={Colors.textViolet}>e </span>
-                            <span style={Colors.textBlue}>D</span>
-                            <span style={Colors.textGreen}>e</span>
-                            <span style={Colors.textYellow}>t</span>
-                            <span style={Colors.textBlack}>a</span>
-                            <span style={Colors.textOrange}>i</span>
-                            <span style={Colors.textRed}>l</span>
-                            <span style={Colors.textPink}>s</span>
-                        </FormHeader>
-
-                        <TextInput onChange={e => {
-                            this.handleInputChange('gameName', e.target.value);}
-                        } type='text' placeholder='Game Name'>
-                        </TextInput>
-                        <Button
-                            width="25%"
-                            onClick={() => {
-                                this.createGame();
-                            }}
-                        >
-                            Create Game
-                        </Button>
-                    </FormContent>
-                </FormContainer>
-            </BaseContainer>
-        );
-    }
+            <TextInput
+              onChange={(e) => {
+                this.handleInputChange("gameName", e.target.value);
+              }}
+              type="text"
+              placeholder="Game Name"
+            ></TextInput>
+            <Button
+              width="25%"
+              onClick={() => {
+                this.createGame();
+              }}
+            >
+              Create Game
+            </Button>
+          </FormContent>
+        </FormContainer>
+      </BaseContainer>
+    );
+  }
 }
 
 /**

@@ -1,16 +1,18 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+//Redux
+import {store} from '../../../store';
 
-/**
- *
- * Another way to export directly your functional component.
- */
 export const RouteGuard = props => {
 
-    if (!localStorage.getItem("token")) {
+    const state = store.getState();
+    console.log("RouteGuard")
+    console.log(state);
+
+    if (state.userReducer.user.token==null) {
         //User is not logged-in, redirect
         return <Redirect to={"/login"} />;
     }
-    // if user is already logged in, return to requested route
+    // If user is already logged in, return to requested route
     return props.children;
 };

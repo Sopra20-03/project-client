@@ -8,13 +8,13 @@ import userfemale from '../../views/logos/user_female.png';
 
 export const PlayerContainer = styled.div`
   display: flex;
-  flex-direction: column
+  flex-direction: column;
   align-items: center;
   width: 7rem;
-  background-color: white
+  background-color: white;
   border-radius: 5px;
   border: 2px solid black;
-  padding: 5px
+  padding: 5px;
   margin-top: 2rem;
   margin-left: 3rem;
   margin-right: 3rem;
