@@ -1,15 +1,14 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 //Redux
-import {store} from '../../../store';
+import { store } from "../../../store";
 
-export const LoginGuard = props => {
-
+export const LoginGuard = (props) => {
   const state = store.getState();
-  console.log("LoginGuard")
-  console.log(state)
+  console.log("LoginGuard");
+  console.log(state);
 
-  if (state.userReducer.user.token==null) {
+  if (state.userReducer.user.token == null) {
     //User is not logged-in, Load Login
     return props.children;
   }

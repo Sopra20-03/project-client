@@ -1,7 +1,11 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from "redux";
 //Reducers
-import userReducer from './userReducer';
+import userReducer from "./userReducer";
+import gameplayReducer from "./gameplayReducer";
+import lobbyReducer from "./lobbyReducer";
 
 export default combineReducers({
-    userReducer: userReducer
+  userReducer: userReducer,
+  gameplayReducer: gameplayReducer,
+  lobbyReducer: lobbyReducer,
 });
