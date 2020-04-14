@@ -5,7 +5,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import styled from "styled-components";
 import GameRow from "./GameRow";
 
 class GameTable extends React.Component {
@@ -17,7 +16,7 @@ class GameTable extends React.Component {
     this.setState({ selectedGameId: gameId });
   };
 
-  handleLeaveGame = (gameId) => {
+  handleLeaveGame = () => {
     this.setState({ selectedGameId: "" });
   };
 
