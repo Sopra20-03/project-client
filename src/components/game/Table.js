@@ -23,22 +23,14 @@ export const ContainerRow = styled.div`
   flex-direction: row;
 `;
 
-const CurrentPlayer = {
-  id: 1,
-  role: "clue writer"
-};
-
 
 export default class Table extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {showRolePopup: false, player: CurrentPlayer};
+    this.state = {showRolePopup: false};
   }
 
-  getRole() {
-    // TODO implement method to get players for current game --> get role by logged in player id
-  }
 
   togglePopup() {
     this.setState({
@@ -71,7 +63,7 @@ export default class Table extends Component {
             this.togglePopup()
           }}>Toggle Role</Button>
           {this.state.showRolePopup ?
-          <RolePopup role={this.state.player.role} closePopup={this.togglePopup.bind(this)}/> : null}
+          <RolePopup role={this.props.player.role} closePopup={this.togglePopup.bind(this)}/> : null}
         </Container>
       </div>
 
