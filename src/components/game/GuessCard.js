@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const CardContainer = styled.div`
   background-color: white;
@@ -15,13 +15,11 @@ export const CardContainer = styled.div`
 `;
 
 export default class GuessCard extends Component {
-    render() {
-        return (
-            <div>
-                <CardContainer>
-                    
-                </CardContainer>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <CardContainer></CardContainer>
+      </div>
+    );
+  }
 }
