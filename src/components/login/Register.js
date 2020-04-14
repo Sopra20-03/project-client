@@ -7,14 +7,14 @@ import Button from "../../views/design/Button";
 import {handleError} from "../../helpers/api";
 import PropTypes from 'prop-types';
 //Redux
-import { connect } from 'react-redux';
-import { registerUser } from '../../redux/actions/userActions';
+import {connect} from 'react-redux';
+import {registerUser} from '../../redux/actions/userActions';
 
 class Register extends React.Component {
 
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       name: null,
       username: null,
