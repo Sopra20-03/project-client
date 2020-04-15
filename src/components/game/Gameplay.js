@@ -36,19 +36,15 @@ export default class Gameplay extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gameId: 1, // FIXME GameID needs to be rendered dynamically
-      userId: null,
+      gameId: store.getState().lobbyReducer.gameId,
+      userId: store.getState().userReducer.user.id,
       players: [],
       loggedInPlayer: null
     }
   }
 
   componentDidMount() {
-    const userId = store.getState().userReducer.user.id;
-    this.setState({
-      userId: userId
-    });
-    api.get(`/games/${this.state.gameId}/players`, {
+     api.get(`/games/${this.state.gameId}/players`, {
       withCredentials: true,
     })
       .then(result => {
