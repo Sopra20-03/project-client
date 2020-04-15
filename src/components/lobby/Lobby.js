@@ -12,6 +12,8 @@ import Colors from "../../views/design/Colors";
 //Redux
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/userActions";
+import Game from "../shared/models/Game";
+import GameRow from "./GameRow";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -41,6 +43,7 @@ const LobbyContainer = styled.div`
 `;
 
 class Lobby extends React.Component {
+
   constructor() {
     super();
     this.state = {
@@ -50,11 +53,38 @@ class Lobby extends React.Component {
 
   async logout() {
     await this.props.logoutUser();
+    //await this.props.resetState();
     this.props.history.push("/login");
+  }
+
+  async getPlayerCount(gameId) {
+    try {
+      console.log("***API CALL : GET PLAYERS***");
+        const response = await api.get(`/games/${gameId}/players`, {
+          withCredentials: true,
+        });
+        console.log("request to:", response.request.responseURL);
+        console.log("requested data:", response.data);
+        this.state.games[gameId-1].playerCount = response.data.length;
+        console.log("PlayerCount: ", this.state.games[gameId-1].playerCount);
+      }
+    catch (error) {
+      alert(`Something went wrong getting player count: \n${handleError(error)}`);
+    }
+  };
+
+  getNumberOfPlayers() {
+    const gamesWithPlayerCount = this.state.games;
+    gamesWithPlayerCount.map((game) => (
+        this.getPlayerCount(game.gameId)
+    ));
+    this.setState({games: gamesWithPlayerCount});
+    console.log("Games after numplayers: ", this.state.games);
   }
 
   async componentDidMount() {
     try {
+      console.log("***API CALL - GET GAMES***");
       const response = await api.get("/games", {
         withCredentials: true,
       });
@@ -67,7 +97,6 @@ class Lobby extends React.Component {
       this.setState({ games: response.data });
 
       // This is just some data for you to see what is available.
-      // Feel free to remove it.
       console.log("request to:", response.request.responseURL);
       console.log("status code:", response.status);
       console.log("status text:", response.statusText);
@@ -75,6 +104,9 @@ class Lobby extends React.Component {
 
       // See here to get more data.
       console.log(response);
+
+      this.getNumberOfPlayers();
+
     } catch (error) {
       alert(
         `Something went wrong while fetching the games: \n${handleError(error)}`

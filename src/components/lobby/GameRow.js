@@ -4,6 +4,9 @@ import {withStyles} from '@material-ui/core/styles'
 import {Button} from '@material-ui/core';
 import TableRow from "@material-ui/core/TableRow";
 
+//Redux
+import { connect, useSelector } from "react-redux";
+
 const PlayButton = withStyles((theme) => ({
     root: {
         color: theme.palette.getContrastText('#00a839'),
@@ -25,10 +28,29 @@ const LeaveButton = withStyles((theme) => ({
 }))(Button);
 
 
-
 function GameRow(props){
 
-    const isGameSelected = props.selectedGameId === props.game.gameId;
+    //get state
+    const selectedGameId = useSelector(state => state.lobbyReducer.gameId);
+    const thisGameSelected = selectedGameId === props.game.gameId;
+    const gameNotChosen = selectedGameId == null;
+    let rowButton;
+
+    if(!thisGameSelected && !gameNotChosen) {
+        rowButton = <PlayButton disabled onClick={() => props.onJoinGame(props.game.gameId)}>
+            Play
+        </PlayButton>
+    }
+    else if (thisGameSelected) {
+        rowButton = <LeaveButton onClick={() => props.onLeaveGame(props.game.gameId)}>
+            Leave
+        </LeaveButton>
+    }
+    else {
+        rowButton = <PlayButton onClick={() => props.onJoinGame(props.game.gameId)}>
+            Play
+        </PlayButton>
+    }
 
    return (
         <TableRow key={props.game.gameId} className={thisGameSelected ? 'gameJoined' : undefined}>
@@ -41,4 +63,4 @@ function GameRow(props){
     );
 }
 
-export default GameRow;
+export default connect(null )(GameRow);
