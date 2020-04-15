@@ -12,8 +12,10 @@ import Colors from "../../views/design/Colors";
 //Redux
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/userActions";
+import { startGame } from "../../redux/actions/lobbyActions";
 import Game from "../shared/models/Game";
 import GameRow from "./GameRow";
+import { store } from "../../store";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -114,6 +116,16 @@ class Lobby extends React.Component {
     }
   }
 
+  async startGame() {
+    const currentGameId = store.getState().lobbyReducer.gameId;
+    try {
+      await this.props.startGame(currentGameId);
+    } catch (error) {
+      alert(`Something went wrong while starting the game: \n${handleError(error)}`);
+    }
+  };
+
+
   render() {
     return (
       <Container>
@@ -132,13 +144,23 @@ class Lobby extends React.Component {
 
           {!this.state.games ? <div /> : <GameTable games={this.state.games} />}
 
-          <Button
-            onClick={() => {
-              this.props.history.push(`/gamedetails`);
-            }}
-          >
-            Create Game
-          </Button>
+          {store.getState().lobbyReducer.isUserCreator ?
+              <Button
+                  onClick={() => {
+                    this.startGame();
+                    this.props.history.push(`/gameplay`);
+                  }}
+              >
+                Start Game
+              </Button> :
+              <Button
+                  onClick={() => {
+                    this.props.history.push(`/gamedetails`);
+                  }}
+              >
+                Create Game
+              </Button>
+          }
 
           <Button
             onClick={() => {
@@ -153,4 +175,4 @@ class Lobby extends React.Component {
   }
 }
 
-export default withRouter(connect(null, { logoutUser })(Lobby));
+export default withRouter(connect(null, { logoutUser, startGame })(Lobby));

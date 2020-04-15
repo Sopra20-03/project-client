@@ -9,7 +9,7 @@ import GameRow from "./GameRow";
 
 //redux imports
 import { connect } from "react-redux";
-import { joinGame, leaveGame } from "../../redux/actions/lobbyActions";
+import { joinGame, leaveGame, cancelGame } from "../../redux/actions/lobbyActions";
 import { store } from "../../store";
 import {handleError} from "../../helpers/api";
 
@@ -50,6 +50,21 @@ class GameTable extends React.Component {
     this.leaveGame();
   };
 
+  async cancelGame(gameId) {
+    const currentGameId = store.getState().lobbyReducer.gameId;
+    try {
+      // IMPLEMENT CANCEL GAME FUNCTIONALITY HERE
+      await this.props.cancelGame(currentGameId);
+      this.leaveGame();
+    } catch (error) {
+      alert(`Something went wrong while cancelling the game: \n${handleError(error)}`);
+    }
+  };
+
+  handleCancelGame = (gameId) => {
+    this.cancelGame(gameId);
+  };
+
 
   render() {
     return (
@@ -70,17 +85,15 @@ class GameTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {console.log(this.props.games)}
-            {this.props.games.map((game) => {
-              return (
-                  <GameRow
-                      key={game.gameId}
-                      game={game}
-                      onJoinGame={this.handleJoinGame}
-                      onLeaveGame={this.handleLeaveGame}
-                  />
-              )
-            })}
+            {this.props.games.map((game) => (
+              <GameRow
+                key={game.gameId}
+                game={game}
+                onJoinGame={this.handleJoinGame}
+                onLeaveGame={this.handleLeaveGame}
+                onCancelGame={this.handleCancelGame}
+              />
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -88,4 +101,4 @@ class GameTable extends React.Component {
   };
 }
 
-export default connect(null, { joinGame, leaveGame })(GameTable);
+export default connect(null, { joinGame, leaveGame, cancelGame })(GameTable);
