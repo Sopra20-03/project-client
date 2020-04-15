@@ -1,4 +1,4 @@
-import {GAME_CREATION, JOIN_GAME, LEAVE_GAME, START_GAME} from "./types";
+import {GAME_CREATION, JOIN_GAME, LEAVE_GAME, START_GAME, CANCEL_GAME} from "./types";
 import { api, handleError } from "../../helpers/api";
 import Game from "../../components/shared/models/Game";
 
@@ -75,6 +75,27 @@ export const startGame = (gameId) => async (dispatch) => {
         console.log("status code:", response.status);
         console.log("status text:", response.statusText);
         console.log("requested data:", response.data);
+    } catch (error) {
+        alert(handleError(error));
+    }
+};
+
+export const cancelGame = (gameId) => async (dispatch) => {
+    try {
+        console.log("***API CALL : CANCEL GAME*** ...coming soon");
+        /*
+        const response = await api.delete(`/games/${gameId}`, {
+            withCredentials: true,
+        });
+        const game = new Game(response.data);
+        console.log("request to:", response.request.responseURL);
+        console.log("status code:", response.status);
+        console.log("status text:", response.statusText);
+        console.log("requested data:", response.data);
+        */
+        dispatch({
+            type: CANCEL_GAME,
+        });
     } catch (error) {
         alert(handleError(error));
     }

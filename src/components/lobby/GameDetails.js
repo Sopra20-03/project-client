@@ -79,7 +79,6 @@ class GameDetails extends React.Component {
       gameId: null,
       gameName: null,
       gameMode: null,
-      creator: null,
     };
   }
 
@@ -89,13 +88,11 @@ class GameDetails extends React.Component {
    * and its token is stored in the localStorage.
    */
   async createGame() {
-    const state = store.getState();
-    const creator = state.userReducer.user.username;
     try {
       const requestBody = {
         gameName: this.state.gameName,
         gameMode: this.state.gameMode,
-        creatorUsername: creator,
+        creatorUsername: store.getState().userReducer.user.username,
       };
       await this.props.createGame(requestBody);
       this.addUserToGame();
