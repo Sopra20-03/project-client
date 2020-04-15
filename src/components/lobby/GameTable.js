@@ -81,7 +81,6 @@ class GameTable extends React.Component {
           </TableBody>
         </Table>
       </TableContainer>
-        </BaseContainer>
     );
   };
 }
