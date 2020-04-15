@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import {withStyles} from '@material-ui/core/styles'
 import {Button} from '@material-ui/core';
@@ -32,20 +31,12 @@ function GameRow(props){
     const isGameSelected = props.selectedGameId === props.game.gameId;
 
    return (
-        <TableRow key={props.game.gameId} className={isGameSelected ? 'gameJoined' : undefined}>
+        <TableRow key={props.game.gameId} className={thisGameSelected ? 'gameJoined' : undefined}>
             <TableCell component="th" scope="row" align="center"> {props.game.gameId} </TableCell>
             <TableCell align = "center" > {props.game.gameName} </TableCell>
             <TableCell align="center"> {props.game.creatorUsername} </TableCell>
-            <TableCell align="center">{'4 of 5'} </TableCell>
-            <TableCell align="center">{
-                isGameSelected ?
-                    <LeaveButton onClick={() => props.onLeaveGame(props.game.gameId)}>
-                        Leave
-                    </LeaveButton> :
-                    <PlayButton onClick={() => props.onJoinGame(props.game.gameId)}>
-                        Play
-                    </PlayButton>}
-            </TableCell>
+            <TableCell align="center">{props.game.playerCount} </TableCell>
+            <TableCell align="center">{rowButton} </TableCell>
         </TableRow>
     );
 }

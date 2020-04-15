@@ -1,16 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { BaseContainer } from "../../helpers/layout";
-import { api, handleError } from "../../helpers/api";
+import { handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
 import Button from "../../views/design/Button";
-import Game from "../shared/models/Game";
 import Colors from "../../views/design/Colors";
 
 //Redux
-import {connect, useSelector} from "react-redux";
+import {connect} from "react-redux";
 import { store } from "../../store"
-import { createGame, joinGame } from "../../redux/actions/gameActions";
+import { createGame, joinGame } from "../../redux/actions/lobbyActions";
 
 
 const FormContainer = styled.div`

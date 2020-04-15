@@ -26,7 +26,8 @@ class GameTable extends React.Component {
         <Table
           style={{ minWidth: 650 }}
           size="small"
-          aria-label="a dense table"
+          aria-label="dense table"
+          stickyHeader
         >
           <TableHead>
             <TableRow>
@@ -50,6 +51,7 @@ class GameTable extends React.Component {
           </TableBody>
         </Table>
       </TableContainer>
+        </BaseContainer>
     );
   }
 }
