@@ -53,7 +53,7 @@ class GameTable extends React.Component {
 
   render() {
     return (
-      <TableContainer>
+      <TableContainer style={ { maxHeight: 500}}>
         <Table
           style={{ minWidth: 650 }}
           size="small"
@@ -70,18 +70,20 @@ class GameTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.props.games.map((game) => (
-              <GameRow
-                key={game.gameId}
-                game={game}
-                onJoinGame={this.handleJoinGame}
-                onLeaveGame={this.handleLeaveGame}
-              />
-            ))}
+            {console.log(this.props.games)}
+            {this.props.games.map((game) => {
+              return (
+                  <GameRow
+                      key={game.gameId}
+                      game={game}
+                      onJoinGame={this.handleJoinGame}
+                      onLeaveGame={this.handleLeaveGame}
+                  />
+              )
+            })}
           </TableBody>
         </Table>
       </TableContainer>
-        </BaseContainer>
     );
   };
 }

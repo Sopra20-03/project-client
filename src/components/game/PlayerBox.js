@@ -19,7 +19,7 @@ export const PlayerContainer = styled.div`
   margin-right: 3rem;
 `;
 
-export default class Player extends Component {
+export default class PlayerBox extends Component {
   render() {
     return (
       <div>

@@ -37,7 +37,7 @@ function GameRow(props){
     let rowButton;
 
     if(!thisGameSelected && !gameNotChosen) {
-        rowButton = <PlayButton disabled onClick={() => props.onJoinGame(props.game.gameId)}>
+        rowButton = <PlayButton onClick={() => props.onJoinGame(props.game.gameId)}>
             Play
         </PlayButton>
     }
