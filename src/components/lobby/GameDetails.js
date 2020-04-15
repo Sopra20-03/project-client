@@ -106,7 +106,7 @@ class GameDetails extends React.Component {
 
   async addUserToGame() {
     const state = store.getState();
-    const gameId = state.gameReducer.gameId;
+    const gameId = state.lobbyReducer.gameId;
     const userId = state.userReducer.user.id;
     try {
       const requestBody = {

@@ -1,0 +1,53 @@
+
+// ****** CREATE USER ******
+POST http://localhost:8080/users
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "username": "test", "password": "test", "name": "testUser" }
+
+###
+
+// ****** LOGIN USER ******
+POST http://localhost:8080/login?username=test&password=test
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+// ***** GET USERS ******
+GET http://localhost:8080/users
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+// ***** CREATE GAME ******
+POST http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "gameName": "test", "creatorUsername": "test"}
+
+###
+
+// ***** START GAME 1 ******
+PUT http://localhost:8080/games/3
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+
+// ***** GET GAMES ******
+GET http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+
+
+###
+
+
+

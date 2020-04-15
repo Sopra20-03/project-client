@@ -1,4 +1,4 @@
-import {GAME_CREATION, JOIN_GAME, LEAVE_GAME} from "./types";
+import {GAME_CREATION, JOIN_GAME, LEAVE_GAME, START_GAME} from "./types";
 import { api, handleError } from "../../helpers/api";
 import Game from "../../components/shared/models/Game";
 
@@ -61,4 +61,21 @@ export const leaveGame = (gameId, userId) => async (dispatch) => {
     }
 };
 
-
+export const startGame = (gameId) => async (dispatch) => {
+    try {
+        console.log("***API CALL : START GAME***");
+        const response = await api.put(`/games/${gameId}`, {
+            withCredentials: true,
+        });
+        const game = new Game(response.data);
+        dispatch({
+            type: START_GAME,
+        });
+        console.log("request to:", response.request.responseURL);
+        console.log("status code:", response.status);
+        console.log("status text:", response.statusText);
+        console.log("requested data:", response.data);
+    } catch (error) {
+        alert(handleError(error));
+    }
+};
