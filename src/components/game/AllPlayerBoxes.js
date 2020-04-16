@@ -1,4 +1,4 @@
-import React, from "react";
+import React from "react";
 import PlayerBox from "./PlayerBox";
 import Colors from "../../views/design/Colors";
 import {ContainerRow} from "./Gameplay";
