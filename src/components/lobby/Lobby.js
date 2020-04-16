@@ -8,12 +8,14 @@ import { withRouter } from "react-router-dom";
 import LogoutIcon from "./LogoutIcon";
 import GameTable from "./GameTable";
 import Colors from "../../views/design/Colors";
+import {SmallLogo} from "./SmallLogo";
 
 //Redux
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/userActions";
 import { startGame } from "../../redux/actions/lobbyActions";
 import { store } from "../../store";
+
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -115,6 +117,7 @@ class Lobby extends React.Component {
     return (
       <Container>
         <GameContainer>
+          <SmallLogo/>
           <BoxHeader>
             <span style={Colors.textOrange}>G</span>
             <span style={Colors.textRed}>a</span>

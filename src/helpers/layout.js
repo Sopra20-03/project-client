@@ -27,7 +27,7 @@ export const LoginContainer = styled.div`
 `;
 
 export const GameContainer = styled.div`
-  margin-top: 2em;
+  margin-top: 4em;
   --webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 5px 5px 5px 5px;
   background: #ffffff;
