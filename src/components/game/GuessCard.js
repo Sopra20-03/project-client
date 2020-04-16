@@ -5,7 +5,6 @@ import styled from "styled-components";
 export const CardContainer = styled.div`
   background-color: white;
   border-radius: 5px;
-  border: 2px solid black;
   padding: 5px;
   margin-top: 2rem;
   margin-left: 3rem;
@@ -18,7 +17,7 @@ export default class GuessCard extends Component {
   render() {
     return (
       <div>
-        <CardContainer></CardContainer>
+        <CardContainer style={{border: `2px solid ${this.props.borderColor}`}}/>
       </div>
     );
   }

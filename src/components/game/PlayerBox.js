@@ -12,7 +12,6 @@ export const PlayerContainer = styled.div`
   width: 7rem;
   background-color: white;
   border-radius: 5px;
-  border: 2px solid black;
   padding: 5px;
   margin-top: 2rem;
   margin-left: 3rem;
@@ -22,12 +21,10 @@ export const PlayerContainer = styled.div`
 export default class PlayerBox extends Component {
   render() {
     return (
-      <div>
-        <PlayerContainer>
+        <PlayerContainer style={{border: `2px solid ${this.props.borderColor}`}}>
           <img src={usermale} height="60rem" width="50rem" />
           <h4 style={{ margin: "0" }}>Player Name</h4>
         </PlayerContainer>
-      </div>
     );
   }
 }

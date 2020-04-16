@@ -5,17 +5,12 @@ import PointsInfo from "./PointsInfo";
 import Table from "./Table";
 import {api} from "../../helpers/api";
 import {store} from "../../store";
+import {BaseContainer, GameContainer} from "../../helpers/layout";
+import PlayerBox from "./PlayerBox";
+import Button from "../../views/design/Button";
+import RolePopup from "./RolePopup";
+import Colors from "../../views/design/Colors/Colors";
 
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  justify-content: space-between;
-  border-radius: 5px;
-  border: 2px solid black;
-  min-width: fit-content;
-`;
 
 const InfoContainer = styled.div`
   display: flex;
@@ -31,6 +26,12 @@ const TableContainer = styled.div`
   align-items: center;
 `;
 
+export const ContainerRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
 
 export default class Gameplay extends Component {
   constructor(props) {
@@ -39,9 +40,16 @@ export default class Gameplay extends Component {
       gameId: store.getState().lobbyReducer.gameId,
       userId: store.getState().userReducer.user.id,
       players: [],
-      loggedInPlayer: null
+      loggedInPlayer: null,
+      showRolePopup: false,
     }
   }
+
+    toggleRolePopup() {
+        this.setState({
+            showRolePopup: !this.state.showRolePopup
+        });
+    }
 
   componentDidMount() {
      api.get(`/games/${this.state.gameId}/players`, {
@@ -73,18 +81,33 @@ export default class Gameplay extends Component {
   render() {
     return (
       <div>
-        <Container>
-          <div></div>
-          <TableContainer>
-            <Table player={this.state.loggedInPlayer}/>
-          </TableContainer>
+        <BaseContainer>
+            <GameContainer>
+              <div></div>
 
-          <InfoContainer>
-            <PointsInfo/>
-            <div></div>
-            <TimerInfo/>
-          </InfoContainer>
-        </Container>
+              <ContainerRow>
+                <PlayerBox userName={'test'} borderColor={Colors.blue} />
+                <PlayerBox userName={'test'} borderColor={Colors.orange} />
+                <PlayerBox userName={'test'} borderColor={Colors.violet} />
+                <PlayerBox userName={'test'} borderColor={Colors.green} />
+              </ContainerRow>
+
+              <TableContainer>
+                <Table player={this.state.loggedInPlayer} players={this.state.players}/>
+              </TableContainer>
+
+              <InfoContainer>
+                  <PointsInfo/>
+                  <Button onClick={() => {
+                      this.toggleRolePopup()
+                  }}>Toggle Role</Button>
+                  {this.state.showRolePopup ?
+                      <RolePopup role={this.props.player.role} closePopup={this.toggleRolePopup.bind(this)}/> : null}
+                  <TimerInfo/>
+              </InfoContainer>
+
+            </GameContainer>
+        </BaseContainer>
       </div>
     );
   }
