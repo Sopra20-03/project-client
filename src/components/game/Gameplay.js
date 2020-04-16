@@ -3,7 +3,7 @@ import styled from "styled-components";
 import TimerInfo from "./TimerInfo";
 import PointsInfo from "./PointsInfo";
 import Table from "./Table";
-import {api, handleError} from "../../helpers/api";
+import {api} from "../../helpers/api";
 import {store} from "../../store";
 import {BaseContainer, GameContainer} from "../../helpers/layout";
 import Button from "../../views/design/Button";
@@ -49,31 +49,6 @@ export default class Gameplay extends Component {
         this.setState({
             showRolePopup: !this.state.showRolePopup
         });
-    }
-
-    async getPlayerUsername(userId) {
-        try {
-            console.log("***API CALL : GET USER***");
-            const response = await api.get(`/users/${userId}`, {
-                withCredentials: true,
-            });
-            this.state.players.find(x => x.userId === userId).username = response.data.username;
-        }
-        catch (error) {
-            alert(`Something went wrong getting player username: \n${handleError(error)}`);
-        }
-    };
-
-    getUsernames() {
-        const playersWithUsernames = this.state.players;
-        playersWithUsernames.map((player) => (
-            this.getPlayerUsername(player.userId)
-        ));
-        this.setState({players: playersWithUsernames});
-        const opponents = this.state.players.filter( x => x.userId !== this.state.userId );
-        this.setState({opponents: opponents});
-        console.log("Players after getUsernames: ", this.state.players);
-        console.log("Opponents after getUsernames: ", this.state.opponents);
     }
 
     componentDidMount() {

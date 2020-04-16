@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 import Colors from "../../views/design/Colors";
 
@@ -27,28 +27,29 @@ export const Word = styled.div`
   text-transform: uppercase;
 `;
 
-export default class WordCard extends Component {
-  render() {
+function WordCard(props) {
+  let words = props.wordCard;
     return (
       <div>
         <CardContainer>
           <Word style={{border: `2px solid ${Colors.blue}`}}>
-            jackson
+            {words.word1}
           </Word>
           <Word style={{border: `2px solid ${Colors.green}`}}>
-            CIGARETTE
+            {words.word2}
           </Word>
           <Word style={{border: `2px solid ${Colors.red}`}}>
-            BRACELET
+            {words.word3}
           </Word>
           <Word style={{border: `2px solid ${Colors.orange}`}}>
-            WEATHER FORCAST
+            {words.word4}
           </Word>
           <Word style={{border: `2px solid ${Colors.yellow}`}}>
-            TOWER
+            {words.word5}
           </Word>
         </CardContainer>
       </div>
     );
   }
-}
+
+export default WordCard;
