@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import WordCard from "./WordCard";
 
-import GuessCard from "./GuessCard";
+import ClueCard from "./ClueCard";
 import WhiteTextField from "./InputField";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import {api, handleError} from "../../helpers/api";
@@ -66,10 +66,10 @@ export default class Table extends Component {
       <div>
         <GameTable>
           <ContainerRow>
-            <GuessCard borderColor={Colors.blue} />
-            <GuessCard borderColor={Colors.orange} />
-            <GuessCard borderColor={Colors.violet} />
-            <GuessCard borderColor={Colors.green} />
+            <ClueCard borderColor={Colors.blue}/>
+            <ClueCard borderColor={Colors.orange}/>
+            <ClueCard borderColor={Colors.violet}/>
+            <ClueCard borderColor={Colors.green}/>
           </ContainerRow>
           <ContainerRow style={{justifyContent: "center"}}>
             <WordCard/>

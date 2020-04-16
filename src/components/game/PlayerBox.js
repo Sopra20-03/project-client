@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
 import styled from "styled-components";
 
@@ -14,17 +14,26 @@ export const PlayerContainer = styled.div`
   border-radius: 5px;
   padding: 5px;
   margin-top: 2rem;
-  margin-left: 3rem;
-  margin-right: 3rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
 `;
 
 export default class PlayerBox extends Component {
-  render() {
-    return (
-        <PlayerContainer style={{border: `2px solid ${this.props.borderColor}`}}>
-          <img src={usermale} height="60rem" width="50rem" />
-          <h4 style={{ margin: "0" }}>Player Name</h4>
-        </PlayerContainer>
-    );
-  }
+
+    render() {
+        let userIcon = {};
+        if (this.props.gender === 'female') {
+            userIcon = <img src= {userfemale} height="60rem" width="50rem"/>
+        }
+        else {
+            userIcon = <img src= {usermale} height="60rem" width="50rem"/>
+        }
+
+        return (
+            <PlayerContainer style={{border: `2px solid ${this.props.borderColor}`}}>
+                {userIcon}
+                <h4 style={{margin: "0"}}>{this.props.userName}</h4>
+            </PlayerContainer>
+        );
+    }
 }

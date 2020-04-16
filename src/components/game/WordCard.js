@@ -24,6 +24,7 @@ export const Word = styled.div`
   margin: 2px;
   font-size: 20px;
   width: 12rem;
+  text-transform: uppercase;
 `;
 
 export default class WordCard extends Component {
@@ -32,7 +33,7 @@ export default class WordCard extends Component {
       <div>
         <CardContainer>
           <Word style={{border: `2px solid ${Colors.blue}`}}>
-            JACKSON
+            jackson
           </Word>
           <Word style={{border: `2px solid ${Colors.green}`}}>
             CIGARETTE

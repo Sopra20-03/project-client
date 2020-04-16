@@ -3,13 +3,12 @@ import styled from "styled-components";
 import TimerInfo from "./TimerInfo";
 import PointsInfo from "./PointsInfo";
 import Table from "./Table";
-import {api} from "../../helpers/api";
+import {api, handleError} from "../../helpers/api";
 import {store} from "../../store";
 import {BaseContainer, GameContainer} from "../../helpers/layout";
-import PlayerBox from "./PlayerBox";
 import Button from "../../views/design/Button";
 import RolePopup from "./RolePopup";
-import Colors from "../../views/design/Colors/Colors";
+import AllPlayerBoxes from "./AllPlayerBoxes";
 
 
 const InfoContainer = styled.div`
@@ -34,16 +33,17 @@ export const ContainerRow = styled.div`
 
 
 export default class Gameplay extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      gameId: store.getState().lobbyReducer.gameId,
-      userId: store.getState().userReducer.user.id,
-      players: [],
-      loggedInPlayer: null,
-      showRolePopup: false,
+    constructor(props) {
+        super(props);
+        this.state = {
+            gameId: store.getState().lobbyReducer.gameId,
+            userId: store.getState().userReducer.user.id,
+            players: [],
+            opponents: [],
+            loggedInPlayer: null,
+            showRolePopup: false,
+        }
     }
-  }
 
     toggleRolePopup() {
         this.setState({
@@ -51,64 +51,93 @@ export default class Gameplay extends Component {
         });
     }
 
-  componentDidMount() {
-     api.get(`/games/${this.state.gameId}/players`, {
-      withCredentials: true,
-    })
-      .then(result => {
-        let players = [];
-        result.data.forEach((element) => {
-          console.log(element);
-          players.push(element);
-          if (element.userId === this.state.userId) {
-            console.log(true);
-            this.setState({
-              loggedInPlayer: element
-            })
-          }
-        });
-        this.setState({
-          players: players
-        })
-      })
-      .catch(error => {
-          console.log(error);
-          alert(`Couldn't load players. \n${error}`);
+    async getPlayerUsername(userId) {
+        try {
+            console.log("***API CALL : GET USER***");
+            const response = await api.get(`/users/${userId}`, {
+                withCredentials: true,
+            });
+            this.state.players.find(x => x.userId === userId).username = response.data.username;
         }
-      );
-  }
+        catch (error) {
+            alert(`Something went wrong getting player username: \n${handleError(error)}`);
+        }
+    };
 
-  render() {
-    return (
-      <div>
-        <BaseContainer>
-            <GameContainer>
-              <div></div>
+    getUsernames() {
+        const playersWithUsernames = this.state.players;
+        playersWithUsernames.map((player) => (
+            this.getPlayerUsername(player.userId)
+        ));
+        this.setState({players: playersWithUsernames});
+        const opponents = this.state.players.filter( x => x.userId !== this.state.userId );
+        this.setState({opponents: opponents});
+        console.log("Players after getUsernames: ", this.state.players);
+        console.log("Opponents after getUsernames: ", this.state.opponents);
+    }
 
-              <ContainerRow>
-                <PlayerBox userName={'test'} borderColor={Colors.blue} />
-                <PlayerBox userName={'test'} borderColor={Colors.orange} />
-                <PlayerBox userName={'test'} borderColor={Colors.violet} />
-                <PlayerBox userName={'test'} borderColor={Colors.green} />
-              </ContainerRow>
+    componentDidMount() {
+        console.log("***API CALL - GET PLAYERS***");
+        //api.get(`/games/${this.state.gameId}/players`, {
+        api.get(`/games/1/players`, {           // NEEDS TO BE UPDATED TO LOAD CURRENT GAME ID
+            withCredentials: true,
+        })
+            .then(result => {
+                let players = [];
+                result.data.forEach((element) => {
+                    players.push(element);
+                    if (element.userId === this.state.userId) {
+                        this.setState({
+                            loggedInPlayer: element
+                        });
+                        console.log("Logged In Player: ", this.state.loggedInPlayer);
+                    }
+                });
+                this.setState({
+                    players: players
+                });
+                console.log("All players: ", this.state.players);
 
-              <TableContainer>
-                <Table player={this.state.loggedInPlayer} players={this.state.players}/>
-              </TableContainer>
+                const opponents = this.state.players.filter( x => x.userId !== this.state.userId );
+                this.setState( {
+                    opponents: opponents
+                });
+                console.log("All opponents: ", this.state.opponents);
+            })
+            .catch(error => {
+                    console.log(error);
+                    alert(`Couldn't load players. \n${error}`);
+                }
+            )
+    };
 
-              <InfoContainer>
-                  <PointsInfo/>
-                  <Button onClick={() => {
-                      this.toggleRolePopup()
-                  }}>Toggle Role</Button>
-                  {this.state.showRolePopup ?
-                      <RolePopup role={this.props.player.role} closePopup={this.toggleRolePopup.bind(this)}/> : null}
-                  <TimerInfo/>
-              </InfoContainer>
+    render() {
+        return (
+            <div>
+                <BaseContainer>
+                    <GameContainer>
+                        <div></div>
 
-            </GameContainer>
-        </BaseContainer>
-      </div>
-    );
-  }
+                        <AllPlayerBoxes opponents={this.state.opponents}/>
+
+                        <TableContainer>
+                            <Table player={this.state.loggedInPlayer} players={this.state.players}/>
+                        </TableContainer>
+
+                        <InfoContainer>
+                            <PointsInfo/>
+                            <Button onClick={() => {
+                                this.toggleRolePopup()
+                            }}>Toggle Role</Button>
+                            {this.state.showRolePopup ?
+                                <RolePopup role={this.props.player.role}
+                                           closePopup={this.toggleRolePopup.bind(this)}/> : null}
+                            <TimerInfo/>
+                        </InfoContainer>
+
+                    </GameContainer>
+                </BaseContainer>
+            </div>
+        );
+    }
 }
