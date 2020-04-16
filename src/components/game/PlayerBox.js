@@ -13,7 +13,6 @@ export const PlayerContainer = styled.div`
   background-color: white;
   border-radius: 5px;
   padding: 5px;
-  margin-top: 2rem;
   margin-left: 2rem;
   margin-right: 2rem;
 `;
