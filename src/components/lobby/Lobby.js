@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-import { BaseContainer } from "../../helpers/layout";
+import { BaseContainer, GameContainer} from "../../helpers/layout";
 import { api, handleError } from "../../helpers/api";
 import Button from "../../views/design/Button";
 import { withRouter } from "react-router-dom";
-
+import LogoutIcon from "./LogoutIcon";
 import GameTable from "./GameTable";
 import Colors from "../../views/design/Colors";
 
@@ -13,8 +13,6 @@ import Colors from "../../views/design/Colors";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/userActions";
 import { startGame } from "../../redux/actions/lobbyActions";
-import Game from "../shared/models/Game";
-import GameRow from "./GameRow";
 import { store } from "../../store";
 
 const Container = styled(BaseContainer)`
@@ -29,19 +27,6 @@ const BoxHeader = styled.div`
   letter-spacing: 10px;
   margin: auto;
   margin-bottom: 20px;
-`;
-
-const LobbyContainer = styled.div`
-  margin-top: 2em;
-  --webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 5px 5px 5px 5px;
-  background: #ffffff;
-  padding: 1.2rem;
-  width: 90%;
-  width: 60%;
-  position: relative;
-  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
-  text-align: center;
 `;
 
 class Lobby extends React.Component {
@@ -129,7 +114,7 @@ class Lobby extends React.Component {
   render() {
     return (
       <Container>
-        <LobbyContainer>
+        <GameContainer>
           <BoxHeader>
             <span style={Colors.textOrange}>G</span>
             <span style={Colors.textRed}>a</span>
@@ -140,6 +125,9 @@ class Lobby extends React.Component {
             <span style={Colors.textYellow}>b</span>
             <span style={Colors.textBlack}>b</span>
             <span style={Colors.textOrange}>y</span>
+            <LogoutIcon onClick={() => {
+              this.logout()
+            }}/>
           </BoxHeader>
 
           {!this.state.games ? <div /> : <GameTable games={this.state.games} />}
@@ -161,15 +149,14 @@ class Lobby extends React.Component {
                 Create Game
               </Button>
           }
-
           <Button
-            onClick={() => {
-              this.logout();
-            }}
+              onClick={() => {
+                this.logout();
+              }}
           >
             Logout
           </Button>
-        </LobbyContainer>
+        </GameContainer>
       </Container>
     );
   }

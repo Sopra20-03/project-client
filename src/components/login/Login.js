@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { BaseContainer } from "../../helpers/layout";
+import {BaseContainer, LoginContainer} from "../../helpers/layout";
 import { handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
 import Button from "../../views/design/Button";
@@ -12,26 +12,25 @@ import { connect } from "react-redux";
 import { loginUser } from "../../redux/actions/userActions";
 
 export const FormContainer = styled.div`
-  display: inline-flex;
-  margin: 0 auto;
+  margin-top: 6em;
+  display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  width: 40%;
-  align-self: flex-start;
-  align-self: flex-end;
+  width: 100%;
+  min-height: 100%;
 `;
 
 export const FormContent = styled.div`
+  margin-top: 2em;
+  left: 10em;
   --webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 5px 5px 5px 5px;
   background: #ffffff;
-  opacity: 0.9;
   padding: 1.2rem;
-  width: 90%;
-  maxwidth: 450px;
+  width: 35%;
   position: relative;
-  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 10px 15px 20px rgba(0, 0, 0, 0.25);
   text-align: center;
 `;
 
@@ -58,11 +57,12 @@ export const TextInput = styled.input`
   transition: all 0.5s ease-in-out;
   border-radius: 5px;
 
-  &:focus {
+  &::focus {
     background-color: #fff;
-    border: 2px solid #5fbae9;
+    border-bottom: 2px solid #5fbae9;
     border-radius: 5px;
-  `;
+  }
+`;
 
 export const Link = styled.a`
   text-decoration: none;
@@ -130,7 +130,7 @@ class Login extends React.Component {
     return (
       <BaseContainer>
         <FormContainer>
-          <FormContent>
+          <LoginContainer>
             <FormHeader>
               <span style={Colors.textOrange}>L</span>
               <span style={Colors.textRed}>o</span>
@@ -169,7 +169,7 @@ class Login extends React.Component {
             <Link href="/register">
               Don't have an account yet? Register here!
             </Link>
-          </FormContent>
+          </LoginContainer>
         </FormContainer>
       </BaseContainer>
     );

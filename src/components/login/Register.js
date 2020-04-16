@@ -1,11 +1,12 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
-import {BaseContainer} from "../../helpers/layout";
-import {FormContainer, FormContent, FormHeader, Link, TextInput} from "./Login";
+import {BaseContainer, LoginContainer} from "../../helpers/layout";
+import {FormContainer, FormHeader, Link, TextInput} from "./Login";
 import Colors from "../../views/design/Colors";
 import Button from "../../views/design/Button";
 import {handleError} from "../../helpers/api";
 import PropTypes from 'prop-types';
+
 //Redux
 import {connect} from 'react-redux';
 import {registerUser} from '../../redux/actions/userActions';
@@ -46,7 +47,7 @@ class Register extends React.Component {
     return (
       <BaseContainer>
         <FormContainer>
-          <FormContent>
+          <LoginContainer>
             <FormHeader>
               <span style={Colors.textOrange}>R</span>
               <span style={Colors.textRed}>e</span>
@@ -55,10 +56,7 @@ class Register extends React.Component {
               <span style={Colors.textBlue}>s</span>
               <span style={Colors.textGreen}>t</span>
               <span style={Colors.textYellow}>e</span>
-              <span style={Colors.textBlack}>r </span>
-              <span style={Colors.textOrange}>N</span>
-              <span style={Colors.textRed}>o</span>
-              <span style={Colors.textPink}>w</span>
+              <span style={Colors.textBlack}>r</span>
             </FormHeader>
             <TextInput onChange={e => {
               this.handleInputChange('name', e.target.value);
@@ -77,7 +75,7 @@ class Register extends React.Component {
               }}>Register</Button>
             <br></br>
             <Link href="/login">Already have an account? Login here!</Link>
-          </FormContent>
+          </LoginContainer>
         </FormContainer>
       </BaseContainer>
     );
