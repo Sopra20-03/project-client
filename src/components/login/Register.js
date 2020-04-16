@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 //Redux
 import {connect} from 'react-redux';
 import {registerUser} from '../../redux/actions/userActions';
+import {LargeLogo} from "./LargeLogo";
 
 class Register extends React.Component {
 
@@ -46,6 +47,7 @@ class Register extends React.Component {
   render() {
     return (
       <BaseContainer>
+        <LargeLogo/>
         <FormContainer>
           <LoginContainer>
             <FormHeader>

@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 //Redux
 import { connect } from "react-redux";
 import { loginUser } from "../../redux/actions/userActions";
+import {LargeLogo} from "./LargeLogo";
 
 export const FormContainer = styled.div`
   margin-top: 6em;
@@ -129,6 +130,7 @@ class Login extends React.Component {
   render() {
     return (
       <BaseContainer>
+        <LargeLogo/>
         <FormContainer>
           <LoginContainer>
             <FormHeader>
