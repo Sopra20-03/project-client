@@ -5,7 +5,8 @@ import {Button} from '@material-ui/core';
 import TableRow from "@material-ui/core/TableRow";
 
 //Redux
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
+import {store} from "../../store";
 
 const PlayButton = withStyles((theme) => ({
     root: {
@@ -30,21 +31,26 @@ const LeaveButton = withStyles((theme) => ({
 
 function GameRow(props){
 
-    //get state
-    const selectedGameId = useSelector(state => state.lobbyReducer.gameId);
-    const thisGameSelected = selectedGameId === props.game.gameId;
-    const gameNotChosen = selectedGameId == null;
+    const globalState = store.getState();
+    const thisGameSelected = globalState.lobbyReducer.gameId === props.game.gameId;
+    const noGameChosen = globalState.lobbyReducer.gameId == null;
+    const userIsCreator = globalState.lobbyReducer.isUserCreator;
     let rowButton;
 
-    if(!thisGameSelected && !gameNotChosen) {
-        rowButton = <PlayButton onClick={() => props.onJoinGame(props.game.gameId)}>
-            Play
-        </PlayButton>
+    if (userIsCreator && thisGameSelected) {
+        rowButton = <LeaveButton onClick={() => props.onCancelGame(props.game.gameId)}>
+            Cancel
+        </LeaveButton>
     }
     else if (thisGameSelected) {
         rowButton = <LeaveButton onClick={() => props.onLeaveGame(props.game.gameId)}>
             Leave
         </LeaveButton>
+    }
+    else if(!noGameChosen) {
+        rowButton = <PlayButton disabled>
+            Play
+        </PlayButton>
     }
     else {
         rowButton = <PlayButton onClick={() => props.onJoinGame(props.game.gameId)}>

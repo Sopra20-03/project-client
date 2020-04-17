@@ -3,121 +3,130 @@ import styled from "styled-components";
 
 import WordCard from "./WordCard";
 
-import PlayerBox from "./PlayerBox";
-import GuessCard from "./GuessCard";
-import Button from "../../views/design/Button";
-import RolePopup from "./RolePopup";
+import ClueCard from "./ClueCard";
 import WhiteTextField from "./InputField";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import {api, handleError} from "../../helpers/api";
-import {fade, makeStyles} from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import {ContainerRow} from "./Gameplay";
 import {store} from "../../store";
+import Colors from "../../views/design/Colors";
+import MessageBox from "./MessageBox";
 
-export const Container = styled.div`
+export const GameTable = styled.div`
   display: flex;
   flex-direction: column;
-  width: fit-content;
+  /**width: fit-content;
+  height: fit-content;**/
+  background-color: #F8F3EB;
+  border-radius: 200px;
+  border: 3px solid #CAB48A;
+  box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 850px;
   height: fit-content;
-  background-color: #00a839;
-  border-radius: 100px;
-  border: 2px solid black;
-`;
-
-export const ContainerRow = styled.div`
-  display: flex;
-  flex-direction: row;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
 `;
 
 export default class Table extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      showRolePopup: false,
-      guessInput: '',
-      isGuessCorrect: '',
-      showVerifyGuessPopup: false
-    };
-  }
-
-  toggleRolePopup() {
-    this.setState({
-      showRolePopup: !this.state.showRolePopup
-    });
-  }
-
-  async submitGuess() {
-    const state = store.getState();
-    const gameId = state.gameId;
-    const currentPlayer = this.props.state.loggedInPlayer.playerId;
-    try {
-      const requestBody = {
-        word: this.state.guessInput,
-      };
-      const response = await api.post(`/games/${gameId}/players/${currentPlayer}/guess`, requestBody, {
-        withCredentials: true,
-      });
-      this.setState({isGuessCorrect: response.data.isValid});
-    } catch (error) {
-      alert(`Something went wrong during the guess submission: \n${handleError(error)}`);
+    constructor(props) {
+        super(props);
+        this.getRound();
+        this.state = {
+            guessInput: '',
+            isGuessCorrect: '',
+            showVerifyGuessPopup: false,
+            gamePhase: '',
+            wordCard: '',
+        };
     }
-  }
 
-  handleInputChange(key, value) {
-    this.setState({ [key]: value });
-  }
+    async getRound() {
+      //let gameId = store.getState().lobbyReducer.gameId;
+      let gameId = 1;
+      let currentRound = 1;
+      try {
+        console.log("***API CALL - GET ROUND***");
+        const response = await api.get(`/games/${gameId}/rounds/${currentRound}`, {
+          withCredentials: true,
+        });
+        this.setState({wordCard: response.data.wordCard});
+        console.log("Current Round: ", this.state.wordCard);
+      } catch (error) {
+        alert(`Something went wrong while getting round: \n${handleError(error)}`);
+      }
+    }
 
-  render() {
+    async submitGuess() {
+        const state = store.getState();
+        const gameId = state.gameId;
+        const currentPlayer = this.props.state.loggedInPlayer.playerId;
+        try {
+          console.log("***API CALL - SUBMIT GUESS***");
+            const requestBody = {
+                word: this.state.guessInput,
+            };
+            const response = await api.post(`/games/${gameId}/players/${currentPlayer}/guess`, requestBody, {
+                withCredentials: true,
+            });
+            this.setState({isGuessCorrect: response.data.isValid});
+        } catch (error) {
+            alert(`Something went wrong during the guess submission: \n${handleError(error)}`);
+        }
+    }
 
-    return (
-      <div>
-        <Container>
-          <ContainerRow>
-            <PlayerBox/>
-            <PlayerBox/>
-            <PlayerBox/>
-            <PlayerBox/>
-          </ContainerRow>
+    handleInputChange(key, value) {
+        this.setState({[key]: value});
+    }
 
-          <ContainerRow>
-            <GuessCard/>
-            <GuessCard/>
-            <GuessCard/>
-            <GuessCard/>
-          </ContainerRow>
+    createMessage(gamePhase) {
+        if (gamePhase === 'ROUND_ANNOUNCEMENT')
+            return "Round X of 13";
+        else if (gamePhase === 'ROLE_ASSIGNMENT')
+            return "You are the GUESSER";
+        else if (gamePhase === 'WAITING_FOR_CLUES')
+            return "Players are writing clues...";
+        else
+            return "This is the default message";
+    };
 
-          <ContainerRow style={{justifyContent: "center"}}>
-            <WordCard/>
-          </ContainerRow>
+    render() {
+
+        return (
+            <div>
+                <GameTable>
+                    <ContainerRow>
+                        <ClueCard borderColor={Colors.blue}/>
+                        <ClueCard borderColor={Colors.orange}/>
+                        <ClueCard borderColor={Colors.violet}/>
+                        <ClueCard borderColor={Colors.green}/>
+                    </ContainerRow>
+                    <ContainerRow style={{justifyContent: "center"}}>
+                        <WordCard wordCard={this.state.wordCard}/>
+                    </ContainerRow>
+                    <ContainerRow>
+                        <MessageBox msg={this.createMessage('ROUND_ANNOUNCEMENT')}/>
+                    </ContainerRow>
+                    <ContainerRow style={{justifyContent: "center"}}>
+                        <WhiteTextField
+                            label="Guess here..."
+                            variant="filled"
+                            id="guess"
+                            onChange={(e) => {
+                                this.handleInputChange("guessInput", e.target.value);
+                            }}
+                        />
+                        <CheckCircleOutlineIcon style={{fontSize: 60, color: Colors.green}} onClick={() => {
+                            this.submitGuess()
+                        }}></CheckCircleOutlineIcon>
+                    </ContainerRow>
+                </GameTable>
 
 
-          <ContainerRow style={{justifyContent: "center"}}>
-            <WhiteTextField
-                label="Guess here..."
-                variant="filled"
-                id="guess"
-                onChange={(e) => {
-                  this.handleInputChange("guessInput", e.target.value);
-                }}
-            />
-            <CheckCircleOutlineIcon style={{ fontSize: 60 }} onClick={() => {
-              this.submitGuess()
-            }}></CheckCircleOutlineIcon>
-          </ContainerRow>
+            </div>
 
-
-          <ContainerRow style={{justifyContent: "center"}}>
-          <Button onClick={() => {
-            this.toggleRolePopup()
-          }}>Toggle Role</Button>
-          {this.state.showRolePopup ?
-          <RolePopup role={this.props.player.role} closePopup={this.toggleRolePopup.bind(this)}/> : null}
-        </ContainerRow>
-
-        </Container>
-      </div>
-
-    );
-  }
+        );
+    }
 }

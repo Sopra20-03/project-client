@@ -1,19 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 
-import { BaseContainer } from "../../helpers/layout";
+import { BaseContainer, GameContainer} from "../../helpers/layout";
 import { api, handleError } from "../../helpers/api";
 import Button from "../../views/design/Button";
 import { withRouter } from "react-router-dom";
-
+import LogoutIcon from "./LogoutIcon";
 import GameTable from "./GameTable";
 import Colors from "../../views/design/Colors";
+import {SmallLogo} from "./SmallLogo";
 
 //Redux
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/userActions";
-import Game from "../shared/models/Game";
-import GameRow from "./GameRow";
+import { startGame } from "../../redux/actions/lobbyActions";
+import { store } from "../../store";
+
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -27,19 +29,6 @@ const BoxHeader = styled.div`
   letter-spacing: 10px;
   margin: auto;
   margin-bottom: 20px;
-`;
-
-const LobbyContainer = styled.div`
-  margin-top: 2em;
-  --webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 5px 5px 5px 5px;
-  background: #ffffff;
-  padding: 1.2rem;
-  width: 90%;
-  width: 60%;
-  position: relative;
-  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
-  text-align: center;
 `;
 
 class Lobby extends React.Component {
@@ -114,10 +103,21 @@ class Lobby extends React.Component {
     }
   }
 
+  async startGame() {
+    const currentGameId = store.getState().lobbyReducer.gameId;
+    try {
+      await this.props.startGame(currentGameId);
+    } catch (error) {
+      alert(`Something went wrong while starting the game: \n${handleError(error)}`);
+    }
+  };
+
+
   render() {
     return (
       <Container>
-        <LobbyContainer>
+        <GameContainer>
+          <SmallLogo/>
           <BoxHeader>
             <span style={Colors.textOrange}>G</span>
             <span style={Colors.textRed}>a</span>
@@ -128,29 +128,41 @@ class Lobby extends React.Component {
             <span style={Colors.textYellow}>b</span>
             <span style={Colors.textBlack}>b</span>
             <span style={Colors.textOrange}>y</span>
+            <LogoutIcon onClick={() => {
+              this.logout()
+            }}/>
           </BoxHeader>
 
           {!this.state.games ? <div /> : <GameTable games={this.state.games} />}
 
+          {store.getState().lobbyReducer.isUserCreator ?
+              <Button
+                  onClick={() => {
+                    this.startGame();
+                    this.props.history.push(`/gameplay`);
+                  }}
+              >
+                Start Game
+              </Button> :
+              <Button
+                  onClick={() => {
+                    this.props.history.push(`/gamedetails`);
+                  }}
+              >
+                Create Game
+              </Button>
+          }
           <Button
-            onClick={() => {
-              this.props.history.push(`/gamedetails`);
-            }}
-          >
-            Create Game
-          </Button>
-
-          <Button
-            onClick={() => {
-              this.logout();
-            }}
+              onClick={() => {
+                this.logout();
+              }}
           >
             Logout
           </Button>
-        </LobbyContainer>
+        </GameContainer>
       </Container>
     );
   }
 }
 
-export default withRouter(connect(null, { logoutUser })(Lobby));
+export default withRouter(connect(null, { logoutUser, startGame })(Lobby));

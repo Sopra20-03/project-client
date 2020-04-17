@@ -1,6 +1,6 @@
 import React from "react";
-import styled from "styled-components";
-import { BaseContainer } from "../../helpers/layout";
+import {FormHeader, TextInput} from "../login/Login";
+import { BaseContainer, GameContainer } from "../../helpers/layout";
 import { handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
 import Button from "../../views/design/Button";
@@ -8,62 +8,10 @@ import Colors from "../../views/design/Colors";
 
 //Redux
 import {connect} from "react-redux";
-import { store } from "../../store"
+import { store } from "../../store";
+import { logoutUser } from "../../redux/actions/userActions";
 import { createGame, joinGame } from "../../redux/actions/lobbyActions";
-
-
-const FormContainer = styled.div`
-  margin-top: 2em;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  min-height: 100%;
-`;
-
-const FormContent = styled.div`
-  margin-top: 2em;
-  --webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 5px 5px 5px 5px;
-  background: #ffffff;
-  padding: 1.2rem;
-  width: 90%;
-  width: 60%;
-  position: relative;
-  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
-  text-align: center;
-`;
-
-const FormHeader = styled.div`
-  font-size: 50px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 10px;
-  margin: auto;
-`;
-
-const TextInput = styled.input`
-  background-color: #f3ead8;
-  border: none;
-  color: #0d0d0d;
-  padding: 0.5rem 0.8rem;
-  margin: 0.5rem 1rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  width: 85%;
-  border: 2px solid;
-  transition: all 0.5s ease-in-out;
-  border-radius: 5px;
-
-  &::focus {
-    background-color: #fff;
-    border-bottom: 2px solid #5fbae9;
-    border-radius: 5px;
-  }
-`;
+import LogoutIcon from "./LogoutIcon";
 
 /**
  * @Class
@@ -79,8 +27,13 @@ class GameDetails extends React.Component {
       gameId: null,
       gameName: null,
       gameMode: null,
-      creator: null,
     };
+  }
+
+  async logout() {
+    await this.props.logoutUser();
+    //await this.props.resetState();
+    this.props.history.push("/login");
   }
 
   /**
@@ -89,13 +42,11 @@ class GameDetails extends React.Component {
    * and its token is stored in the localStorage.
    */
   async createGame() {
-    const state = store.getState();
-    const creator = state.userReducer.user.username;
     try {
       const requestBody = {
         gameName: this.state.gameName,
         gameMode: this.state.gameMode,
-        creatorUsername: creator,
+        creatorUsername: store.getState().userReducer.user.username,
       };
       await this.props.createGame(requestBody);
       this.addUserToGame();
@@ -106,7 +57,7 @@ class GameDetails extends React.Component {
 
   async addUserToGame() {
     const state = store.getState();
-    const gameId = state.gameReducer.gameId;
+    const gameId = state.lobbyReducer.gameId;
     const userId = state.userReducer.user.id;
     try {
       const requestBody = {
@@ -130,6 +81,7 @@ class GameDetails extends React.Component {
     this.setState({ [key]: value });
   }
 
+
   /**
    * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
    * Initialization that requires DOM nodes should go here.
@@ -142,8 +94,7 @@ class GameDetails extends React.Component {
   render() {
     return (
       <BaseContainer>
-        <FormContainer>
-          <FormContent>
+          <GameContainer>
             <FormHeader>
               <span style={Colors.textOrange}>G</span>
               <span style={Colors.textRed}>a</span>
@@ -156,6 +107,9 @@ class GameDetails extends React.Component {
               <span style={Colors.textOrange}>i</span>
               <span style={Colors.textRed}>l</span>
               <span style={Colors.textPink}>s</span>
+              <LogoutIcon onClick={() => {
+                this.logout();
+              }}/>
             </FormHeader>
 
             <TextInput
@@ -173,8 +127,14 @@ class GameDetails extends React.Component {
             >
               Create Game
             </Button>
-          </FormContent>
-        </FormContainer>
+            <Button
+                onClick={() => {
+                  this.logout();
+                }}
+            >
+              Logout
+            </Button>
+          </GameContainer>
       </BaseContainer>
     );
   }
@@ -184,4 +144,4 @@ class GameDetails extends React.Component {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default withRouter(connect(null, { createGame, joinGame })(GameDetails));
+export default withRouter(connect(null, { createGame, joinGame, logoutUser })(GameDetails));
