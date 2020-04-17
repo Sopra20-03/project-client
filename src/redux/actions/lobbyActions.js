@@ -42,8 +42,7 @@ export const joinGame = (gameId, userData) => async (dispatch) => {
 
 export const leaveGame = (gameId, userId) => async (dispatch) => {
     try {
-        console.log("***API CALL : LEAVE GAME*** ...coming soon");
-        /*
+        console.log("***API CALL : LEAVE GAME***");
         const response = await api.delete(`/games/${gameId}/players/${userId}`, {
             withCredentials: true,
         });
@@ -52,7 +51,6 @@ export const leaveGame = (gameId, userId) => async (dispatch) => {
         console.log("status code:", response.status);
         console.log("status text:", response.statusText);
         console.log("requested data:", response.data);
-        */
         dispatch({
             type: LEAVE_GAME,
         });
@@ -82,8 +80,7 @@ export const startGame = (gameId) => async (dispatch) => {
 
 export const cancelGame = (gameId) => async (dispatch) => {
     try {
-        console.log("***API CALL : CANCEL GAME*** ...coming soon");
-        /*
+        console.log("***API CALL : CANCEL GAME***");
         const response = await api.delete(`/games/${gameId}`, {
             withCredentials: true,
         });
@@ -92,7 +89,6 @@ export const cancelGame = (gameId) => async (dispatch) => {
         console.log("status code:", response.status);
         console.log("status text:", response.statusText);
         console.log("requested data:", response.data);
-        */
         dispatch({
             type: CANCEL_GAME,
         });

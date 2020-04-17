@@ -10,7 +10,7 @@ import Button from "../../views/design/Button";
 import RolePopup from "./RolePopup";
 import AllPlayerBoxes from "./AllPlayerBoxes";
 import {SmallLogo} from "../../views/logos/SmallLogo";
-import LogoutIcon from "../lobby/LogoutIcon";
+import LogoutIcon from "../../views/design/LogoutIcon";
 
 
 const InfoContainer = styled.div`
