@@ -1,15 +1,14 @@
-import React, {Component} from "react";
-import styled from "styled-components";
-import TimerInfo from "./TimerInfo";
-import PointsInfo from "./PointsInfo";
-import Table from "./Table";
-import {api} from "../../helpers/api";
-import {store} from "../../store";
-import {BaseContainer, GameContainer} from "../../helpers/layout";
-import Button from "../../views/design/Button";
-import RolePopup from "./RolePopup";
-import AllPlayerBoxes from "./AllPlayerBoxes";
-
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import TimerInfo from './TimerInfo';
+import PointsInfo from './PointsInfo';
+import Table from './Table';
+import { api } from '../../helpers/api';
+import { store } from '../../store';
+import { BaseContainer, GameContainer } from '../../helpers/layout';
+import Button from '../../views/design/Button';
+import RolePopup from './RolePopup';
+import AllPlayerBoxes from './AllPlayerBoxes';
 
 const InfoContainer = styled.div`
   display: flex;
@@ -105,7 +104,7 @@ export default class Gameplay extends Component {
                                 this.toggleRolePopup()
                             }}>Toggle Role</Button>
                             {this.state.showRolePopup ?
-                                <RolePopup role={this.props.player.role}
+                                <RolePopup role={this.state.loggedInPlayer.role}
                                            closePopup={this.toggleRolePopup.bind(this)}/> : null}
                             <TimerInfo/>
                         </InfoContainer>
