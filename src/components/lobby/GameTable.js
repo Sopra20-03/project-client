@@ -28,6 +28,7 @@ class GameTable extends React.Component {
         userId: this.state.currentUserId
       };
       await this.props.joinGame(gameId, requestBody);
+     this.setState({selectedGameId: gameId});
     } catch (error) {
       alert(`Something went wrong while joining game: \n${handleError(error)}`);
     }
@@ -40,6 +41,8 @@ class GameTable extends React.Component {
   async leaveGame() {
     try {
       await this.props.leaveGame(this.state.selectedGameId, this.state.currentUserId);
+      this.setState({selectedGameId: ''});
+
     } catch (error) {
       alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
     }
@@ -53,6 +56,7 @@ class GameTable extends React.Component {
     try {
       this.leaveGame();
       await this.props.cancelGame(gameId);
+      this.setState({selectedGameId: ''});
     } catch (error) {
       alert(`Something went wrong while cancelling the game: \n${handleError(error)}`);
     }
