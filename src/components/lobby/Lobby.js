@@ -74,8 +74,9 @@ class Lobby extends React.Component {
       // feel free to remove it :)
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Get the returned games and update the state.
-      this.setState({ games: response.data });
+      // Get the returned games and filter on game status then set the state.
+      const initializedGames = response.data.filter(x=>x.gameStatus==='INITIALIZED');
+      this.setState({ games: initializedGames });
 
       // This is just some data for you to see what is available.
       console.log("request to:", response.request.responseURL);
