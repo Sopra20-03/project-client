@@ -104,7 +104,7 @@ export default class Gameplay extends Component {
                                 this.toggleRolePopup()
                             }}>Toggle Role</Button>
                             {this.state.showRolePopup ?
-                                <RolePopup role={this.state.loggedInPlayer.role}
+                                <RolePopup role={this.state.loggedInPlayer.role !== null ? this.state.loggedInPlayer.role : "no role set yet"}
                                            closePopup={this.toggleRolePopup.bind(this)}/> : null}
                             <TimerInfo/>
                         </InfoContainer>
