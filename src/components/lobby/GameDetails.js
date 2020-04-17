@@ -126,13 +126,6 @@ class GameDetails extends React.Component {
             >
               Create Game
             </Button>
-            <Button
-                onClick={() => {
-                  this.logout();
-                }}
-            >
-              Logout
-            </Button>
           </GameContainer>
       </BaseContainer>
     );
