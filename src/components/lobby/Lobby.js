@@ -8,7 +8,7 @@ import { withRouter } from "react-router-dom";
 import LogoutIcon from "./LogoutIcon";
 import GameTable from "./GameTable";
 import Colors from "../../views/design/Colors";
-import { SmallLogo } from "./SmallLogo";
+import { SmallLogo } from "../../views/logos/SmallLogo";
 //Redux
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/userActions";

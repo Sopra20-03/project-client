@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 //Redux
 import { connect } from 'react-redux';
 import { registerUser } from '../../redux/actions/userActions';
-import { LargeLogo } from "./LargeLogo";
+import { LargeLogo } from "../../views/logos/LargeLogo";
 
 class Register extends React.Component {
 

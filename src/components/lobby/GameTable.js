@@ -67,7 +67,7 @@ class GameTable extends React.Component {
 
   render() {
     return (
-      <TableContainer style={ { maxHeight: 500}}>
+      <TableContainer style={ { maxHeight: 400}}>
         <Table
           style={{ minWidth: 650 }}
           size="small"

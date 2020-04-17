@@ -11,6 +11,7 @@ import { store } from "../../store";
 import { logoutUser } from "../../redux/actions/userActions";
 import { createGame, joinGame } from "../../redux/actions/lobbyActions";
 import LogoutIcon from "./LogoutIcon";
+import {SmallLogo} from "../../views/logos/SmallLogo";
 
 /**
  * @Class
@@ -94,6 +95,7 @@ class GameDetails extends React.Component {
     return (
       <BaseContainer>
           <GameContainer>
+            <SmallLogo/>
             <FormHeader>
               <span style={Colors.textOrange}>G</span>
               <span style={Colors.textRed}>a</span>

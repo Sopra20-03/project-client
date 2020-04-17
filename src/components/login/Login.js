@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 //Redux
 import { connect } from "react-redux";
 import { loginUser } from "../../redux/actions/userActions";
-import { LargeLogo } from "./LargeLogo";
+import { LargeLogo } from "../../views/logos/LargeLogo";
 
 export const FormContainer = styled.div`
   margin-top: 6em;
