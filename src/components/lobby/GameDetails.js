@@ -1,13 +1,12 @@
 import React from "react";
-import {FormHeader, TextInput} from "../login/Login";
+import { FormHeader, TextInput } from "../login/Login";
 import { BaseContainer, GameContainer } from "../../helpers/layout";
 import { handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
 import Button from "../../views/design/Button";
 import Colors from "../../views/design/Colors";
-
 //Redux
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import { store } from "../../store";
 import { logoutUser } from "../../redux/actions/userActions";
 import { createGame, joinGame } from "../../redux/actions/lobbyActions";

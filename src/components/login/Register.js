@@ -1,16 +1,15 @@
 import React from "react";
-import {withRouter} from "react-router-dom";
-import {BaseContainer, LoginContainer} from "../../helpers/layout";
-import {FormContainer, FormHeader, Link, TextInput} from "./Login";
+import { withRouter } from "react-router-dom";
+import { BaseContainer, LoginContainer } from "../../helpers/layout";
+import { FormContainer, FormHeader, Link, TextInput } from "./Login";
 import Colors from "../../views/design/Colors";
 import Button from "../../views/design/Button";
-import {handleError} from "../../helpers/api";
+import { handleError } from "../../helpers/api";
 import PropTypes from 'prop-types';
-
 //Redux
-import {connect} from 'react-redux';
-import {registerUser} from '../../redux/actions/userActions';
-import {LargeLogo} from "./LargeLogo";
+import { connect } from 'react-redux';
+import { registerUser } from '../../redux/actions/userActions';
+import { LargeLogo } from "./LargeLogo";
 
 class Register extends React.Component {
 

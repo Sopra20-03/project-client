@@ -1,15 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-import { BaseContainer, GameContainer} from "../../helpers/layout";
+import { BaseContainer, GameContainer } from "../../helpers/layout";
 import { api, handleError } from "../../helpers/api";
 import Button from "../../views/design/Button";
 import { withRouter } from "react-router-dom";
 import LogoutIcon from "./LogoutIcon";
 import GameTable from "./GameTable";
 import Colors from "../../views/design/Colors";
-import {SmallLogo} from "./SmallLogo";
-
+import { SmallLogo } from "./SmallLogo";
 //Redux
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/userActions";

@@ -1,12 +1,11 @@
 import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
-import {withStyles} from '@material-ui/core/styles'
-import {Button} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles'
+import { Button } from '@material-ui/core';
 import TableRow from "@material-ui/core/TableRow";
-
 //Redux
 import { connect } from "react-redux";
-import {store} from "../../store";
+import { store } from "../../store";
 
 const PlayButton = withStyles((theme) => ({
     root: {

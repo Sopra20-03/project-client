@@ -1,9 +1,8 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 import styled from "styled-components";
 
 import usermale from "../../views/logos/user_male.png";
-import userfemale from "../../views/logos/user_female.png";
 
 export const PlayerContainer = styled.div`
   display: flex;

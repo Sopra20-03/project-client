@@ -6,12 +6,11 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import GameRow from "./GameRow";
-
 //redux imports
 import { connect } from "react-redux";
-import { joinGame, leaveGame, cancelGame } from "../../redux/actions/lobbyActions";
+import { cancelGame, joinGame, leaveGame } from "../../redux/actions/lobbyActions";
 import { store } from "../../store";
-import {handleError} from "../../helpers/api";
+import { handleError } from "../../helpers/api";
 
 class GameTable extends React.Component {
   constructor() {

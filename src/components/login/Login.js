@@ -1,16 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import {BaseContainer, LoginContainer} from "../../helpers/layout";
+import { BaseContainer, LoginContainer } from "../../helpers/layout";
 import { handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
 import Button from "../../views/design/Button";
 import Colors from "../../views/design/Colors";
 import PropTypes from "prop-types";
-
 //Redux
 import { connect } from "react-redux";
 import { loginUser } from "../../redux/actions/userActions";
-import {LargeLogo} from "./LargeLogo";
+import { LargeLogo } from "./LargeLogo";
 
 export const FormContainer = styled.div`
   margin-top: 6em;
