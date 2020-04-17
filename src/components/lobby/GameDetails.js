@@ -1,11 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import { BaseContainer } from "../../helpers/layout";
-import { api, handleError } from "../../helpers/api";
+import { handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
 import Button from "../../views/design/Button";
-import Game from "../shared/models/Game";
 import Colors from "../../views/design/Colors";
+
+//Redux
+import {connect} from "react-redux";
+import { store } from "../../store"
+import { createGame, joinGame } from "../../redux/actions/lobbyActions";
+
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -74,31 +79,43 @@ class GameDetails extends React.Component {
       gameId: null,
       gameName: null,
       gameMode: null,
+      creator: null,
     };
   }
+
   /**
    * HTTP POST request is sent to the backend.
    * If the request is successful, a new game is returned to the front-end
    * and its token is stored in the localStorage.
    */
   async createGame() {
+    const state = store.getState();
+    const creator = state.userReducer.user.username;
     try {
-      //Make sure current user is included as the creator on the server side
       const requestBody = {
         gameName: this.state.gameName,
         gameMode: this.state.gameMode,
+        creatorUsername: creator,
       };
-      const response = await api.post("/games", requestBody);
+      await this.props.createGame(requestBody);
+      this.addUserToGame();
+    } catch (error) {
+      alert(`Something went wrong during the game creation: \n${handleError(error)}`);
+    }
+  }
 
-      // Get the returned game and update a new object.
-      const game = new Game(response.data);
-
-      // Game creation successfully worked --> navigate to the route /lobby in the GameRouter
+  async addUserToGame() {
+    const state = store.getState();
+    const gameId = state.gameReducer.gameId;
+    const userId = state.userReducer.user.id;
+    try {
+      const requestBody = {
+        userId: userId,
+      };
+      await this.props.joinGame(gameId, requestBody);
       this.props.history.push(`/lobby`);
     } catch (error) {
-      alert(
-        `Something went wrong during the game creation: \n${handleError(error)}`
-      );
+      alert(`Something went wrong while adding you to the game: \n${handleError(error)}`);
     }
   }
 
@@ -167,4 +184,4 @@ class GameDetails extends React.Component {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default withRouter(GameDetails);
+export default withRouter(connect(null, { createGame, joinGame })(GameDetails));

@@ -1,15 +1,11 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import {withStyles} from '@material-ui/core/styles'
 import {Button} from '@material-ui/core';
 import TableRow from "@material-ui/core/TableRow";
 
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-});
+//Redux
+import { connect, useSelector } from "react-redux";
 
 const PlayButton = withStyles((theme) => ({
     root: {
@@ -32,28 +28,39 @@ const LeaveButton = withStyles((theme) => ({
 }))(Button);
 
 
-
 function GameRow(props){
 
-    const isGameSelected = props.selectedGameId === props.game.gameId;
+    //get state
+    const selectedGameId = useSelector(state => state.lobbyReducer.gameId);
+    const thisGameSelected = selectedGameId === props.game.gameId;
+    const gameNotChosen = selectedGameId == null;
+    let rowButton;
+
+    if(!thisGameSelected && !gameNotChosen) {
+        rowButton = <PlayButton onClick={() => props.onJoinGame(props.game.gameId)}>
+            Play
+        </PlayButton>
+    }
+    else if (thisGameSelected) {
+        rowButton = <LeaveButton onClick={() => props.onLeaveGame(props.game.gameId)}>
+            Leave
+        </LeaveButton>
+    }
+    else {
+        rowButton = <PlayButton onClick={() => props.onJoinGame(props.game.gameId)}>
+            Play
+        </PlayButton>
+    }
 
    return (
-        <TableRow key={props.game.gameId} className={isGameSelected ? 'gameJoined' : undefined}>
+        <TableRow key={props.game.gameId} className={thisGameSelected ? 'gameJoined' : undefined}>
             <TableCell component="th" scope="row" align="center"> {props.game.gameId} </TableCell>
             <TableCell align = "center" > {props.game.gameName} </TableCell>
-            <TableCell align="center"> {props.game.creator} </TableCell>
-            <TableCell align="center">{'4 of 5'} </TableCell>
-            <TableCell align="center">{
-                isGameSelected ?
-                    <LeaveButton onClick={() => props.onLeaveGame(props.game.gameId)}>
-                        Leave
-                    </LeaveButton> :
-                    <PlayButton onClick={() => props.onJoinGame(props.game.gameId)}>
-                        Play
-                    </PlayButton>}
-            </TableCell>
+            <TableCell align="center"> {props.game.creatorUsername} </TableCell>
+            <TableCell align="center">{props.game.playerCount} </TableCell>
+            <TableCell align="center">{rowButton} </TableCell>
         </TableRow>
     );
 }
 
-export default GameRow;
+export default connect(null )(GameRow);
