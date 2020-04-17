@@ -108,9 +108,7 @@ class GameDetails extends React.Component {
               <span style={Colors.textOrange}>i</span>
               <span style={Colors.textRed}>l</span>
               <span style={Colors.textPink}>s</span>
-              <LogoutIcon onClick={() => {
-                this.logout();
-              }}/>
+              <LogoutIcon/>
             </FormHeader>
 
             <TextInput

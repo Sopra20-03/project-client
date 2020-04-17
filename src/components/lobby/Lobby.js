@@ -11,7 +11,6 @@ import Colors from "../../views/design/Colors";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 //Redux
 import { connect } from "react-redux";
-import { logoutUser } from "../../redux/actions/userActions";
 import { startGame } from "../../redux/actions/lobbyActions";
 import { store } from "../../store";
 
@@ -37,12 +36,6 @@ class Lobby extends React.Component {
     this.state = {
       games: null,
     };
-  }
-
-  async logout() {
-    await this.props.logoutUser();
-    //await this.props.resetState();
-    this.props.history.push("/login");
   }
 
   async getPlayerCount(gameId) {
@@ -127,9 +120,8 @@ class Lobby extends React.Component {
             <span style={Colors.textYellow}>b</span>
             <span style={Colors.textBlack}>b</span>
             <span style={Colors.textOrange}>y</span>
-            <LogoutIcon onClick={() => {
-              this.logout()
-            }}/>
+            <LogoutIcon/>
+
           </BoxHeader>
 
           {!this.state.games ? <div /> : <GameTable games={this.state.games} />}
@@ -151,17 +143,10 @@ class Lobby extends React.Component {
                 Create Game
               </Button>
           }
-          <Button
-              onClick={() => {
-                this.logout();
-              }}
-          >
-            Logout
-          </Button>
         </GameContainer>
       </Container>
     );
   }
 }
 
-export default withRouter(connect(null, { logoutUser, startGame })(Lobby));
+export default withRouter(connect(null, { startGame })(Lobby));

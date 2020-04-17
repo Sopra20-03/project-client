@@ -10,6 +10,7 @@ import Button from "../../views/design/Button";
 import RolePopup from "./RolePopup";
 import AllPlayerBoxes from "./AllPlayerBoxes";
 import {SmallLogo} from "../../views/logos/SmallLogo";
+import LogoutIcon from "../lobby/LogoutIcon";
 
 
 const InfoContainer = styled.div`
@@ -93,6 +94,7 @@ export default class Gameplay extends Component {
                 <BaseContainer>
                     <GameContainer>
                         <SmallLogo/>
+                        <LogoutIcon/>
                         <div></div>
 
                         <AllPlayerBoxes opponents={this.state.opponents}/>
