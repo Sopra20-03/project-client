@@ -60,6 +60,9 @@ export default class Gameplay extends Component {
             withCredentials: true
         })
             .then(result => {
+                console.log("request to:", result.request.responseURL);
+                console.log("status code:", result.status);
+                console.log("requested data:", result.data);
                 let players = [];
                 result.data.forEach((element) => {
                     players.push(element);
