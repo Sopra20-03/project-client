@@ -1,5 +1,5 @@
 //Import Actions
-import { GUESSER_SELECTWORD } from "../actions/types";
+import { GUESSER_SELECTWORD, CLUEWRITER_SUBMITCLUE } from "../actions/types";
 
 const initialState = {
   gameId: null,
@@ -17,6 +17,12 @@ export default function (state = initialState, action) {
         ...state,
         round: action.payload,
       };
+
+    case CLUEWRITER_SUBMITCLUE:
+      return {
+        ...state,
+      };
+
     default:
       return state;
   }
