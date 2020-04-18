@@ -57,7 +57,7 @@ function GameRow(props){
     }
 
    return (
-        <TableRow key={props.game.gameId} className={thisGameSelected ? 'gameJoined' : undefined}>
+       <TableRow key={props.game.gameId} className={thisGameSelected ? 'gameJoined' : undefined}>
             <TableCell component="th" scope="row" align="center"> {props.game.gameId} </TableCell>
             <TableCell align = "center" > {props.game.gameName} </TableCell>
             <TableCell align="center"> {props.game.creatorUsername} </TableCell>
