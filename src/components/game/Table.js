@@ -1,16 +1,15 @@
-import React, {Component} from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
-import WordCard from "./WordCard";
-
-import ClueCard from "./ClueCard";
-import WhiteTextField from "./InputField";
+import WordCard from './WordCard';
+import WhiteTextField from './InputField';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import {api, handleError} from "../../helpers/api";
-import {ContainerRow} from "./Gameplay";
-import {store} from "../../store";
-import Colors from "../../views/design/Colors";
-import MessageBox from "./MessageBox";
+import { api, handleError } from '../../helpers/api';
+import { ContainerRow } from './Gameplay';
+import { store } from '../../store';
+import Colors from '../../views/design/Colors';
+import MessageBox from './MessageBox';
+import Clues from './Clues';
 
 export const GameTable = styled.div`
   display: flex;
@@ -62,7 +61,7 @@ export default class Table extends Component {
     async submitGuess() {
         const state = store.getState();
         const gameId = state.gameId;
-        const currentPlayer = this.props.state.loggedInPlayer.playerId;
+        const currentPlayer = this.props.player;
         try {
           console.log("***API CALL - SUBMIT GUESS***");
             const requestBody = {
@@ -98,10 +97,7 @@ export default class Table extends Component {
             <div>
                 <GameTable>
                     <ContainerRow>
-                        <ClueCard borderColor={Colors.blue}/>
-                        <ClueCard borderColor={Colors.orange}/>
-                        <ClueCard borderColor={Colors.violet}/>
-                        <ClueCard borderColor={Colors.green}/>
+                        <Clues/>
                     </ContainerRow>
                     <ContainerRow style={{justifyContent: "center"}}>
                         <WordCard wordCard={this.state.wordCard}/>

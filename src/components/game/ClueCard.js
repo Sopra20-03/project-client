@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const CardContainer = styled.div`
   background-color: white;
@@ -17,7 +17,7 @@ export default class ClueCard extends Component {
   render() {
     return (
       <div>
-        <CardContainer style={{border: `2px solid ${this.props.borderColor}`}}/>
+        <CardContainer style={{border: `2px solid ${this.props.borderColor}`}}>{this.props.clue}</CardContainer>
       </div>
     );
   }
