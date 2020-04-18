@@ -11,6 +11,4 @@ export const START_GAME = "START_GAME";
 export const CANCEL_GAME = "CANCEL_GAME";
 
 //Gameplay Actions
-export const GAMEPLAY_GETGAME = "GAMEPLAY_GETGAME";
-export const GAMEPLAY_GETROUND = "GAMEPLAY_GETROUND";
-
+export const GUESSER_SELECTWORD = "GUESSER_SELECTWORD";
