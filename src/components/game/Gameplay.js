@@ -55,9 +55,9 @@ export default class Gameplay extends Component {
 
     componentDidMount() {
         console.log("***API CALL - GET PLAYERS***");
-        //api.get(`/games/${this.state.gameId}/players`, {
-        api.get(`/games/1/players`, {           // NEEDS TO BE UPDATED TO LOAD CURRENT GAME ID
-            withCredentials: true,
+       api.get(`/games/${this.state.gameId}/players`, {
+     //   api.get(`/games/1/players`, {           // NEEDS TO BE UPDATED TO LOAD CURRENT GAME ID
+            withCredentials: true
         })
             .then(result => {
                 let players = [];
@@ -109,7 +109,7 @@ export default class Gameplay extends Component {
                                 this.toggleRolePopup()
                             }}>Toggle Role</Button>
                             {this.state.showRolePopup ?
-                                <RolePopup role={this.props.player.role}
+                                <RolePopup role={this.state.loggedInPlayer.role !== null ? this.state.loggedInPlayer.role : "no role set yet"}
                                            closePopup={this.toggleRolePopup.bind(this)}/> : null}
                             <TimerInfo/>
                         </InfoContainer>

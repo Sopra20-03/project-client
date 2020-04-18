@@ -1,6 +1,6 @@
-import React from "react";
-import Button from "../../views/design/Button";
-import styled from "styled-components";
+import React from 'react';
+import Button from '../../views/design/Button';
+import styled from 'styled-components';
 
 const Popup = styled.div`
   position: fixed;
@@ -18,8 +18,8 @@ const PopupContent = styled.div`
   position: absolute;
   left: 25%;
   right: 25%;
-  top: 25;
-  bottom: 25%;
+  top: 40%;
+  bottom: 45%;
   margin: auto;
   border-radius: 20px;
   background: white;
