@@ -10,7 +10,8 @@ import { connect } from "react-redux";
 import { store } from "../../store";
 import { logoutUser } from "../../redux/actions/userActions";
 import { createGame, joinGame } from "../../redux/actions/lobbyActions";
-import LogoutIcon from "./LogoutIcon";
+import LogoutIcon from "../../views/design/LogoutIcon";
+import {SmallLogo} from "../../views/logos/SmallLogo";
 
 /**
  * @Class
@@ -94,6 +95,7 @@ class GameDetails extends React.Component {
     return (
       <BaseContainer>
           <GameContainer>
+            <SmallLogo/>
             <FormHeader>
               <span style={Colors.textOrange}>G</span>
               <span style={Colors.textRed}>a</span>
@@ -106,9 +108,7 @@ class GameDetails extends React.Component {
               <span style={Colors.textOrange}>i</span>
               <span style={Colors.textRed}>l</span>
               <span style={Colors.textPink}>s</span>
-              <LogoutIcon onClick={() => {
-                this.logout();
-              }}/>
+              <LogoutIcon/>
             </FormHeader>
 
             <TextInput
@@ -125,13 +125,6 @@ class GameDetails extends React.Component {
               }}
             >
               Create Game
-            </Button>
-            <Button
-                onClick={() => {
-                  this.logout();
-                }}
-            >
-              Logout
             </Button>
           </GameContainer>
       </BaseContainer>

@@ -30,10 +30,9 @@ const LeaveButton = withStyles((theme) => ({
 
 function GameRow(props){
 
-    const globalState = store.getState();
-    const thisGameSelected = globalState.lobbyReducer.gameId === props.game.gameId;
-    const noGameChosen = globalState.lobbyReducer.gameId == null;
-    const userIsCreator = globalState.lobbyReducer.isUserCreator;
+    const thisGameSelected = props.selectedGameId === props.game.gameId;
+    const gameChosen = props.selectedGameId > 0;
+    const userIsCreator = props.userIsCreator;
     let rowButton;
 
     if (userIsCreator && thisGameSelected) {
@@ -46,7 +45,7 @@ function GameRow(props){
             Leave
         </LeaveButton>
     }
-    else if(!noGameChosen) {
+    else if(gameChosen) {
         rowButton = <PlayButton disabled>
             Play
         </PlayButton>

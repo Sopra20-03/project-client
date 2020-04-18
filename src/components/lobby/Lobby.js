@@ -5,13 +5,12 @@ import { BaseContainer, GameContainer } from "../../helpers/layout";
 import { api, handleError } from "../../helpers/api";
 import Button from "../../views/design/Button";
 import { withRouter } from "react-router-dom";
-import LogoutIcon from "./LogoutIcon";
+import LogoutIcon from "../../views/design/LogoutIcon";
 import GameTable from "./GameTable";
 import Colors from "../../views/design/Colors";
-import { SmallLogo } from "./SmallLogo";
+import { SmallLogo } from "../../views/logos/SmallLogo";
 //Redux
 import { connect } from "react-redux";
-import { logoutUser } from "../../redux/actions/userActions";
 import { startGame } from "../../redux/actions/lobbyActions";
 import { store } from "../../store";
 
@@ -39,22 +38,16 @@ class Lobby extends React.Component {
     };
   }
 
-  async logout() {
-    await this.props.logoutUser();
-    //await this.props.resetState();
-    this.props.history.push("/login");
-  }
-
   async getPlayerCount(gameId) {
     try {
       console.log("***API CALL : GET PLAYERS***");
         const response = await api.get(`/games/${gameId}/players`, {
           withCredentials: true,
         });
-        console.log("request to:", response.request.responseURL);
-        console.log("requested data:", response.data);
-        this.state.games[gameId-1].playerCount = response.data.length;
-        console.log("PlayerCount: ", this.state.games[gameId-1].playerCount);
+        //console.log("request to:", response.request.responseURL);
+        //console.log("requested data:", response.data);
+        this.state.games.find(x=>x.gameId===gameId).playerCount = response.data.length;
+        console.log("Game ", gameId, " - PlayerCount: ", this.state.games.find(x=>x.gameId===gameId).playerCount);
       }
     catch (error) {
       alert(`Something went wrong getting player count: \n${handleError(error)}`);
@@ -81,8 +74,9 @@ class Lobby extends React.Component {
       // feel free to remove it :)
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Get the returned games and update the state.
-      this.setState({ games: response.data });
+      // Get the returned games and filter on game status then set the state.
+      const initializedGames = response.data.filter(x=>x.gameStatus==='INITIALIZED');
+      this.setState({ games: initializedGames });
 
       // This is just some data for you to see what is available.
       console.log("request to:", response.request.responseURL);
@@ -127,9 +121,8 @@ class Lobby extends React.Component {
             <span style={Colors.textYellow}>b</span>
             <span style={Colors.textBlack}>b</span>
             <span style={Colors.textOrange}>y</span>
-            <LogoutIcon onClick={() => {
-              this.logout()
-            }}/>
+            <LogoutIcon/>
+
           </BoxHeader>
 
           {!this.state.games ? <div /> : <GameTable games={this.state.games} />}
@@ -151,17 +144,10 @@ class Lobby extends React.Component {
                 Create Game
               </Button>
           }
-          <Button
-              onClick={() => {
-                this.logout();
-              }}
-          >
-            Logout
-          </Button>
         </GameContainer>
       </Container>
     );
   }
 }
 
-export default withRouter(connect(null, { logoutUser, startGame })(Lobby));
+export default withRouter(connect(null, { startGame })(Lobby));

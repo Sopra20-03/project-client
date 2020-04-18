@@ -15,16 +15,20 @@ import { handleError } from "../../helpers/api";
 class GameTable extends React.Component {
   constructor() {
     super();
+    this.state={
+      selectedGameId: store.getState().lobbyReducer.gameId,
+      currentUserId: store.getState().userReducer.user.id,
+      userIsCreator: store.getState().lobbyReducer.isUserCreator,
+    }
   }
 
   async joinGame(gameId) {
-    const state = store.getState();
-    const currentUserId = state.userReducer.user.id;
-    try {
+   try {
       const requestBody = {
-        userId: currentUserId
+        userId: this.state.currentUserId
       };
       await this.props.joinGame(gameId, requestBody);
+     this.setState({selectedGameId: gameId});
     } catch (error) {
       alert(`Something went wrong while joining game: \n${handleError(error)}`);
     }
@@ -35,11 +39,10 @@ class GameTable extends React.Component {
   };
 
   async leaveGame() {
-    const state = store.getState();
-    const currentUserId = state.userReducer.user.id;
-    const currentGameId = state.lobbyReducer.gameId;
     try {
-      await this.props.leaveGame(currentGameId, currentUserId);
+      await this.props.leaveGame(this.state.selectedGameId, this.state.currentUserId);
+      this.setState({selectedGameId: ''});
+
     } catch (error) {
       alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
     }
@@ -50,11 +53,10 @@ class GameTable extends React.Component {
   };
 
   async cancelGame(gameId) {
-    const currentGameId = store.getState().lobbyReducer.gameId;
     try {
-      // IMPLEMENT CANCEL GAME FUNCTIONALITY HERE
-      await this.props.cancelGame(currentGameId);
       this.leaveGame();
+      await this.props.cancelGame(gameId);
+      this.setState({selectedGameId: ''});
     } catch (error) {
       alert(`Something went wrong while cancelling the game: \n${handleError(error)}`);
     }
@@ -67,7 +69,7 @@ class GameTable extends React.Component {
 
   render() {
     return (
-      <TableContainer style={ { maxHeight: 500}}>
+      <TableContainer style={ { maxHeight: 400}}>
         <Table
           style={{ minWidth: 650 }}
           size="small"
@@ -88,6 +90,8 @@ class GameTable extends React.Component {
               <GameRow
                 key={game.gameId}
                 game={game}
+                selectedGameId={this.state.selectedGameId}
+                userIsCreator={this.state.userIsCreator}
                 onJoinGame={this.handleJoinGame}
                 onLeaveGame={this.handleLeaveGame}
                 onCancelGame={this.handleCancelGame}

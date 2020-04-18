@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const SmallLogo = styled.div`{
-    position: relative;
+    position: absolute;
     height: 10rem; 
     width: 10rem;
     left: -5rem; 
