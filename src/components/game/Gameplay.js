@@ -54,8 +54,8 @@ export default class Gameplay extends Component {
 
     componentDidMount() {
         console.log("***API CALL - GET PLAYERS***");
-       api.get(`/games/${this.state.gameId}/players`, {
-               withCredentials: true
+        api.get(`/games/${this.state.gameId}/players`, {
+            withCredentials: true
         })
             .then(result => {
                 console.log("request to:", result.request.responseURL);
@@ -75,8 +75,8 @@ export default class Gameplay extends Component {
                 });
                 console.log("All players: ", this.state.players);
 
-                const opponents = this.state.players.filter( x => x.userId !== this.state.userId );
-                this.setState( {
+                const opponents = this.state.players.filter(x => x.userId !== this.state.userId);
+                this.setState({
                     opponents: opponents
                 });
                 console.log("All opponents: ", this.state.opponents);
@@ -86,14 +86,7 @@ export default class Gameplay extends Component {
                     alert(`Couldn't load players. \n${error}`);
                 }
             )
-
-  toggleRolePopup() {
-    this.setState({
-      showRolePopup: !this.state.showRolePopup,
-    });
-  }
-
-  componentDidMount() {}
+    }
 
   render() {
     return (
