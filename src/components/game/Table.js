@@ -1,24 +1,24 @@
-import React, {Component} from 'react';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import styled from "styled-components";
 
-import WordCard from './WordCard';
-import WhiteTextField from './InputField';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import {api, handleError} from '../../helpers/api';
-import {ContainerRow} from './Gameplay';
-import {store} from '../../store';
-import Colors from '../../views/design/Colors';
-import MessageBox from './MessageBox';
-import Clues from './Clues';
+import WordCard from "./WordCard";
+import WhiteTextField from "./InputField";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import { api, handleError } from "../../helpers/api";
+import { ContainerRow } from "./Gameplay";
+import { store } from "../../store";
+import Colors from "../../views/design/Colors";
+import MessageBox from "./MessageBox";
+import Clues from "./Clues";
 
 export const GameTable = styled.div`
   display: flex;
   flex-direction: column;
   /**width: fit-content;
   height: fit-content;**/
-  background-color: #F8F3EB;
+  background-color: #f8f3eb;
   border-radius: 200px;
-  border: 3px solid #CAB48A;
+  border: 3px solid #cab48a;
   box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.1);
   position: relative;
   width: 850px;
@@ -88,13 +88,13 @@ export default class Table extends Component {
             this.setState({isGuessCorrect: response.data.isValid});
             console.log("Is guess valid?: ", this.state.isGuessCorrect);
         } catch (error) {
-            alert(`Something went wrong during the guess submission: \n${handleError(error)}`);
+          alert(`Something went wrong during the guess submission: \n${handleError(error)}`);
         }
     }
-
+  
     handleInputChange(key, value) {
-        this.setState({[key]: value});
-    }
+    this.setState({ [key]: value });
+  }
 
     createMessage(gamePhase) {
         if (gamePhase === 'ROUND_ANNOUNCEMENT')
@@ -114,38 +114,37 @@ export default class Table extends Component {
             return "This is the default message";
     };
 
-    render() {
-
-        return (
-            <div>
-                <GameTable>
-                    <ContainerRow>
-                        <Clues/>
-                    </ContainerRow>
-                    <ContainerRow style={{justifyContent: "center"}}>
-                        <WordCard wordCard={this.state.wordCard}/>
-                    </ContainerRow>
-                    <ContainerRow>
-                        <MessageBox msg={this.createMessage('ROLE_ASSIGNMENT')}/>
-                    </ContainerRow>
-                    <ContainerRow style={{justifyContent: "center"}}>
-                        <WhiteTextField
-                            label="Guess here..."
-                            variant="filled"
-                            id="guess"
-                            onChange={(e) => {
-                                this.handleInputChange("guessInput", e.target.value);
-                            }}
-                        />
-                        <CheckCircleOutlineIcon style={{fontSize: 60, color: Colors.green}} onClick={() => {
-                            this.submitGuess()
-                        }}></CheckCircleOutlineIcon>
-                    </ContainerRow>
-                </GameTable>
-
-
-            </div>
-
-        );
-    }
+  render() {
+    return (
+      <div>
+        <GameTable>
+          <ContainerRow>
+            <Clues />
+          </ContainerRow>
+          <ContainerRow style={{ justifyContent: "center" }}>
+            <WordCard wordCard={this.state.wordCard} />
+          </ContainerRow>
+          <ContainerRow>
+            <MessageBox msg={this.createMessage("ROUND_ANNOUNCEMENT")} />
+          </ContainerRow>
+          <ContainerRow style={{ justifyContent: "center" }}>
+            <WhiteTextField
+              label="Guess here..."
+              variant="filled"
+              id="guess"
+              onChange={(e) => {
+                this.handleInputChange("guessInput", e.target.value);
+              }}
+            />
+            <CheckCircleOutlineIcon
+              style={{ fontSize: 60, color: Colors.green }}
+              onClick={() => {
+                this.submitGuess();
+              }}
+            ></CheckCircleOutlineIcon>
+          </ContainerRow>
+        </GameTable>
+      </div>
+    );
+  }
 }

@@ -1,17 +1,16 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
 import TimerInfo from "./TimerInfo";
 import PointsInfo from "./PointsInfo";
 import Table from "./Table";
-import {api} from "../../helpers/api";
-import {store} from "../../store";
-import {BaseContainer, GameContainer} from "../../helpers/layout";
+import { api } from "../../helpers/api";
+import { store } from "../../store";
+import { BaseContainer, GameContainer } from "../../helpers/layout";
 import Button from "../../views/design/Button";
 import RolePopup from "./RolePopup";
 import AllPlayerBoxes from "./AllPlayerBoxes";
-import {SmallLogo} from "../../views/logos/SmallLogo";
+import { SmallLogo } from "../../views/logos/SmallLogo";
 import LogoutIcon from "../../views/design/LogoutIcon";
-
 
 const InfoContainer = styled.div`
   display: flex;
@@ -33,8 +32,8 @@ export const ContainerRow = styled.div`
   justify-content: center;
 `;
 
-
 export default class Gameplay extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -87,37 +86,57 @@ export default class Gameplay extends Component {
                     alert(`Couldn't load players. \n${error}`);
                 }
             )
-    };
 
-    render() {
-        return (
-            <div>
-                <BaseContainer>
-                    <GameContainer>
-                        <SmallLogo/>
-                        <LogoutIcon/>
-                        <div></div>
+  toggleRolePopup() {
+    this.setState({
+      showRolePopup: !this.state.showRolePopup,
+    });
+  }
 
-                        <AllPlayerBoxes opponents={this.state.opponents}/>
+  componentDidMount() {}
 
-                        <TableContainer>
-                            <Table player={this.state.loggedInPlayer} players={this.state.players}/>
-                        </TableContainer>
+  render() {
+    return (
+      <div>
+        <BaseContainer>
+          <GameContainer>
+            <SmallLogo />
+            <LogoutIcon />
+            <div></div>
 
-                        <InfoContainer>
-                            <PointsInfo/>
-                            {/*<Button onClick={() => {
-                                this.toggleRolePopup()
-                            }}>Toggle Role</Button>*/}
-                            {this.state.showRolePopup ?
-                                <RolePopup role={this.state.loggedInPlayer.role !== null ? this.state.loggedInPlayer.role : "no role set yet"}
-                                           closePopup={this.toggleRolePopup.bind(this)}/> : null}
-                            <TimerInfo/>
-                        </InfoContainer>
+            <AllPlayerBoxes opponents={this.state.opponents} />
 
-                    </GameContainer>
-                </BaseContainer>
-            </div>
-        );
-    }
+            <TableContainer>
+              <Table
+                player={this.state.loggedInPlayer}
+                players={this.state.players}
+              />
+            </TableContainer>
+
+            <InfoContainer>
+              <PointsInfo />
+              <Button
+                onClick={() => {
+                  this.toggleRolePopup();
+                }}
+              >
+                Toggle Role
+              </Button>
+              {this.state.showRolePopup ? (
+                <RolePopup
+                  role={
+                    this.state.loggedInPlayer.role !== null
+                      ? this.state.loggedInPlayer.role
+                      : "no role set yet"
+                  }
+                  closePopup={this.toggleRolePopup.bind(this)}
+                />
+              ) : null}
+              <TimerInfo />
+            </InfoContainer>
+          </GameContainer>
+        </BaseContainer>
+      </div>
+    );
+  }
 }
