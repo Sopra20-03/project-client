@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Colors from "../../views/design/Colors";
-//Redux
+//Redux Imports
 import { connect } from "react-redux";
 import { guesserSelectWord } from "../../redux/actions/gameplayActions";
 import { store } from "../../store";
