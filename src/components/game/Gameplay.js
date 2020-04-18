@@ -106,9 +106,9 @@ export default class Gameplay extends Component {
 
                         <InfoContainer>
                             <PointsInfo/>
-                            <Button onClick={() => {
+                            {/*<Button onClick={() => {
                                 this.toggleRolePopup()
-                            }}>Toggle Role</Button>
+                            }}>Toggle Role</Button>*/}
                             {this.state.showRolePopup ?
                                 <RolePopup role={this.state.loggedInPlayer.role !== null ? this.state.loggedInPlayer.role : "no role set yet"}
                                            closePopup={this.toggleRolePopup.bind(this)}/> : null}

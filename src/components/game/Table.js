@@ -103,9 +103,13 @@ export default class Table extends Component {
             return this.props.player === null ? "Role cannot be assigned" : `You are the ${this.props.player.role}`;
         else if (gamePhase === 'WAITING_FOR_CLUES')
             return "Players are writing clues...";
+        else if (gamePhase === 'WAITING_FOR_GUESS')
+            return "Waiting for guesser to guess word...";
         else if (gamePhase === 'GUESS_VALIDATION')
             return this.state.isGuessCorrect === null ? "Guess cannot be determined" :
                 (this.state.isGuessCorrect ? "Guess was CORRECT" : "Guess was INCORRECT");
+        else if (gamePhase === 'GAME_OVER')
+            return "Game Over";
         else
             return "This is the default message";
     };
@@ -122,7 +126,7 @@ export default class Table extends Component {
                         <WordCard wordCard={this.state.wordCard}/>
                     </ContainerRow>
                     <ContainerRow>
-                        <MessageBox msg={this.createMessage('GUESS_VALIDATION')}/>
+                        <MessageBox msg={this.createMessage('ROLE_ASSIGNMENT')}/>
                     </ContainerRow>
                     <ContainerRow style={{justifyContent: "center"}}>
                         <WhiteTextField
