@@ -1,0 +1,75 @@
+//Run this file to create a game, add 5 players, and start the game.
+
+
+// ***** CREATE GAME ******
+POST http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "gameName": "test", "creatorUsername": "test"}
+###
+
+// ***** ADD PLAYER TO GAME ******
+PUT http://localhost:8080/games/1/players
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "userId": "1"}
+###
+
+// ***** ADD PLAYER TO GAME ******
+PUT http://localhost:8080/games/1/players
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "userId": "2"}
+###
+
+// ***** ADD PLAYER TO GAME ******
+PUT http://localhost:8080/games/1/players
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "userId": "3"}
+###
+
+// ***** ADD PLAYER TO GAME ******
+PUT http://localhost:8080/games/1/players
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "userId": "4"}
+###
+
+// ***** ADD PLAYER TO GAME ******
+PUT http://localhost:8080/games/1/players
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "userId": "5"}
+###
+
+// ***** START GAME 1 ******
+PUT http://localhost:8080/games/1
+Accept: */*
+Cache-Control: no-cache
+###
+
+// ***** GET PLAYERS IN GAME ******
+GET http://localhost:8080/games/1/players
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+// ***** GET GAMES ******
+GET http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+###

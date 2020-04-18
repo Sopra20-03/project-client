@@ -33,17 +33,59 @@ export const ContainerRow = styled.div`
 `;
 
 export default class Gameplay extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      gameId: store.getState().lobbyReducer.gameId,
-      userId: store.getState().userReducer.user.id,
-      players: [],
-      opponents: [],
-      loggedInPlayer: null,
-      showRolePopup: false,
-    };
-  }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            gameId: store.getState().lobbyReducer.gameId,
+            userId: store.getState().userReducer.user.id,
+            players: [],
+            opponents: [],
+            loggedInPlayer: null,
+            showRolePopup: false,
+        }
+    }
+
+    toggleRolePopup() {
+        this.setState({
+            showRolePopup: !this.state.showRolePopup
+        });
+    }
+
+    componentDidMount() {
+        console.log("***API CALL - GET PLAYERS***");
+       api.get(`/games/${this.state.gameId}/players`, {
+               withCredentials: true
+        })
+            .then(result => {
+                console.log("request to:", result.request.responseURL);
+                console.log("status code:", result.status);
+                let players = [];
+                result.data.forEach((element) => {
+                    players.push(element);
+                    if (element.userId === this.state.userId) {
+                        this.setState({
+                            loggedInPlayer: element
+                        });
+                        console.log("Logged In Player: ", this.state.loggedInPlayer);
+                    }
+                });
+                this.setState({
+                    players: players
+                });
+                console.log("All players: ", this.state.players);
+
+                const opponents = this.state.players.filter( x => x.userId !== this.state.userId );
+                this.setState( {
+                    opponents: opponents
+                });
+                console.log("All opponents: ", this.state.opponents);
+            })
+            .catch(error => {
+                    console.log(error);
+                    alert(`Couldn't load players. \n${error}`);
+                }
+            )
 
   toggleRolePopup() {
     this.setState({

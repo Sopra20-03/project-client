@@ -1,0 +1,82 @@
+//Run this file to create 10 users and log one in
+
+
+// ****** CREATE USER ******
+POST http://localhost:8080/users
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "test",
+  "name": "testUser"
+}
+
+###
+
+POST http://localhost:8080/users
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "username": "test2",
+  "password": "test2",
+  "name": "testUser2"
+}
+
+###
+
+POST http://localhost:8080/users
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "username": "test3",
+  "password": "test3",
+  "name": "testUser3"
+}
+
+###
+
+POST http://localhost:8080/users
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "username": "test4",
+  "password": "test4",
+  "name": "testUser4"
+}
+
+###
+
+POST http://localhost:8080/users
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "username": "test5",
+  "password": "test5",
+  "name": "testUser5"
+}
+
+###
+
+// ****** LOGIN USER ******
+POST http://localhost:8080/login?username=test&password=test
+Accept: */*
+Cache-Control: no-cache
+
+###
+
+// ***** GET USERS ******
+GET http://localhost:8080/users
+Accept: */*
+Cache-Control: no-cache
+
+###

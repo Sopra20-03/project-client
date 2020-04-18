@@ -29,76 +29,90 @@ export const GameTable = styled.div`
 `;
 
 export default class Table extends Component {
-  constructor(props) {
-    super(props);
-    this.getRound();
-    this.state = {
-      guessInput: "",
-      isGuessCorrect: "",
-      showVerifyGuessPopup: false,
-      gamePhase: "",
-      wordCard: "",
-    };
-  }
 
-  async getRound() {
-    //let gameId = store.getState().lobbyReducer.gameId;
-    let gameId = 1;
-    let currentRound = 1;
-    try {
-      console.log("***API CALL - GET ROUND***");
-      const response = await api.get(
-        `/games/${gameId}/rounds/${currentRound}`,
-        {
-          withCredentials: true,
-        }
-      );
-      this.setState({ wordCard: response.data.wordCard });
-      console.log("Current Round: ", this.state.wordCard);
-    } catch (error) {
-      alert(
-        `Something went wrong while getting round: \n${handleError(error)}`
-      );
+    constructor(props) {
+        super(props);
+        this.getRounds();
+        this.state = {
+            guessInput: '',
+            isGuessCorrect: '',
+            showVerifyGuessPopup: false,
+            activeRound: '',
+            gamePhase: '',
+            wordCard: '',
+        };
     }
-  }
 
-  async submitGuess() {
-    const state = store.getState();
-    const gameId = state.gameId;
-    const currentPlayer = this.props.player;
-    try {
-      console.log("***API CALL - SUBMIT GUESS***");
-      const requestBody = {
-        word: this.state.guessInput,
-      };
-      const response = await api.post(
-        `/games/${gameId}/players/${currentPlayer}/guess`,
-        requestBody,
-        {
-          withCredentials: true,
+    async getRounds() {
+        let gameId = store.getState().lobbyReducer.gameId;
+        try {
+            console.log("***API CALL - GET ROUNDS***");
+            const response = await api.get(`/games/${gameId}/rounds`, {
+                withCredentials: true,
+            });
+            let activeRound = response.data.find(x => x.roundStatus === 'RUNNING');
+            console.log("Current Round Id: ", activeRound.roundId);
+            console.log("Current Round Num: ", activeRound.roundNum);
+            this.getRound(activeRound.roundId);
+            this.setState({activeRound: activeRound});
+        } catch (error) {
+            alert(`Something went wrong while getting rounds: \n${handleError(error)}`);
         }
-      );
-      this.setState({ isGuessCorrect: response.data.isValid });
-    } catch (error) {
-      alert(
-        `Something went wrong during the guess submission: \n${handleError(
-          error
-        )}`
-      );
     }
-  }
 
-  handleInputChange(key, value) {
+    async getRound(currentRoundId) {
+        let gameId = store.getState().lobbyReducer.gameId;
+        try {
+            console.log("***API CALL - GET ROUND***");
+            const response = await api.get(`/games/${gameId}/rounds/${currentRoundId}`, {
+                withCredentials: true,
+            });
+            this.setState({wordCard: response.data.wordCard});
+            console.log("Current Round: ", this.state.wordCard);
+        } catch (error) {
+            alert(`Something went wrong while getting round: \n${handleError(error)}`);
+        }
+    }
+
+    async submitGuess() {
+        const gameId = store.getState().lobbyReducer.gameId;
+        const currentPlayerId = this.props.player.playerId;
+        try {
+            console.log("***API CALL - SUBMIT GUESS***");
+            const requestBody = {
+                word: this.state.guessInput,
+            };
+            const response = await api.post(`/games/${gameId}/players/${currentPlayerId}/guess`, requestBody, {
+                withCredentials: true,
+            });
+            this.setState({isGuessCorrect: response.data.isValid});
+            console.log("Is guess valid?: ", this.state.isGuessCorrect);
+        } catch (error) {
+          alert(`Something went wrong during the guess submission: \n${handleError(error)}`);
+        }
+    }
+  
+    handleInputChange(key, value) {
     this.setState({ [key]: value });
   }
 
-  createMessage(gamePhase) {
-    if (gamePhase === "ROUND_ANNOUNCEMENT") return "Round X of 13";
-    else if (gamePhase === "ROLE_ASSIGNMENT") return "You are the GUESSER";
-    else if (gamePhase === "WAITING_FOR_CLUES")
-      return "Players are writing clues...";
-    else return "This is the default message";
-  }
+    createMessage(gamePhase) {
+        if (gamePhase === 'ROUND_ANNOUNCEMENT')
+            return `Round ${this.state.activeRound.roundNum} of 13`;
+        else if (gamePhase === 'ROLE_ASSIGNMENT')
+            return this.props.player === null ? "Role cannot be assigned" : `You are the ${this.props.player.role}`;
+        else if (gamePhase === 'WAITING_FOR_CLUES')
+            return "Players are writing clues...";
+        else if (gamePhase === 'WAITING_FOR_GUESS')
+            return "Waiting for guesser to guess word...";
+        else if (gamePhase === 'GUESS_VALIDATION')
+            return this.state.isGuessCorrect === null ? "Guess cannot be determined" :
+                (this.state.isGuessCorrect ? "Guess was CORRECT" : "Guess was INCORRECT");
+        else if (gamePhase === 'GAME_OVER')
+            return "Game Over";
+        else
+            return "This is the default message";
+    };
 
   render() {
     return (

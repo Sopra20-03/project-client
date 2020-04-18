@@ -56,7 +56,6 @@ class GameTable extends React.Component {
     try {
       this.leaveGame();
       await this.props.cancelGame(gameId);
-      this.setState({selectedGameId: ''});
     } catch (error) {
       alert(`Something went wrong while cancelling the game: \n${handleError(error)}`);
     }

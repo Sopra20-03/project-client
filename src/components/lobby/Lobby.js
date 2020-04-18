@@ -38,31 +38,6 @@ class Lobby extends React.Component {
     };
   }
 
-  async getPlayerCount(gameId) {
-    try {
-      console.log("***API CALL : GET PLAYERS***");
-        const response = await api.get(`/games/${gameId}/players`, {
-          withCredentials: true,
-        });
-        //console.log("request to:", response.request.responseURL);
-        //console.log("requested data:", response.data);
-        this.state.games.find(x=>x.gameId===gameId).playerCount = response.data.length;
-        console.log("Game ", gameId, " - PlayerCount: ", this.state.games.find(x=>x.gameId===gameId).playerCount);
-      }
-    catch (error) {
-      alert(`Something went wrong getting player count: \n${handleError(error)}`);
-    }
-  };
-
-  getNumberOfPlayers() {
-    const gamesWithPlayerCount = this.state.games;
-    gamesWithPlayerCount.map((game) => (
-        this.getPlayerCount(game.gameId)
-    ));
-    this.setState({games: gamesWithPlayerCount});
-    console.log("Games after numplayers: ", this.state.games);
-  }
-
   async componentDidMount() {
     try {
       console.log("***API CALL - GET GAMES***");
@@ -86,8 +61,6 @@ class Lobby extends React.Component {
 
       // See here to get more data.
       console.log(response);
-
-      this.getNumberOfPlayers();
 
     } catch (error) {
       alert(

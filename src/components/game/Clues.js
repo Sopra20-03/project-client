@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { api } from '../../helpers/api';
 import ClueCard from './ClueCard';
 import Colors from '../../views/design/Colors/Colors';
+import {store} from "../../store";
 
 export default class Clues extends Component {
     constructor (props) {
@@ -20,17 +21,18 @@ export default class Clues extends Component {
     setupColors () {
         let colors = [];
         colors.push (Colors.blue);
-        colors.push (Colors.green);
-        colors.push (Colors.pink);
         colors.push (Colors.orange);
-        colors.push (Colors.red);
+        colors.push (Colors.violet);
+        colors.push (Colors.green);
         this.setState({
             colors: colors
         })
     }
 
     getClues () {
-        api.get (`/games/${this.props.gameId}/rounds/${this.props.roundNo}`, {
+        let gameId = store.getState().lobbyReducer.gameId;
+        let roundNum = 1;
+        api.get (`/games/${gameId}/rounds/${roundNum}`, {
             withCredentials: true
         })
           .then (result => {
@@ -40,7 +42,7 @@ export default class Clues extends Component {
           })
           .catch (() => {
               this.setState ({
-                  clues: ['joey', 'chandler', 'sitcom', 'coffeehouse', 'new york']
+                  clues: ['joey', 'chandler', 'sitcom', 'coffeehouse']
               })
           })
     }
@@ -48,8 +50,8 @@ export default class Clues extends Component {
     render () {
         return (
           this.state.clues.map ((clue, index) => {
-              console.log (clue);
-              console.log (index);
+              //console.log (clue);
+              //console.log (index);
               return <ClueCard borderColor={this.state.colors[index]} clue={clue}/>
           })
         )
