@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import usermale from "../../views/logos/user_male.png";
-import userfemale from "../../views/logos/user_female.png";
+import usermale from '../../views/logos/user_male.png';
+import userfemale from '../../views/logos/user_female.png';
 
 export const PlayerContainer = styled.div`
   display: flex;
@@ -22,10 +22,10 @@ export default class PlayerBox extends Component {
     render() {
         let userIcon = {};
         if (this.props.gender === 'female') {
-            userIcon = <img src= {userfemale} height="60rem" width="50rem"/>
+            userIcon = <img alt="" src= {userfemale} height="60rem" width="50rem"/>
         }
         else {
-            userIcon = <img src= {usermale} height="60rem" width="50rem"/>
+            userIcon = <img alt="" src= {usermale} height="60rem" width="50rem"/>
         }
 
         return (
