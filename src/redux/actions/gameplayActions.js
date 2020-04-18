@@ -3,7 +3,6 @@ import { api, handleError } from "../../helpers/api";
 
 //Functions
 export const guesserSelectWord = (data) => async (dispatch) => {
-  console.log("***API CALL - PUT GuesserSlecteWord***");
   try {
     const response = await api.put(
       `/games/${data.gameId}/rounds/${data.roundId}`,
