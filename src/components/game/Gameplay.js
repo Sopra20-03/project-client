@@ -56,13 +56,11 @@ export default class Gameplay extends Component {
     componentDidMount() {
         console.log("***API CALL - GET PLAYERS***");
        api.get(`/games/${this.state.gameId}/players`, {
-     //   api.get(`/games/1/players`, {           // NEEDS TO BE UPDATED TO LOAD CURRENT GAME ID
-            withCredentials: true
+               withCredentials: true
         })
             .then(result => {
                 console.log("request to:", result.request.responseURL);
                 console.log("status code:", result.status);
-                console.log("requested data:", result.data);
                 let players = [];
                 result.data.forEach((element) => {
                     players.push(element);

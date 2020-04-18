@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { api } from '../../helpers/api';
 import ClueCard from './ClueCard';
 import Colors from '../../views/design/Colors/Colors';
+import {store} from "../../store";
 
 export default class Clues extends Component {
     constructor (props) {
@@ -29,7 +30,9 @@ export default class Clues extends Component {
     }
 
     getClues () {
-        api.get (`/games/${this.props.gameId}/rounds/${this.props.roundNo}`, {
+        let gameId = store.getState().lobbyReducer.gameId;
+        let roundNum = 1;
+        api.get (`/games/${gameId}/rounds/${roundNum}`, {
             withCredentials: true
         })
           .then (result => {
@@ -47,8 +50,8 @@ export default class Clues extends Component {
     render () {
         return (
           this.state.clues.map ((clue, index) => {
-              console.log (clue);
-              console.log (index);
+              //console.log (clue);
+              //console.log (index);
               return <ClueCard borderColor={this.state.colors[index]} clue={clue}/>
           })
         )
