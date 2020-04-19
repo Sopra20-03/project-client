@@ -6,15 +6,12 @@ import {
   START_GAME,
   CANCEL_GAME,
   GET_GAMES,
-  GET_GAME_PLAYERS,
 } from "../actions/types";
 
 const initialState = {
   gameId: {},
   isUserCreator: false,
-  gameStatus: {},
   gamesList: [],
-  playersList: [],
 };
 
 export default function (state = initialState, action) {
@@ -23,12 +20,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         gamesList: action.payload,
-      };
-
-    case GET_GAME_PLAYERS:
-      return {
-        ...state,
-        playersList: action.payload,
       };
 
     case GAME_CREATION:

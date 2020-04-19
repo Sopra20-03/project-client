@@ -5,7 +5,6 @@ import {
   START_GAME,
   CANCEL_GAME,
   GET_GAMES,
-  GET_GAME_PLAYERS,
 } from "./types";
 import { api, handleError } from "../../helpers/api";
 import Game from "../../components/shared/models/Game";
@@ -20,31 +19,6 @@ export const getGames = () => async (dispatch) => {
     dispatch({
       type: GET_GAMES,
       payload: response.data,
-    });
-  } catch (error) {
-    alert(handleError(error));
-  }
-};
-
-export const getGamePlayers = (gamesList) => async (dispatch) => {
-  try {
-    console.log("GET_GAME_PLAYERS");
-    let gamePlayers = [];
-    for (const game of gamesList) {
-      const response = await api.get(`/games/${game.gameId}/players`, {
-        withCredentials: true,
-      });
-      const players = {
-        gameId: game.gameId,
-        gamePlayers: response.data,
-      };
-      gamePlayers.push(players);
-      console.log(gamePlayers);
-    }
-
-    dispatch({
-      type: GET_GAME_PLAYERS,
-      payload: gamePlayers,
     });
   } catch (error) {
     alert(handleError(error));

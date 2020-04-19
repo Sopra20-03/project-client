@@ -1,57 +1,52 @@
-import React, { Component } from 'react';
-import { api } from '../../helpers/api';
-import ClueCard from './ClueCard';
-import Colors from '../../views/design/Colors/Colors';
+import React, { Component } from "react";
+import { api } from "../../helpers/api";
+import ClueCard from "./ClueCard";
+import Colors from "../../views/design/Colors/Colors";
 
 export default class Clues extends Component {
-    constructor (props) {
-        super (props);
-        this.state = {
-            clues: [],
-            colors: []
-        }
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      clues: [],
+      colors: [],
+    };
+  }
 
-    componentDidMount () {
-        this.getClues ();
-        this.setupColors();
-    }
+  componentDidMount() {
+    this.getClues();
+    this.setupColors();
+  }
 
-    setupColors () {
-        let colors = [];
-        colors.push (Colors.blue);
-        colors.push (Colors.green);
-        colors.push (Colors.pink);
-        colors.push (Colors.orange);
-        colors.push (Colors.red);
-        this.setState({
-            colors: colors
-        })
-    }
+  setupColors() {
+    let colors = [];
+    colors.push(Colors.blue);
+    colors.push(Colors.green);
+    colors.push(Colors.pink);
+    colors.push(Colors.orange);
+    colors.push(Colors.red);
+    this.setState({
+      colors: colors,
+    });
+  }
 
-    getClues () {
-        api.get (`/games/${this.props.gameId}/rounds/${this.props.roundNo}`, {
-            withCredentials: true
-        })
-          .then (result => {
-              this.setState ({
-                  clues: result.data
-              })
-          })
-          .catch (() => {
-              this.setState ({
-                  clues: ['joey', 'chandler', 'sitcom', 'coffeehouse', 'new york']
-              })
-          })
-    }
+  //TODO
+  getClues() {
+    this.setState({
+      clues: ["joey", "chandler", "sitcom", "coffeehouse", "new york"],
+    });
+  }
 
-    render () {
-        return (
-          this.state.clues.map ((clue, index) => {
-              console.log (clue);
-              console.log (index);
-              return <ClueCard borderColor={this.state.colors[index]} clue={clue}/>
-          })
-        )
-    }
+  render() {
+    return this.state.clues.map((clue, index) => {
+      console.log(clue);
+      console.log(index);
+      return (
+        <ClueCard
+          key={clue}
+          borderColor={this.state.colors[index]}
+          clue={clue}
+        />
+      );
+    });
+  }
 }

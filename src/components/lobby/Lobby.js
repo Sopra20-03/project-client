@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { BaseContainer, GameContainer } from "../../helpers/layout";
-import { api, handleError } from "../../helpers/api";
+import { handleError } from "../../helpers/api";
 import Button from "../../views/design/Button";
 import { withRouter } from "react-router-dom";
 import LogoutIcon from "../../views/design/LogoutIcon";
@@ -11,7 +11,7 @@ import Colors from "../../views/design/Colors";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 //Redux
 import { connect } from "react-redux";
-import { getGames, getGamePlayers } from "../../redux/actions/lobbyActions";
+import { getGames, startGame } from "../../redux/actions/lobbyActions";
 import { store } from "../../store";
 import { element } from "prop-types";
 
@@ -44,7 +44,6 @@ class Lobby extends React.Component {
 
   async loadLobby() {
     await this.getGames();
-    await this.getPlayers();
   }
 
   //getGames
@@ -59,21 +58,19 @@ class Lobby extends React.Component {
     }
   }
 
-  async getPlayers() {
+  async startGame() {
+    const currentGameId = this.props.state.gameId;
     try {
-      const gamesList = store.getState().lobbyReducer.gamesList;
-      await this.props.getGamePlayers(gamesList);
+      await this.props.startGame(currentGameId);
     } catch (error) {
       alert(
-        `Something went wrong while fetching the players: \n${handleError(
-          error
-        )}`
+        `Something went wrong while starting the game: \n${handleError(error)}`
       );
     }
   }
 
   render() {
-    const state = store.getState().lobbyReducer;
+    console.log("Render Lobby");
     return (
       <Container>
         <GameContainer>
@@ -90,24 +87,39 @@ class Lobby extends React.Component {
             <span style={Colors.textOrange}>y</span>
             <LogoutIcon />
           </BoxHeader>
-
-          {!state.gamesList == null ? (
+          {!this.props.state.gamesList == null ? (
             <div />
           ) : (
-            <GameTable games={state.gamesList} players={state.playersList} />
+            <GameTable games={this.props.state.gamesList} />
           )}
-
-          <Button
-            onClick={() => {
-              this.props.history.push(`/gamedetails`);
-            }}
-          >
-            Create New Game
-          </Button>
+          {this.props.state.isUserCreator ? (
+            <Button
+              onClick={() => {
+                this.startGame();
+                this.props.history.push(`/gameplay`);
+              }}
+            >
+              Start Game
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                this.props.history.push(`/gamedetails`);
+              }}
+            >
+              Create Game
+            </Button>
+          )}
         </GameContainer>
       </Container>
     );
   }
 }
 
-export default withRouter(connect(null, { getGames, getGamePlayers })(Lobby));
+const mapStateToProps = (state) => ({
+  state: state.lobbyReducer,
+});
+
+export default withRouter(
+  connect(mapStateToProps, { getGames, startGame })(Lobby)
+);

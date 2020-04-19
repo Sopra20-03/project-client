@@ -79,9 +79,9 @@ class GameTable extends React.Component {
   };
 
   render() {
-    console.log(
-      this.props.players.find(({ gameId }) => gameId == 2).gamePlayers.length
-    );
+    console.log("GameTable");
+    console.log(this.props.games);
+
     return (
       <TableContainer style={{ maxHeight: 400 }}>
         <Table
@@ -104,10 +104,7 @@ class GameTable extends React.Component {
               <GameRow
                 key={game.gameId}
                 game={game}
-                numPlayers={
-                  this.props.players.find(({ gameId }) => gameId == game.gameId)
-                    .gamePlayers.length
-                }
+                numPlayers={game.playerCount}
                 selectedGameId={this.state.selectedGameId}
                 userIsCreator={this.state.userIsCreator}
                 onJoinGame={this.handleJoinGame}

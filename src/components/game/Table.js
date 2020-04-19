@@ -11,6 +11,9 @@ import Colors from "../../views/design/Colors";
 import MessageBox from "./MessageBox";
 import Clues from "./Clues";
 
+//Redux
+import { connect } from "react-redux";
+
 export const GameTable = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,64 +31,12 @@ export const GameTable = styled.div`
   padding-bottom: 15px;
 `;
 
-export default class Table extends Component {
+class Table extends Component {
   constructor(props) {
     super(props);
-    this.getRound();
     this.state = {
-      guessInput: "",
-      isGuessCorrect: "",
-      showVerifyGuessPopup: false,
-      gamePhase: "",
-      wordCard: "",
+      playerGuess: null,
     };
-  }
-
-  async getRound() {
-    //let gameId = store.getState().lobbyReducer.gameId;
-    let gameId = 1;
-    let currentRound = 1;
-    try {
-      console.log("***API CALL - GET ROUND***");
-      const response = await api.get(
-        `/games/${gameId}/rounds/${currentRound}`,
-        {
-          withCredentials: true,
-        }
-      );
-      this.setState({ wordCard: response.data.wordCard });
-      console.log("Current Round: ", this.state.wordCard);
-    } catch (error) {
-      alert(
-        `Something went wrong while getting round: \n${handleError(error)}`
-      );
-    }
-  }
-
-  async submitGuess() {
-    const state = store.getState();
-    const gameId = state.gameId;
-    const currentPlayer = this.props.player;
-    try {
-      console.log("***API CALL - SUBMIT GUESS***");
-      const requestBody = {
-        word: this.state.guessInput,
-      };
-      const response = await api.post(
-        `/games/${gameId}/players/${currentPlayer}/guess`,
-        requestBody,
-        {
-          withCredentials: true,
-        }
-      );
-      this.setState({ isGuessCorrect: response.data.isValid });
-    } catch (error) {
-      alert(
-        `Something went wrong during the guess submission: \n${handleError(
-          error
-        )}`
-      );
-    }
   }
 
   handleInputChange(key, value) {
@@ -108,7 +59,7 @@ export default class Table extends Component {
             <Clues />
           </ContainerRow>
           <ContainerRow style={{ justifyContent: "center" }}>
-            <WordCard wordCard={this.state.wordCard} />
+            <WordCard />
           </ContainerRow>
           <ContainerRow>
             <MessageBox msg={this.createMessage("ROUND_ANNOUNCEMENT")} />
@@ -119,7 +70,7 @@ export default class Table extends Component {
               variant="filled"
               id="guess"
               onChange={(e) => {
-                this.handleInputChange("guessInput", e.target.value);
+                this.handleInputChange("playerGuess", e.target.value);
               }}
             />
             <CheckCircleOutlineIcon
@@ -134,3 +85,11 @@ export default class Table extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  lobbyState: state.lobbyReducer,
+  gameState: state.gameplayReducer,
+  userState: state.userReducer,
+});
+
+export default connect(mapStateToProps, {})(Table);

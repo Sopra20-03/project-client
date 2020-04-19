@@ -3,14 +3,23 @@ import styled from "styled-components";
 import TimerInfo from "./TimerInfo";
 import PointsInfo from "./PointsInfo";
 import Table from "./Table";
-import { api } from "../../helpers/api";
-import { store } from "../../store";
 import { BaseContainer, GameContainer } from "../../helpers/layout";
 import Button from "../../views/design/Button";
 import RolePopup from "./RolePopup";
 import AllPlayerBoxes from "./AllPlayerBoxes";
 import { SmallLogo } from "../../views/logos/SmallLogo";
+import { withRouter } from "react-router-dom";
+import { handleError } from "../../helpers/api";
 import LogoutIcon from "../../views/design/LogoutIcon";
+//Redux
+import { connect } from "react-redux";
+import {
+  gameLoadGame,
+  getGamePlayers,
+  playerSetRole,
+  gameGetRound,
+  gameUpdateRound,
+} from "../../redux/actions/gameplayActions";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -32,15 +41,10 @@ export const ContainerRow = styled.div`
   justify-content: center;
 `;
 
-export default class Gameplay extends Component {
+class Gameplay extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gameId: store.getState().lobbyReducer.gameId,
-      userId: store.getState().userReducer.user.id,
-      players: [],
-      opponents: [],
-      loggedInPlayer: null,
       showRolePopup: false,
     };
   }
@@ -51,7 +55,69 @@ export default class Gameplay extends Component {
     });
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    //1. Load gameState
+    const gameData = {
+      userId: this.props.userState.user.id,
+      gameId: this.props.lobbyState.gameId,
+    };
+    this.props.gameLoadGame(gameData);
+    //2. Set RoundNum to 1
+    this.props.gameUpdateRound(1);
+    //3. Start Polling
+    this.timer = setInterval(async () => await this.runGame(), 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  async runGame() {
+    //1. TODO Get Gamestatus, check if it is running/ checkRound
+
+    //2. Get Players
+    await this.getPlayers();
+
+    //3. Update Role for each round
+    this.playerUpdateRole();
+
+    //4. Get Round
+    await this.getRound();
+  }
+
+  async getPlayers() {
+    try {
+      await this.props.getGamePlayers(this.props.gameState.gameId);
+    } catch (error) {
+      alert(
+        `Something went wrong while fetching the games: \n${handleError(error)}`
+      );
+    }
+  }
+
+  playerUpdateRole() {
+    let players = this.props.gameState.gamePlayers;
+    if (players != null) {
+      let player = players.find(
+        ({ userId }) => userId == this.props.gameState.userId
+      );
+      this.props.playerSetRole(player.role);
+    }
+  }
+
+  async getRound() {
+    try {
+      const data = {
+        gameId: this.props.gameState.gameId,
+        roundNum: this.props.gameState.roundNum,
+      };
+      await this.props.gameGetRound(data);
+    } catch (error) {
+      alert(
+        `Something went wrong while fetching the games: \n${handleError(error)}`
+      );
+    }
+  }
 
   render() {
     return (
@@ -62,34 +128,14 @@ export default class Gameplay extends Component {
             <LogoutIcon />
             <div></div>
 
-            <AllPlayerBoxes opponents={this.state.opponents} />
+            <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
-              <Table
-                player={this.state.loggedInPlayer}
-                players={this.state.players}
-              />
+              <Table />
             </TableContainer>
 
             <InfoContainer>
               <PointsInfo />
-              <Button
-                onClick={() => {
-                  this.toggleRolePopup();
-                }}
-              >
-                Toggle Role
-              </Button>
-              {this.state.showRolePopup ? (
-                <RolePopup
-                  role={
-                    this.state.loggedInPlayer.role !== null
-                      ? this.state.loggedInPlayer.role
-                      : "no role set yet"
-                  }
-                  closePopup={this.toggleRolePopup.bind(this)}
-                />
-              ) : null}
               <TimerInfo />
             </InfoContainer>
           </GameContainer>
@@ -98,3 +144,19 @@ export default class Gameplay extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  lobbyState: state.lobbyReducer,
+  gameState: state.gameplayReducer,
+  userState: state.userReducer,
+});
+
+export default withRouter(
+  connect(mapStateToProps, {
+    gameLoadGame,
+    getGamePlayers,
+    playerSetRole,
+    gameGetRound,
+    gameUpdateRound,
+  })(Gameplay)
+);

@@ -50,26 +50,26 @@ export const WordHover = styled.div`
     cursor: pointer;
   }
 `;
-//TODO: Get Role for loggedIn User for Each round
+//Only For Demo * Remove
 const role = 1;
+//**
 
 function Guesser(props) {
   async function SelectWord(word) {
     console.log(word);
     const data = {
-      gameId: 1,
-      roundId: 1,
+      gameId: props.gameState.gameId,
+      roundNum: props.gameState.roundNum,
       selectedWord: word,
     };
 
     await props.guesserSelectWord(data);
   }
 
-  let words = props.wordCard;
-  const state = store.getState().gameplayReducer;
+  let words = props.gameState.round.wordCard;
 
   //TODO: Word is not yet selected
-  if (state.round.wordCard.selectedWord == null) {
+  if (props.gameState.round.wordCard.selectedWord == null) {
     return (
       <div>
         <CardContainer>
@@ -113,7 +113,7 @@ function Guesser(props) {
             theme={Colors.blue}
             style={{
               backgroundColor:
-                state.round.wordCard.selectedWord == words.word1
+                props.gameState.round.wordCard.selectedWord == words.word1
                   ? Colors.blue
                   : "",
             }}
@@ -124,7 +124,7 @@ function Guesser(props) {
             theme={Colors.red}
             style={{
               backgroundColor:
-                state.round.wordCard.selectedWord == words.word2
+                props.gameState.round.wordCard.selectedWord == words.word2
                   ? Colors.red
                   : "",
             }}
@@ -135,7 +135,7 @@ function Guesser(props) {
             theme={Colors.yellow}
             style={{
               backgroundColor:
-                state.round.wordCard.selectedWord == words.word3
+                props.gameState.round.wordCard.selectedWord == words.word3
                   ? Colors.yellow
                   : "",
             }}
@@ -146,7 +146,7 @@ function Guesser(props) {
             theme={Colors.green}
             style={{
               backgroundColor:
-                state.round.wordCard.selectedWord == words.word4
+                props.gameState.round.wordCard.selectedWord == words.word4
                   ? Colors.green
                   : "",
             }}
@@ -157,7 +157,7 @@ function Guesser(props) {
             theme={Colors.orange}
             style={{
               backgroundColor:
-                state.round.wordCard.selectedWord == words.word5
+                props.gameState.round.wordCard.selectedWord == words.word5
                   ? Colors.orange
                   : "",
             }}
@@ -171,12 +171,9 @@ function Guesser(props) {
 }
 
 function ClueWriter(props) {
-  console.log(props);
-  let words = props.wordCard;
+  let words = props.gameState.round.wordCard;
 
-  const state = store.getState().gameplayReducer;
-
-  if (state.round.wordCard.selectedWord == null) {
+  if (props.gameState.round.wordCard.selectedWord == null) {
     //Word Not Yet Selected
     return (
       <div>
@@ -198,7 +195,7 @@ function ClueWriter(props) {
             theme={Colors.blue}
             style={{
               backgroundColor:
-                state.round.wordCard.selectedWord == words.word1
+                props.gameState.round.wordCard.selectedWord == words.word1
                   ? Colors.blue
                   : "",
             }}
@@ -209,7 +206,7 @@ function ClueWriter(props) {
             theme={Colors.red}
             style={{
               backgroundColor:
-                state.round.wordCard.selectedWord == words.word2
+                props.gameState.round.wordCard.selectedWord == words.word2
                   ? Colors.red
                   : "",
             }}
@@ -220,7 +217,7 @@ function ClueWriter(props) {
             theme={Colors.yellow}
             style={{
               backgroundColor:
-                state.round.wordCard.selectedWord == words.word3
+                props.gameState.round.wordCard.selectedWord == words.word3
                   ? Colors.yellow
                   : "",
             }}
@@ -231,7 +228,7 @@ function ClueWriter(props) {
             theme={Colors.green}
             style={{
               backgroundColor:
-                state.round.wordCard.selectedWord == words.word4
+                props.gameState.round.wordCard.selectedWord == words.word4
                   ? Colors.green
                   : "",
             }}
@@ -242,7 +239,7 @@ function ClueWriter(props) {
             theme={Colors.orange}
             style={{
               backgroundColor:
-                state.round.wordCard.selectedWord == words.word5
+                props.gameState.round.wordCard.selectedWord == words.word5
                   ? Colors.orange
                   : "",
             }}
@@ -257,21 +254,28 @@ function ClueWriter(props) {
 
 class WordCard extends Component {
   render() {
-    let words = this.props.wordCard;
-    const state = store.getState().gameplayReducer;
+    let words = this.props.gameState.round.wordCard;
 
     //TODO: Check actual role
+    //if (this.props.gameState.role === 'GUESSER' )
     if (role == 1) {
       return (
         <Guesser
           wordCard={words}
           guesserSelectWord={this.props.guesserSelectWord}
+          gameState={this.props.gameState}
         />
       );
     } else {
-      return <ClueWriter wordCard={words} />;
+      return <ClueWriter wordCard={words} gameState={this.props.gameState} />;
     }
   }
 }
 
-export default connect(null, { guesserSelectWord })(WordCard);
+const mapStateToProps = (state) => ({
+  lobbyState: state.lobbyReducer,
+  gameState: state.gameplayReducer,
+  userState: state.userReducer,
+});
+
+export default connect(mapStateToProps, { guesserSelectWord })(WordCard);
