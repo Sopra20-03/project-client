@@ -11,7 +11,7 @@ import { store } from "../../store";
 import { logoutUser } from "../../redux/actions/userActions";
 import { createGame, joinGame } from "../../redux/actions/lobbyActions";
 import LogoutIcon from "../../views/design/LogoutIcon";
-import {SmallLogo} from "../../views/logos/SmallLogo";
+import { SmallLogo } from "../../views/logos/SmallLogo";
 
 /**
  * @Class
@@ -51,7 +51,9 @@ class GameDetails extends React.Component {
       await this.props.createGame(requestBody);
       this.addUserToGame();
     } catch (error) {
-      alert(`Something went wrong during the game creation: \n${handleError(error)}`);
+      alert(
+        `Something went wrong during the game creation: \n${handleError(error)}`
+      );
     }
   }
 
@@ -66,7 +68,11 @@ class GameDetails extends React.Component {
       await this.props.joinGame(gameId, requestBody);
       this.props.history.push(`/lobby`);
     } catch (error) {
-      alert(`Something went wrong while adding you to the game: \n${handleError(error)}`);
+      alert(
+        `Something went wrong while adding you to the game: \n${handleError(
+          error
+        )}`
+      );
     }
   }
 
@@ -81,7 +87,6 @@ class GameDetails extends React.Component {
     this.setState({ [key]: value });
   }
 
-
   /**
    * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
    * Initialization that requires DOM nodes should go here.
@@ -94,39 +99,39 @@ class GameDetails extends React.Component {
   render() {
     return (
       <BaseContainer>
-          <GameContainer>
-            <SmallLogo/>
-            <FormHeader>
-              <span style={Colors.textOrange}>G</span>
-              <span style={Colors.textRed}>a</span>
-              <span style={Colors.textPink}>m</span>
-              <span style={Colors.textViolet}>e </span>
-              <span style={Colors.textBlue}>D</span>
-              <span style={Colors.textGreen}>e</span>
-              <span style={Colors.textYellow}>t</span>
-              <span style={Colors.textBlack}>a</span>
-              <span style={Colors.textOrange}>i</span>
-              <span style={Colors.textRed}>l</span>
-              <span style={Colors.textPink}>s</span>
-              <LogoutIcon/>
-            </FormHeader>
+        <GameContainer>
+          <SmallLogo />
+          <FormHeader>
+            <span style={Colors.textOrange}>G</span>
+            <span style={Colors.textRed}>a</span>
+            <span style={Colors.textPink}>m</span>
+            <span style={Colors.textViolet}>e </span>
+            <span style={Colors.textBlue}>D</span>
+            <span style={Colors.textGreen}>e</span>
+            <span style={Colors.textYellow}>t</span>
+            <span style={Colors.textBlack}>a</span>
+            <span style={Colors.textOrange}>i</span>
+            <span style={Colors.textRed}>l</span>
+            <span style={Colors.textPink}>s</span>
+            <LogoutIcon />
+          </FormHeader>
 
-            <TextInput
-              onChange={(e) => {
-                this.handleInputChange("gameName", e.target.value);
-              }}
-              type="text"
-              placeholder="Game Name"
-            ></TextInput>
-            <Button
-              width="25%"
-              onClick={() => {
-                this.createGame();
-              }}
-            >
-              Create Game
-            </Button>
-          </GameContainer>
+          <TextInput
+            onChange={(e) => {
+              this.handleInputChange("gameName", e.target.value);
+            }}
+            type="text"
+            placeholder="Game Name"
+          ></TextInput>
+          <Button
+            width="25%"
+            onClick={() => {
+              this.createGame();
+            }}
+          >
+            Create Game
+          </Button>
+        </GameContainer>
       </BaseContainer>
     );
   }
@@ -136,4 +141,6 @@ class GameDetails extends React.Component {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default withRouter(connect(null, { createGame, joinGame, logoutUser })(GameDetails));
+export default withRouter(
+  connect(null, { createGame, joinGame, logoutUser })(GameDetails)
+);

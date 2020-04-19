@@ -1,14 +1,27 @@
 //Import Actions
-import {GAME_CREATION, JOIN_GAME, LEAVE_GAME, START_GAME, CANCEL_GAME} from "../actions/types";
+import {
+  GAME_CREATION,
+  JOIN_GAME,
+  LEAVE_GAME,
+  START_GAME,
+  CANCEL_GAME,
+  GET_GAMES,
+} from "../actions/types";
 
 const initialState = {
   gameId: {},
   isUserCreator: false,
-  gameStatus: {},
+  gamesList: [],
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case GET_GAMES:
+      return {
+        ...state,
+        gamesList: action.payload,
+      };
+
     case GAME_CREATION:
       return {
         ...state,
