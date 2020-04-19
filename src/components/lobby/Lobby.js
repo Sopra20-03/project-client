@@ -11,9 +11,9 @@ import Colors from "../../views/design/Colors";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 //Redux
 import { connect } from "react-redux";
-import { startGame } from "../../redux/actions/lobbyActions";
+import { getGames, getGamePlayers } from "../../redux/actions/lobbyActions";
 import { store } from "../../store";
-
+import { element } from "prop-types";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -30,65 +30,28 @@ const BoxHeader = styled.div`
 `;
 
 class Lobby extends React.Component {
-
   constructor() {
     super();
-    this.state = {
-      games: null,
-    };
   }
 
-  async getPlayerCount(gameId) {
-    try {
-      console.log("***API CALL : GET PLAYERS***");
-        const response = await api.get(`/games/${gameId}/players`, {
-          withCredentials: true,
-        });
-        //console.log("request to:", response.request.responseURL);
-        //console.log("requested data:", response.data);
-        this.state.games.find(x=>x.gameId===gameId).playerCount = response.data.length;
-        console.log("Game ", gameId, " - PlayerCount: ", this.state.games.find(x=>x.gameId===gameId).playerCount);
-      }
-    catch (error) {
-      alert(`Something went wrong getting player count: \n${handleError(error)}`);
-    }
-  };
-
-  getNumberOfPlayers() {
-    const gamesWithPlayerCount = this.state.games;
-    gamesWithPlayerCount.map((game) => (
-        this.getPlayerCount(game.gameId)
-    ));
-    this.setState({games: gamesWithPlayerCount});
-    console.log("Games after numplayers: ", this.state.games);
+  componentDidMount() {
+    this.timer = setInterval(async () => await this.loadLobby(), 5000);
   }
 
-  async componentDidMount() {
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  async loadLobby() {
+    await this.getGames();
+    await this.getPlayers();
+  }
+
+  //getGames
+  async getGames() {
+    console.log("getGames() Lobby");
     try {
-      console.log("***API CALL - GET GAMES***");
-      const response = await api.get("/games", {
-        withCredentials: true,
-      });
-      // delays continuous execution of an async operation for 1 second.
-      // This is just a fake async call, so that the spinner can be displayed
-      // feel free to remove it :)
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Get the returned games and filter on game status then set the state.
-      const initializedGames = response.data.filter(x=>x.gameStatus==='INITIALIZED');
-      this.setState({ games: initializedGames });
-
-      // This is just some data for you to see what is available.
-      console.log("request to:", response.request.responseURL);
-      console.log("status code:", response.status);
-      console.log("status text:", response.statusText);
-      console.log("requested data:", response.data);
-
-      // See here to get more data.
-      console.log(response);
-
-      this.getNumberOfPlayers();
-
+      await this.props.getGames();
     } catch (error) {
       alert(
         `Something went wrong while fetching the games: \n${handleError(error)}`
@@ -96,21 +59,25 @@ class Lobby extends React.Component {
     }
   }
 
-  async startGame() {
-    const currentGameId = store.getState().lobbyReducer.gameId;
+  async getPlayers() {
     try {
-      await this.props.startGame(currentGameId);
+      const gamesList = store.getState().lobbyReducer.gamesList;
+      await this.props.getGamePlayers(gamesList);
     } catch (error) {
-      alert(`Something went wrong while starting the game: \n${handleError(error)}`);
+      alert(
+        `Something went wrong while fetching the players: \n${handleError(
+          error
+        )}`
+      );
     }
-  };
-
+  }
 
   render() {
+    const state = store.getState().lobbyReducer;
     return (
       <Container>
         <GameContainer>
-          <SmallLogo/>
+          <SmallLogo />
           <BoxHeader>
             <span style={Colors.textOrange}>G</span>
             <span style={Colors.textRed}>a</span>
@@ -121,33 +88,26 @@ class Lobby extends React.Component {
             <span style={Colors.textYellow}>b</span>
             <span style={Colors.textBlack}>b</span>
             <span style={Colors.textOrange}>y</span>
-            <LogoutIcon/>
-
+            <LogoutIcon />
           </BoxHeader>
 
-          {!this.state.games ? <div /> : <GameTable games={this.state.games} />}
+          {!state.gamesList == null ? (
+            <div />
+          ) : (
+            <GameTable games={state.gamesList} players={state.playersList} />
+          )}
 
-          {store.getState().lobbyReducer.isUserCreator ?
-              <Button
-                  onClick={() => {
-                    this.startGame();
-                    this.props.history.push(`/gameplay`);
-                  }}
-              >
-                Start Game
-              </Button> :
-              <Button
-                  onClick={() => {
-                    this.props.history.push(`/gamedetails`);
-                  }}
-              >
-                Create Game
-              </Button>
-          }
+          <Button
+            onClick={() => {
+              this.props.history.push(`/gamedetails`);
+            }}
+          >
+            Create New Game
+          </Button>
         </GameContainer>
       </Container>
     );
   }
 }
 
-export default withRouter(connect(null, { startGame })(Lobby));
+export default withRouter(connect(null, { getGames, getGamePlayers })(Lobby));

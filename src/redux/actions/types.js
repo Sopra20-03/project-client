@@ -9,6 +9,8 @@ export const JOIN_GAME = "JOIN_GAME";
 export const LEAVE_GAME = "LEAVE_GAME";
 export const START_GAME = "START_GAME";
 export const CANCEL_GAME = "CANCEL_GAME";
+export const GET_GAMES = "GET_GAMES";
+export const GET_GAME_PLAYERS = "GET_GAME_PLAYERS";
 
 //Gameplay Actions
 export const GUESSER_SELECTWORD = "GUESSER_SELECTWORD";
