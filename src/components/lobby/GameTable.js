@@ -8,31 +8,35 @@ import TableRow from "@material-ui/core/TableRow";
 import GameRow from "./GameRow";
 //redux imports
 import { connect } from "react-redux";
-import { cancelGame, joinGame, leaveGame } from "../../redux/actions/lobbyActions";
+import {
+  cancelGame,
+  joinGame,
+  leaveGame,
+} from "../../redux/actions/lobbyActions";
 import { store } from "../../store";
 import { handleError } from "../../helpers/api";
 
 class GameTable extends React.Component {
   constructor() {
     super();
-    this.state={
+    this.state = {
       selectedGameId: store.getState().lobbyReducer.gameId,
       currentUserId: store.getState().userReducer.user.id,
       userIsCreator: store.getState().lobbyReducer.isUserCreator,
-    }
+    };
   }
 
   async joinGame(gameId) {
-   try {
+    try {
       const requestBody = {
-        userId: this.state.currentUserId
+        userId: this.state.currentUserId,
       };
       await this.props.joinGame(gameId, requestBody);
-     this.setState({selectedGameId: gameId});
+      this.setState({ selectedGameId: gameId });
     } catch (error) {
       alert(`Something went wrong while joining game: \n${handleError(error)}`);
     }
-  };
+  }
 
   handleJoinGame = (gameId) => {
     this.joinGame(gameId);
@@ -40,13 +44,17 @@ class GameTable extends React.Component {
 
   async leaveGame() {
     try {
-      await this.props.leaveGame(this.state.selectedGameId, this.state.currentUserId);
-      this.setState({selectedGameId: ''});
-
+      await this.props.leaveGame(
+        this.state.selectedGameId,
+        this.state.currentUserId
+      );
+      this.setState({ selectedGameId: "" });
     } catch (error) {
-      alert(`Something went wrong while leaving the game: \n${handleError(error)}`);
+      alert(
+        `Something went wrong while leaving the game: \n${handleError(error)}`
+      );
     }
-  };
+  }
 
   handleLeaveGame = () => {
     this.leaveGame();
@@ -56,20 +64,26 @@ class GameTable extends React.Component {
     try {
       this.leaveGame();
       await this.props.cancelGame(gameId);
-      this.setState({selectedGameId: ''});
+      this.setState({ selectedGameId: "" });
     } catch (error) {
-      alert(`Something went wrong while cancelling the game: \n${handleError(error)}`);
+      alert(
+        `Something went wrong while cancelling the game: \n${handleError(
+          error
+        )}`
+      );
     }
-  };
+  }
 
   handleCancelGame = (gameId) => {
     this.cancelGame(gameId);
   };
 
-
   render() {
+    console.log(
+      this.props.players.find(({ gameId }) => gameId == 2).gamePlayers.length
+    );
     return (
-      <TableContainer style={ { maxHeight: 400}}>
+      <TableContainer style={{ maxHeight: 400 }}>
         <Table
           style={{ minWidth: 650 }}
           size="small"
@@ -90,6 +104,10 @@ class GameTable extends React.Component {
               <GameRow
                 key={game.gameId}
                 game={game}
+                numPlayers={
+                  this.props.players.find(({ gameId }) => gameId == game.gameId)
+                    .gamePlayers.length
+                }
                 selectedGameId={this.state.selectedGameId}
                 userIsCreator={this.state.userIsCreator}
                 onJoinGame={this.handleJoinGame}
@@ -101,7 +119,7 @@ class GameTable extends React.Component {
         </Table>
       </TableContainer>
     );
-  };
+  }
 }
 
 export default connect(null, { joinGame, leaveGame, cancelGame })(GameTable);

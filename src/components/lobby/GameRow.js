@@ -66,7 +66,7 @@ function GameRow(props) {
       </TableCell>
       <TableCell align="center"> {props.game.gameName} </TableCell>
       <TableCell align="center"> {props.game.creatorUsername} </TableCell>
-      <TableCell align="center">{props.game.playerCount} </TableCell>
+      <TableCell align="center">{props.numPlayers} </TableCell>
       <TableCell align="center">{rowButton} </TableCell>
     </TableRow>
   );
