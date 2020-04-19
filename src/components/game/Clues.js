@@ -17,6 +17,7 @@ export default class Clues extends Component {
     this.setupColors();
   }
 
+
   setupColors() {
     let colors = [];
     colors.push(Colors.blue);

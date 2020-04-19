@@ -1,0 +1,88 @@
+//Run this file to create 10 games with random creators
+
+// ****** CREATE GAME ******
+POST http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{  "gameName": "game1",  "creatorUsername": "creator1"}
+###
+
+// ***** CREATE GAME ******
+POST http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "gameName": "game2", "creatorUsername": "creator2"}
+###
+
+// ***** CREATE GAME ******
+POST http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "gameName": "game3", "creatorUsername": "creator3"}
+###
+
+// ***** CREATE GAME ******
+POST http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "gameName": "game4", "creatorUsername": "creator4"}
+###
+
+// ***** CREATE GAME ******
+POST http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "gameName": "game5", "creatorUsername": "creator5"}
+###
+
+// ***** CREATE GAME ******
+POST http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "gameName": "game6", "creatorUsername": "creator6"}
+###
+
+// ***** CREATE GAME ******
+POST http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "gameName": "game7", "creatorUsername": "creator7"}
+###
+
+// ***** CREATE GAME ******
+POST http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "gameName": "game8", "creatorUsername": "creator8"}
+###
+
+// ***** CREATE GAME ******
+POST http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "gameName": "game9", "creatorUsername": "creator9"}
+###
+
+// ***** GET GAMES ******
+GET http://localhost:8080/games
+Accept: */*
+Cache-Control: no-cache
+###
