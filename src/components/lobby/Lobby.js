@@ -58,10 +58,13 @@ class Lobby extends React.Component {
     }
   }
 
-  async startGame() {
+  async startTheGame() {
+    console.log("StartGame()");
     const currentGameId = this.props.state.gameId;
     try {
       await this.props.startGame(currentGameId);
+
+      this.props.history.push(`/gameplay`);
     } catch (error) {
       alert(
         `Something went wrong while starting the game: \n${handleError(error)}`
@@ -95,8 +98,7 @@ class Lobby extends React.Component {
           {this.props.state.isUserCreator ? (
             <Button
               onClick={() => {
-                this.startGame();
-                this.props.history.push(`/gameplay`);
+                this.startTheGame();
               }}
             >
               Start Game

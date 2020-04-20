@@ -44,7 +44,6 @@ export default function (state = initialState, action) {
     case START_GAME:
       return {
         ...state,
-        gameStatus: "RUNNING",
       };
 
     case CANCEL_GAME:
