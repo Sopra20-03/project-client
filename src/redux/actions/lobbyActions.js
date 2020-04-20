@@ -6,8 +6,24 @@ import {
   CANCEL_GAME,
   GET_GAMES,
 } from "./types";
+
 import { api, handleError } from "../../helpers/api";
 import Game from "../../components/shared/models/Game";
+
+export const startGame = (gameId) => async (dispatch) => {
+  try {
+    console.log(" ACTION API startGame");
+    console.log(gameId);
+    const response = await api.put(`/games/${gameId}`, null, {
+      withCredentials: true,
+    });
+    dispatch({
+      type: START_GAME,
+    });
+  } catch (error) {
+    alert(handleError(error));
+  }
+};
 
 export const getGames = () => async (dispatch) => {
   try {
@@ -77,25 +93,6 @@ export const leaveGame = (gameId, userId) => async (dispatch) => {
     dispatch({
       type: LEAVE_GAME,
     });
-  } catch (error) {
-    alert(handleError(error));
-  }
-};
-
-export const startGame = (gameId) => async (dispatch) => {
-  try {
-    console.log("***API CALL : START GAME***");
-    const response = await api.put(`/games/${gameId}`, {
-      withCredentials: true,
-    });
-    const game = new Game(response.data);
-    dispatch({
-      type: START_GAME,
-    });
-    console.log("request to:", response.request.responseURL);
-    console.log("status code:", response.status);
-    console.log("status text:", response.statusText);
-    console.log("requested data:", response.data);
   } catch (error) {
     alert(handleError(error));
   }

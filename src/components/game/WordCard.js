@@ -253,7 +253,17 @@ function ClueWriter(props) {
 }
 
 class WordCard extends Component {
+  componentDidMount() {
+    console.log("WordCard Mount");
+  }
+
   render() {
+    if (
+      this.props.gameState.round == null ||
+      this.props.gameState.round.wordCard == null
+    ) {
+      return <h1>Loading..</h1>;
+    }
     let words = this.props.gameState.round.wordCard;
 
     //TODO: Check actual role

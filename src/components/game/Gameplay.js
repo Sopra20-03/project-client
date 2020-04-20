@@ -56,6 +56,7 @@ class Gameplay extends Component {
   }
 
   componentDidMount() {
+    console.log("Gameplay Mount");
     //1. Load gameState
     const gameData = {
       userId: this.props.userState.user.id,
