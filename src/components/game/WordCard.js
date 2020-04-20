@@ -66,10 +66,10 @@ function Guesser(props) {
     await props.guesserSelectWord(data);
   }
 
-  let words = props.gameState.round.wordCard;
+  let words = props.gameState.round.wordCard === null ? [{word1: 'test', word2: 'test2', word3: 'test3', word4: 'test4', word5: 'test5', selectedWord: ''}] : props.gameState.round.wordCard;
 
   //TODO: Word is not yet selected
-  if (props.gameState.round.wordCard.selectedWord == null) {
+  if (words.selectedWord == null) {
     return (
       <div>
         <CardContainer>
@@ -79,23 +79,23 @@ function Guesser(props) {
           >
             Word 1
           </WordHover>
-          <WordHover theme={Colors.red} onClick={() => SelectWord(words.word2)}>
+          <WordHover theme={Colors.green} onClick={() => SelectWord(words.word2)}>
             Word 2
           </WordHover>
           <WordHover
-            theme={Colors.yellow}
+            theme={Colors.red}
             onClick={() => SelectWord(words.word3)}
           >
             Word 3
           </WordHover>
           <WordHover
-            theme={Colors.green}
+            theme={Colors.orange}
             onClick={() => SelectWord(words.word4)}
           >
             Word 4
           </WordHover>
           <WordHover
-            theme={Colors.orange}
+            theme={Colors.yellow}
             onClick={() => SelectWord(words.word5)}
           >
             Word 5
@@ -113,7 +113,7 @@ function Guesser(props) {
             theme={Colors.blue}
             style={{
               backgroundColor:
-                props.gameState.round.wordCard.selectedWord == words.word1
+                props.gameState.round.wordCard.selectedWord === words.word1
                   ? Colors.blue
                   : "",
             }}
@@ -121,44 +121,44 @@ function Guesser(props) {
             Word 1
           </Word>
           <Word
-            theme={Colors.red}
+            theme={Colors.green}
             style={{
               backgroundColor:
-                props.gameState.round.wordCard.selectedWord == words.word2
-                  ? Colors.red
+                props.gameState.round.wordCard.selectedWord === words.word2
+                  ? Colors.green
                   : "",
             }}
           >
             Word 2
           </Word>
           <Word
-            theme={Colors.yellow}
+            theme={Colors.red}
             style={{
               backgroundColor:
-                props.gameState.round.wordCard.selectedWord == words.word3
-                  ? Colors.yellow
+                props.gameState.round.wordCard.selectedWord === words.word3
+                  ? Colors.red
                   : "",
             }}
           >
             Word 3
           </Word>
           <Word
-            theme={Colors.green}
+            theme={Colors.orange}
             style={{
               backgroundColor:
-                props.gameState.round.wordCard.selectedWord == words.word4
-                  ? Colors.green
+                props.gameState.round.wordCard.selectedWord === words.word4
+                  ? Colors.orange
                   : "",
             }}
           >
             Word 4
           </Word>
           <Word
-            theme={Colors.orange}
+            theme={Colors.yellow}
             style={{
               backgroundColor:
-                props.gameState.round.wordCard.selectedWord == words.word5
-                  ? Colors.orange
+                props.gameState.round.wordCard.selectedWord === words.word5
+                  ? Colors.yellow
                   : "",
             }}
           >
@@ -171,18 +171,18 @@ function Guesser(props) {
 }
 
 function ClueWriter(props) {
-  let words = props.gameState.round.wordCard;
+  let words = props.gameState.round.wordCard === null ? [{word1: 'test', word2: 'test2', word3: 'test3', word4: 'test4', word5: 'test5', selectedWord: ''}] : props.gameState.round.wordCard;
 
-  if (props.gameState.round.wordCard.selectedWord == null) {
+  if (words.selectedWord == null) {
     //Word Not Yet Selected
     return (
       <div>
         <CardContainer>
           <Word theme={Colors.blue}>{words.word1}</Word>
-          <Word theme={Colors.red}>{words.word2}</Word>
-          <Word theme={Colors.yellow}>{words.word3}</Word>
-          <Word theme={Colors.green}>{words.word4}</Word>
-          <Word theme={Colors.orange}>{words.word5}</Word>
+          <Word theme={Colors.green}>{words.word2}</Word>
+          <Word theme={Colors.red}>{words.word3}</Word>
+          <Word theme={Colors.orange}>{words.word4}</Word>
+          <Word theme={Colors.yellow}>{words.word5}</Word>
         </CardContainer>
       </div>
     );
@@ -195,7 +195,7 @@ function ClueWriter(props) {
             theme={Colors.blue}
             style={{
               backgroundColor:
-                props.gameState.round.wordCard.selectedWord == words.word1
+                props.gameState.round.wordCard.selectedWord === words.word1
                   ? Colors.blue
                   : "",
             }}
@@ -203,44 +203,44 @@ function ClueWriter(props) {
             {words.word1}
           </Word>
           <Word
-            theme={Colors.red}
+            theme={Colors.green}
             style={{
               backgroundColor:
-                props.gameState.round.wordCard.selectedWord == words.word2
-                  ? Colors.red
+                props.gameState.round.wordCard.selectedWord === words.word2
+                  ? Colors.green
                   : "",
             }}
           >
             {words.word2}
           </Word>
           <Word
-            theme={Colors.yellow}
+            theme={Colors.red}
             style={{
               backgroundColor:
-                props.gameState.round.wordCard.selectedWord == words.word3
-                  ? Colors.yellow
+                props.gameState.round.wordCard.selectedWord === words.word3
+                  ? Colors.red
                   : "",
             }}
           >
             {words.word3}
           </Word>
           <Word
-            theme={Colors.green}
+            theme={Colors.orange}
             style={{
               backgroundColor:
-                props.gameState.round.wordCard.selectedWord == words.word4
-                  ? Colors.green
+                props.gameState.round.wordCard.selectedWord === words.word4
+                  ? Colors.orange
                   : "",
             }}
           >
             {words.word4}
           </Word>
           <Word
-            theme={Colors.orange}
+            theme={Colors.yellow}
             style={{
               backgroundColor:
-                props.gameState.round.wordCard.selectedWord == words.word5
-                  ? Colors.orange
+                props.gameState.round.wordCard.selectedWord === words.word5
+                  ? Colors.yellow
                   : "",
             }}
           >
@@ -258,13 +258,12 @@ class WordCard extends Component {
   }
 
   render() {
-    if (
-      this.props.gameState.round == null ||
-      this.props.gameState.round.wordCard == null
+    /*if (
+      this.props.gameState.round == null || this.props.gameState.round.wordCard == null
     ) {
       return <h1>Loading..</h1>;
-    }
-    let words = this.props.gameState.round.wordCard;
+    }*/
+    let words = this.props.gameState.round.wordCard === null ? [{word1: 'test', word2: 'test2', word3: 'test3', word4: 'test4', word5: 'test5', selectedWord: ''}] : this.props.gameState.round.wordCard;
 
     //TODO: Check actual role
     //if (this.props.gameState.role === 'GUESSER' )

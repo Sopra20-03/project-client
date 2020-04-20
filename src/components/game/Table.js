@@ -6,7 +6,6 @@ import WhiteTextField from "./InputField";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { api, handleError } from "../../helpers/api";
 import { ContainerRow } from "./Gameplay";
-import { store } from "../../store";
 import Colors from "../../views/design/Colors";
 import MessageBox from "./MessageBox";
 import Clues from "./Clues";
@@ -36,6 +35,7 @@ class Table extends Component {
     super(props);
     this.state = {
       playerGuess: null,
+      gamePhase: null,
     };
   }
 
@@ -44,10 +44,11 @@ class Table extends Component {
   }
 
   createMessage(gamePhase) {
-    if (gamePhase === "ROUND_ANNOUNCEMENT") return "Round X of 13";
-    else if (gamePhase === "ROLE_ASSIGNMENT") return "You are the GUESSER";
-    else if (gamePhase === "WAITING_FOR_CLUES")
-      return "Players are writing clues...";
+    if (gamePhase === "ROUND_ANNOUNCEMENT") return `Round ${this.props.gameState.roundNum} of 13`;
+    else if (gamePhase === "ROLE_ASSIGNMENT") return `You are the ${this.props.gameState.role}`;
+    else if (gamePhase === "WAITING_FOR_CLUES") return "Players are writing clues...";
+    else if (gamePhase === "GUESSING") return "Waiting for guesser to guess word";
+    else if (gamePhase === "GUESS_VALIDATION") return `Guess was CORRECT`;
     else return "This is the default message";
   }
 
@@ -62,7 +63,7 @@ class Table extends Component {
             <WordCard />
           </ContainerRow>
           <ContainerRow>
-            <MessageBox msg={this.createMessage("ROUND_ANNOUNCEMENT")} />
+            <MessageBox msg={this.createMessage("ROLE_ASSIGNMENT")} />
           </ContainerRow>
           <ContainerRow style={{ justifyContent: "center" }}>
             <WhiteTextField
