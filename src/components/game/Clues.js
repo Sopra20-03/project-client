@@ -21,10 +21,9 @@ export default class Clues extends Component {
   setupColors() {
     let colors = [];
     colors.push(Colors.blue);
-    colors.push(Colors.green);
-    colors.push(Colors.pink);
     colors.push(Colors.orange);
-    colors.push(Colors.red);
+    colors.push(Colors.violet);
+    colors.push(Colors.green);
     this.setState({
       colors: colors,
     });
@@ -33,14 +32,14 @@ export default class Clues extends Component {
   //TODO
   getClues() {
     this.setState({
-      clues: ["joey", "chandler", "sitcom", "coffeehouse", "new york"],
+      clues: ["joey", "chandler", "sitcom", "coffeehouse"],
     });
   }
 
   render() {
     return this.state.clues.map((clue, index) => {
-      console.log(clue);
-      console.log(index);
+      //console.log(clue);
+      //console.log(index);
       return (
         <ClueCard
           key={clue}
