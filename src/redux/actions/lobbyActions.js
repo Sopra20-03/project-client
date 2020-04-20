@@ -20,6 +20,7 @@ export const startGame = (gameId) => async (dispatch) => {
     dispatch({
       type: START_GAME,
     });
+    return 0;
   } catch (error) {
     alert(handleError(error));
   }

@@ -62,9 +62,9 @@ class Lobby extends React.Component {
     console.log("StartGame()");
     const currentGameId = this.props.state.gameId;
     try {
-      await this.props.startGame(currentGameId);
-
-      this.props.history.push(`/gameplay`);
+      if ((await this.props.startGame(currentGameId)) == 0) {
+        this.props.history.push(`/gameplay`);
+      }
     } catch (error) {
       alert(
         `Something went wrong while starting the game: \n${handleError(error)}`
