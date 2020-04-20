@@ -118,7 +118,7 @@ function Guesser(props) {
                   : "",
             }}
           >
-            {words.word1}
+            Word 1
           </Word>
           <Word
             theme={Colors.red}
@@ -129,7 +129,7 @@ function Guesser(props) {
                   : "",
             }}
           >
-            {words.word2}
+            Word 2
           </Word>
           <Word
             theme={Colors.yellow}
@@ -140,7 +140,7 @@ function Guesser(props) {
                   : "",
             }}
           >
-            {words.word3}
+            Word 3
           </Word>
           <Word
             theme={Colors.green}
@@ -151,7 +151,7 @@ function Guesser(props) {
                   : "",
             }}
           >
-            {words.word4}
+            Word 4
           </Word>
           <Word
             theme={Colors.orange}
@@ -162,7 +162,7 @@ function Guesser(props) {
                   : "",
             }}
           >
-            {words.word5}
+            Word 5
           </Word>
         </CardContainer>
       </div>
