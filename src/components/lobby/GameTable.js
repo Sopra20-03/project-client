@@ -19,20 +19,14 @@ import { handleError } from "../../helpers/api";
 class GameTable extends React.Component {
   constructor() {
     super();
-    this.state = {
-      selectedGameId: store.getState().lobbyReducer.gameId,
-      currentUserId: store.getState().userReducer.user.id,
-      userIsCreator: store.getState().lobbyReducer.isUserCreator,
-    };
   }
 
   async joinGame(gameId) {
     try {
       const requestBody = {
-        userId: this.state.currentUserId,
+        userId: this.props.userState.user.id,
       };
       await this.props.joinGame(gameId, requestBody);
-      this.setState({ selectedGameId: gameId });
     } catch (error) {
       alert(`Something went wrong while joining game: \n${handleError(error)}`);
     }
@@ -45,10 +39,9 @@ class GameTable extends React.Component {
   async leaveGame() {
     try {
       await this.props.leaveGame(
-        this.state.selectedGameId,
-        this.state.currentUserId
+        this.props.lobbyState.gameId,
+        this.props.userState.user.id
       );
-      this.setState({ selectedGameId: "" });
     } catch (error) {
       alert(
         `Something went wrong while leaving the game: \n${handleError(error)}`
@@ -64,7 +57,6 @@ class GameTable extends React.Component {
     try {
       this.leaveGame();
       await this.props.cancelGame(gameId);
-      this.setState({ selectedGameId: "" });
     } catch (error) {
       alert(
         `Something went wrong while cancelling the game: \n${handleError(
@@ -105,8 +97,6 @@ class GameTable extends React.Component {
                 key={game.gameId}
                 game={game}
                 numPlayers={game.playerCount}
-                selectedGameId={this.state.selectedGameId}
-                userIsCreator={this.state.userIsCreator}
                 onJoinGame={this.handleJoinGame}
                 onLeaveGame={this.handleLeaveGame}
                 onCancelGame={this.handleCancelGame}
@@ -119,4 +109,11 @@ class GameTable extends React.Component {
   }
 }
 
-export default connect(null, { joinGame, leaveGame, cancelGame })(GameTable);
+const mapStateToProps = (state) => ({
+  lobbyState: state.lobbyReducer,
+  userState: state.userReducer,
+});
+
+export default connect(mapStateToProps, { joinGame, leaveGame, cancelGame })(
+  GameTable
+);

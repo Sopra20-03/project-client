@@ -6,10 +6,12 @@ import {
   START_GAME,
   CANCEL_GAME,
   GET_GAMES,
+  PLAY_GAME,
 } from "../actions/types";
 
 const initialState = {
   gameId: {},
+  joinedGame: null,
   isUserCreator: false,
   gamesList: [],
 };
@@ -26,19 +28,29 @@ export default function (state = initialState, action) {
       return {
         ...state,
         gameId: action.payload.gameId,
+        joinedGame: action.payload,
         isUserCreator: true,
       };
 
     case JOIN_GAME:
       return {
         ...state,
+        joinedGame: action.payload,
         gameId: action.payload.gameId,
+      };
+
+    case PLAY_GAME:
+      return {
+        ...state,
+        joinedGame: action.payload,
       };
 
     case LEAVE_GAME:
       return {
         ...state,
         gameId: {},
+        isUserCreator: false,
+        joinedGame: null,
       };
 
     case START_GAME:
@@ -51,6 +63,7 @@ export default function (state = initialState, action) {
         ...state,
         gameId: {},
         isUserCreator: false,
+        joinedGame: null,
       };
 
     default:

@@ -5,6 +5,7 @@ import {
   START_GAME,
   CANCEL_GAME,
   GET_GAMES,
+  PLAY_GAME,
 } from "./types";
 
 import { api, handleError } from "../../helpers/api";
@@ -66,10 +67,30 @@ export const joinGame = (gameId, userData) => async (dispatch) => {
     const response = await api.put(`/games/${gameId}/players`, userData, {
       withCredentials: true,
     });
-    const game = new Game(response.data);
     dispatch({
       type: JOIN_GAME,
-      payload: game,
+      payload: response.data,
+    });
+    console.log("request to:", response.request.responseURL);
+    console.log("status code:", response.status);
+    console.log("status text:", response.statusText);
+    console.log("requested data:", response.data);
+  } catch (error) {
+    alert(handleError(error));
+  }
+};
+
+//After joining a game, player waits for creater to start the game.
+//Once the game is set to RUNNING, load the gameplay
+export const playGame = (gameId) => async (dispatch) => {
+  try {
+    console.log("***API CALL : JOIN GAME***");
+    const response = await api.get(`/games/${gameId}`, {
+      withCredentials: true,
+    });
+    dispatch({
+      type: PLAY_GAME,
+      payload: response.data,
     });
     console.log("request to:", response.request.responseURL);
     console.log("status code:", response.status);

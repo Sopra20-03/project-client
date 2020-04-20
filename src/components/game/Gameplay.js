@@ -66,7 +66,7 @@ class Gameplay extends Component {
     //2. Set RoundNum to 1
     this.props.gameUpdateRound(1);
     //3. Start Polling
-    this.timer = setInterval(async () => await this.runGame(), 5000);
+    this.timer = setInterval(async () => await this.runGame(), 1000);
   }
 
   componentWillUnmount() {

@@ -28,9 +28,9 @@ const LeaveButton = withStyles((theme) => ({
 }))(Button);
 
 function GameRow(props) {
-  const thisGameSelected = props.selectedGameId === props.game.gameId;
-  const gameChosen = props.selectedGameId > 0;
-  const userIsCreator = props.userIsCreator;
+  const thisGameSelected = props.lobbyState.gameId === props.game.gameId;
+  const gameChosen = props.lobbyState.gameId > 0;
+  const userIsCreator = props.lobbyState.isUserCreator;
   let rowButton;
 
   if (userIsCreator && thisGameSelected) {
@@ -72,4 +72,9 @@ function GameRow(props) {
   );
 }
 
-export default connect(null)(GameRow);
+const mapStateToProps = (state) => ({
+  lobbyState: state.lobbyReducer,
+  userState: state.userReducer,
+});
+
+export default connect(mapStateToProps)(GameRow);

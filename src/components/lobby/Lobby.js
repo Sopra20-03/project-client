@@ -35,7 +35,7 @@ class Lobby extends React.Component {
   }
 
   componentDidMount() {
-    this.timer = setInterval(async () => await this.loadLobby(), 5000);
+    this.timer = setInterval(async () => await this.loadLobby(), 1000);
   }
 
   componentWillUnmount() {
@@ -43,7 +43,22 @@ class Lobby extends React.Component {
   }
 
   async loadLobby() {
+    //1. Get Games
     await this.getGames();
+
+    //2. If Player has joined a game, check if the creator has started it
+    if (this.props.lobbyState.joinedGame != null) {
+      const game = this.props.lobbyState.gamesList.find(
+        ({ gameId }) => gameId == this.props.lobbyState.joinedGame.gameId
+      );
+
+      if (game.gameStatus === "RUNNING") {
+        console.log("Loading Game");
+        this.props.history.push(`/gameplay`);
+      } else {
+        //Game not yet started
+      }
+    }
   }
 
   //getGames
@@ -60,7 +75,7 @@ class Lobby extends React.Component {
 
   async startTheGame() {
     console.log("StartGame()");
-    const currentGameId = this.props.state.gameId;
+    const currentGameId = this.props.lobbyState.gameId;
     try {
       if ((await this.props.startGame(currentGameId)) == 0) {
         this.props.history.push(`/gameplay`);
@@ -90,12 +105,23 @@ class Lobby extends React.Component {
             <span style={Colors.textOrange}>y</span>
             <LogoutIcon />
           </BoxHeader>
-          {!this.props.state.gamesList == null ? (
+          {!this.props.lobbyState.gamesList == null ? (
             <div />
           ) : (
-            <GameTable games={this.props.state.gamesList} />
+            <GameTable games={this.props.lobbyState.gamesList} />
           )}
-          {this.props.state.isUserCreator ? (
+
+          {this.props.lobbyState.joinedGame != null ? (
+            this.props.lobbyState.isUserCreator == true ? (
+              <h3 style={Colors.textGreen}>Press Start Game to begin!</h3>
+            ) : (
+              <h3 style={Colors.textRed}>
+                Waiting for the game creator to start the game!
+              </h3>
+            )
+          ) : null}
+
+          {this.props.lobbyState.isUserCreator ? (
             <Button
               onClick={() => {
                 this.startTheGame();
@@ -119,7 +145,7 @@ class Lobby extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  state: state.lobbyReducer,
+  lobbyState: state.lobbyReducer,
 });
 
 export default withRouter(

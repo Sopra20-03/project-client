@@ -50,9 +50,6 @@ export const WordHover = styled.div`
     cursor: pointer;
   }
 `;
-//Only For Demo * Remove
-const role = 1;
-//**
 
 function Guesser(props) {
   async function SelectWord(word) {
@@ -66,7 +63,7 @@ function Guesser(props) {
     await props.guesserSelectWord(data);
   }
 
-  let words = props.gameState.round.wordCard === null ? [{word1: 'test', word2: 'test2', word3: 'test3', word4: 'test4', word5: 'test5', selectedWord: ''}] : props.gameState.round.wordCard;
+  let words = props.gameState.round.wordCard;
 
   //TODO: Word is not yet selected
   if (words.selectedWord == null) {
@@ -79,13 +76,13 @@ function Guesser(props) {
           >
             Word 1
           </WordHover>
-          <WordHover theme={Colors.green} onClick={() => SelectWord(words.word2)}>
+          <WordHover
+            theme={Colors.green}
+            onClick={() => SelectWord(words.word2)}
+          >
             Word 2
           </WordHover>
-          <WordHover
-            theme={Colors.red}
-            onClick={() => SelectWord(words.word3)}
-          >
+          <WordHover theme={Colors.red} onClick={() => SelectWord(words.word3)}>
             Word 3
           </WordHover>
           <WordHover
@@ -171,7 +168,7 @@ function Guesser(props) {
 }
 
 function ClueWriter(props) {
-  let words = props.gameState.round.wordCard === null ? [{word1: 'test', word2: 'test2', word3: 'test3', word4: 'test4', word5: 'test5', selectedWord: ''}] : props.gameState.round.wordCard;
+  let words = props.gameState.round.wordCard;
 
   if (words.selectedWord == null) {
     //Word Not Yet Selected
@@ -258,25 +255,24 @@ class WordCard extends Component {
   }
 
   render() {
-    /*if (
-      this.props.gameState.round == null || this.props.gameState.round.wordCard == null
+    if (
+      this.props.gameState.round == null ||
+      this.props.gameState.round.wordCard == null
     ) {
       return <h1>Loading..</h1>;
-    }*/
-    let words = this.props.gameState.round.wordCard === null ? [{word1: 'test', word2: 'test2', word3: 'test3', word4: 'test4', word5: 'test5', selectedWord: ''}] : this.props.gameState.round.wordCard;
+    }
 
     //TODO: Check actual role
-    //if (this.props.gameState.role === 'GUESSER' )
-    if (role == 1) {
+    if (this.props.gameState.role === "GUESSER") {
+      //if (role == 1) {
       return (
         <Guesser
-          wordCard={words}
           guesserSelectWord={this.props.guesserSelectWord}
           gameState={this.props.gameState}
         />
       );
     } else {
-      return <ClueWriter wordCard={words} gameState={this.props.gameState} />;
+      return <ClueWriter gameState={this.props.gameState} />;
     }
   }
 }

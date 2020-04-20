@@ -10,6 +10,7 @@ export const LEAVE_GAME = "LEAVE_GAME";
 export const START_GAME = "START_GAME";
 export const CANCEL_GAME = "CANCEL_GAME";
 export const GET_GAMES = "GET_GAMES";
+export const PLAY_GAME = "PLAY_GAME";
 
 //Gameplay Actions
 export const GET_GAME_PLAYERS = "GET_GAME_PLAYERS";
