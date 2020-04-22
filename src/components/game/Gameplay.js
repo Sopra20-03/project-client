@@ -4,8 +4,6 @@ import TimerInfo from "./TimerInfo";
 import PointsInfo from "./PointsInfo";
 import Table from "./Table";
 import { BaseContainer, GameContainer } from "../../helpers/layout";
-import Button from "../../views/design/Button";
-import RolePopup from "./RolePopup";
 import AllPlayerBoxes from "./AllPlayerBoxes";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 import { withRouter } from "react-router-dom";
@@ -19,6 +17,8 @@ import {
   playerSetRole,
   gameGetRound,
   gameUpdateRound,
+  gameGetClues,
+  gameSubmitClue,
 } from "../../redux/actions/gameplayActions";
 
 const InfoContainer = styled.div`
@@ -84,14 +84,34 @@ class Gameplay extends Component {
 
     //4. Get Round
     await this.getRound();
+
+    //5. Get Clues
+    await this.getClues();
   }
 
   async getPlayers() {
     try {
-      await this.props.getGamePlayers(this.props.gameState.gameId);
+      await this.props.getGamePlayers(this.props.gameState.gameId, this.props.gameState.userId);
     } catch (error) {
       alert(
         `Something went wrong while fetching the games: \n${handleError(error)}`
+      );
+    }
+  }
+
+  async submitClue(clueId, word) {
+    try {
+      console.log("GameId in GameState: ");
+      const requestData = {
+        gameId: this.props.gameState.gameId,
+        playerId: this.props.gameState.playerId,
+        clueId: clueId,
+        word: word,
+      };
+      await this.props.gameSubmitClue(requestData);
+    } catch (error) {
+      alert(
+          `Something went wrong while submitting the clue: \n${handleError(error)}`
       );
     }
   }
@@ -100,7 +120,7 @@ class Gameplay extends Component {
     let players = this.props.gameState.gamePlayers;
     if (players != null) {
       let player = players.find(
-        ({ userId }) => userId == this.props.gameState.userId
+        ({ userId }) => userId === this.props.gameState.userId
       );
       this.props.playerSetRole(player.role);
     }
@@ -120,6 +140,19 @@ class Gameplay extends Component {
     }
   }
 
+  async getClues() {
+    try {
+      const data = {
+        gameId: this.props.gameState.gameId,
+        roundNum: this.props.gameState.roundNum,
+      };
+      await this.props.gameGetClues(data);
+    } catch (error) {
+      alert(
+          `Something went wrong while fetching the clues: \n${handleError(error)}`);
+    }
+  }
+
   render() {
     return (
       <div>
@@ -132,7 +165,7 @@ class Gameplay extends Component {
             <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
-              <Table />
+              <Table onSubmitClue = {this.submitClue} clues = {this.props.gameState.clues}/>
             </TableContainer>
 
             <InfoContainer>
@@ -159,5 +192,7 @@ export default withRouter(
     playerSetRole,
     gameGetRound,
     gameUpdateRound,
+    gameGetClues,
+    gameSubmitClue,
   })(Gameplay)
 );

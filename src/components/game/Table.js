@@ -4,7 +4,6 @@ import styled from "styled-components";
 import WordCard from "./WordCard";
 import WhiteTextField from "./InputField";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-import { api, handleError } from "../../helpers/api";
 import { ContainerRow } from "./Gameplay";
 import Colors from "../../views/design/Colors";
 import MessageBox from "./MessageBox";
@@ -35,12 +34,19 @@ class Table extends Component {
     super(props);
     this.state = {
       playerGuess: null,
+      playerClue: null,
       gamePhase: null,
     };
   }
 
   handleInputChange(key, value) {
     this.setState({ [key]: value });
+  }
+
+  handleSubmitClue() {
+    console.log("SUBMIT CLUE - '", this.state.playerClue, "'");
+    const clueId = this.props.gameState.clues.find(x => x.userId === this.props.userState.userId).playerId;
+    this.props.onSubmitClue(clueId, this.state.playerClue);
   }
 
   createMessage(gamePhase) {
@@ -57,7 +63,7 @@ class Table extends Component {
       <div>
         <GameTable>
           <ContainerRow>
-            <Clues />
+            <Clues clues = {this.props.clues}/>
           </ContainerRow>
           <ContainerRow style={{ justifyContent: "center" }}>
             <WordCard />
@@ -67,17 +73,17 @@ class Table extends Component {
           </ContainerRow>
           <ContainerRow style={{ justifyContent: "center" }}>
             <WhiteTextField
-              label="Guess here..."
+              label="Enter clue here..."
               variant="filled"
-              id="guess"
+              id="clue"
               onChange={(e) => {
-                this.handleInputChange("playerGuess", e.target.value);
+                this.handleInputChange("playerClue", e.target.value);
               }}
             />
             <CheckCircleOutlineIcon
               style={{ fontSize: 60, color: Colors.green }}
               onClick={() => {
-                this.submitGuess();
+                this.handleSubmitClue();
               }}
             ></CheckCircleOutlineIcon>
           </ContainerRow>

@@ -30,12 +30,6 @@ class GameDetails extends React.Component {
     };
   }
 
-  async logout() {
-    await this.props.logoutUser();
-    //await this.props.resetState();
-    this.props.history.push("/login");
-  }
-
   /**
    * HTTP POST request is sent to the backend.
    * If the request is successful, a new game is returned to the front-end
