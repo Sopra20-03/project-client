@@ -92,7 +92,7 @@ class GameTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.props.games.map((game) => (
+            {this.props.games.filter(x => x.gameStatus === "INITIALIZED").map((game) => (
               <GameRow
                 key={game.gameId}
                 game={game}
