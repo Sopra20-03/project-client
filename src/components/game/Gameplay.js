@@ -18,7 +18,6 @@ import {
   gameGetRound,
   gameUpdateRound,
   gameGetClues,
-  gameSubmitClue,
 } from "../../redux/actions/gameplayActions";
 
 const InfoContainer = styled.div`
@@ -99,23 +98,6 @@ class Gameplay extends Component {
     }
   }
 
-  async submitClue(clueId, word) {
-    try {
-      console.log("GameId in GameState: ");
-      const requestData = {
-        gameId: this.props.gameState.gameId,
-        playerId: this.props.gameState.playerId,
-        clueId: clueId,
-        word: word,
-      };
-      await this.props.gameSubmitClue(requestData);
-    } catch (error) {
-      alert(
-          `Something went wrong while submitting the clue: \n${handleError(error)}`
-      );
-    }
-  }
-
   playerUpdateRole() {
     let players = this.props.gameState.gamePlayers;
     if (players != null) {
@@ -165,7 +147,7 @@ class Gameplay extends Component {
             <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
-              <Table onSubmitClue = {this.submitClue} clues = {this.props.gameState.clues}/>
+              <Table clues={this.props.gameState.clues}/>
             </TableContainer>
 
             <InfoContainer>
@@ -193,6 +175,5 @@ export default withRouter(
     gameGetRound,
     gameUpdateRound,
     gameGetClues,
-    gameSubmitClue,
   })(Gameplay)
 );

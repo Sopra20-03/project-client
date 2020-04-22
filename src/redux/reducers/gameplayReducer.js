@@ -2,6 +2,7 @@
 import {
   GUESSER_SELECTWORD,
   CLUEWRITER_SUBMITCLUE,
+  GUESSER_SUBMITGUESS,
   GAME_GETCLUES,
   GAME_LOADGAME,
   GET_GAME_PLAYERS,
@@ -21,6 +22,7 @@ const initialState = {
   role: null,
   selectedWord: null,
   clues: [],
+  gamePhase: null,
 };
 
 export default function (state = initialState, action) {
@@ -45,11 +47,14 @@ export default function (state = initialState, action) {
         //Clear the state
         gameId: null,
         userId: null,
+        playerId: null,
         gamePlayers: [],
         roundNum: null,
         round: null,
         role: null,
         selectedWord: null,
+        clues: [],
+        gamePhase: null,
       };
 
     case GAME_GETROUND:
@@ -74,11 +79,19 @@ export default function (state = initialState, action) {
       return {
         ...state,
         round: action.payload,
+        gamePhase: "WRITING_CLUES"
       };
 
     case CLUEWRITER_SUBMITCLUE:
       return {
         ...state,
+        gamePhase: "GUESSING",
+      };
+
+    case GUESSER_SUBMITGUESS:
+      return {
+        ...state,
+        gamePhase: "CHECK_GUESS"
       };
 
     case GAME_GETCLUES:

@@ -1,6 +1,11 @@
-import React from 'react';
-import { fade, makeStyles, } from '@material-ui/core/styles';
+import React, {Component} from 'react';
+import {fade, makeStyles,} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import Colors from "../../views/design/Colors";
+import {handleError} from "../../helpers/api";
+import {connect} from "react-redux";
+import {gameSubmitClue, gameSubmitGuess} from "../../redux/actions/gameplayActions";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,24 +26,135 @@ const useStyles = makeStyles((theme) => ({
     focused: {},
 }));
 
-export default function WhiteTextField(props) {
+function WhiteTextField(props) {
     const classes = useStyles();
 
-    return <TextField InputProps={{ classes, disableUnderline: true }} {...props} />;
+    return <TextField InputProps={{classes, disableUnderline: true}} {...props} />;
 }
 
-
-export function InputField() {
-    const classes = useStyles();
+function Guesser(props) {
+    async function submitGuess() {
+        try {
+            console.log("SUBMIT GUESS - '", props.guess, "'");
+            const requestData = {
+                gameId: props.gameState.gameId,
+                playerId: props.gameState.playerId,
+                word: props.guess
+            };
+            await props.gameSubmitGuess(requestData);
+        } catch (error) {
+            alert(
+                `Something went wrong while submitting the guess: \n${handleError(error)}`
+            );
+        }
+    }
 
     return (
-        <form className={classes.root} noValidate autoComplete="off">
-            <WhiteTextField
-                label="Guess here..."
-                className={classes.margin}
-                variant="filled"
-                id="guess"
-            />
-        </form>
+        <CheckCircleOutlineIcon
+            style={{fontSize: 60, color: Colors.green}}
+            onClick={() => {
+                submitGuess();
+            }}
+        />
     );
 }
+
+function ClueWriter(props) {
+
+    async function submitClue() {
+        try {
+            console.log("SUBMIT CLUE - '", props.clue, "'");
+            //const clueId = props.gameState.clues.find(x => x.userId === props.userState.userId).playerId;
+            const clueId = 1;
+            const requestData = {
+                gameId: props.gameState.gameId,
+                playerId: props.gameState.playerId,
+                clueId: clueId,
+                word: props.clue
+            };
+            await props.gameSubmitClue(requestData);
+        } catch (error) {
+            alert(
+                `Something went wrong while submitting the clue: \n${handleError(error)}`
+            );
+        }
+    }
+
+    return (
+        <CheckCircleOutlineIcon
+            style={{fontSize: 60, color: Colors.green}}
+            onClick={() => {
+                submitClue();
+            }}
+        />
+    );
+}
+
+class InputField extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            guess: null,
+            clue: null,
+            gamePhase: null,
+        };
+    }
+
+    componentDidMount() {
+        console.log("InputField Mount");
+    }
+
+    handleInputChange(key, value) {
+        this.setState({ [key]: value });
+    }
+
+    render() {
+        //TODO: Check actual role
+        if (this.props.gameState.role === "GUESSER") {
+            return (
+                <div>
+                    <WhiteTextField
+                        label="Enter guess here..."
+                        variant="filled"
+                        id="guess"
+                        onChange={(e) => {
+                            this.handleInputChange("guess", e.target.value);
+                        }}
+                    />
+                <Guesser
+                    gameSubmitGuess={this.props.gameSubmitGuess}
+                    gameState={this.props.gameState}
+                    guess={this.state.guess}
+                />
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <WhiteTextField
+                        label="Enter clue here..."
+                        variant="filled"
+                        id="clue"
+                        onChange={(e) => {
+                            this.handleInputChange("clue", e.target.value);
+                        }}
+                    />
+                    <ClueWriter
+                        gameSubmitClue={this.props.gameSubmitClue}
+                        gameState={this.props.gameState}
+                        userState={this.props.userState}
+                        clue={this.state.clue}
+                    />
+                </div>
+            );
+        }
+    }
+}
+
+const mapStateToProps = (state) => ({
+    lobbyState: state.lobbyReducer,
+    gameState: state.gameplayReducer,
+    userState: state.userReducer,
+});
+
+export default connect(mapStateToProps, {gameSubmitClue, gameSubmitGuess})(InputField);

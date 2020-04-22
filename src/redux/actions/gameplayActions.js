@@ -1,6 +1,7 @@
 import {
   GUESSER_SELECTWORD,
   CLUEWRITER_SUBMITCLUE,
+  GUESSER_SUBMITGUESS,
   GAME_LOADGAME,
   GET_GAME_PLAYERS,
   PLAYER_SET_ROLE,
@@ -92,11 +93,25 @@ export const playerSetRole = (role) => async (dispatch) => {
 
 export const gameSubmitClue = (data) => async (dispatch) => {
   try {
-    const response = await api.put(`/games/${data.gameId}/players/${data.playerId}/clue/${data.clueId}`, data, {
+    const response = await api.post(`/games/${data.gameId}/players/${data.playerId}/clue/${data.clueId}`, data, {
       withCredentials: true,
     });
     dispatch({
       type: CLUEWRITER_SUBMITCLUE,
+      payload: response.data,
+    });
+  } catch (error) {
+    alert(handleError(error));
+  }
+};
+
+export const gameSubmitGuess = (data) => async (dispatch) => {
+  try {
+    const response = await api.post(`/games/${data.gameId}/players/${data.playerId}/guess`, data, {
+      withCredentials: true,
+    });
+    dispatch({
+      type: GUESSER_SUBMITGUESS,
       payload: response.data,
     });
   } catch (error) {
