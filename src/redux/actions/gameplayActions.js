@@ -11,19 +11,19 @@ import {
 import { api, handleError } from "../../helpers/api";
 
 //Functions
-export const getGamePlayers = (gameId) => async (dispatch) => {
+export const getGamePlayers = (gameId, userId) => async (dispatch) => {
   try {
     const response = await api.get(`/games/${gameId}/players`, {
       withCredentials: true,
     });
     console.log("GETGAMEPLAYERS");
     console.log(response.data);
-    // const currentPlayerId = response.data.find(x => x.userId === userId).playerId;
+    const currentPlayerId = response.data.find(x => x.userId === userId).playerId;
     // console.log("CurrentUserId: ", userId);
     // console.log("CurrentPlayerId: ", currentPlayerId);
     dispatch({
       type: GET_GAME_PLAYERS,
-      payload: response.data,
+      payload: {players: response.data, playerId: currentPlayerId},
     });
   } catch (error) {
     alert(handleError(error));

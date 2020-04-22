@@ -14,6 +14,7 @@ import {
 const initialState = {
   gameId: null,
   userId: null,
+  playerId: null,
   gamePlayers: [],
   roundNum: null,
   round: null,
@@ -35,7 +36,8 @@ export default function (state = initialState, action) {
     case GET_GAME_PLAYERS:
       return {
         ...state,
-        gamePlayers: action.payload,
+        gamePlayers: action.payload.players,
+        playerId: action.payload.playerId,
       };
 
     case USER_LOGOUT:

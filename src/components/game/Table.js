@@ -45,8 +45,8 @@ class Table extends Component {
 
   handleSubmitClue() {
     console.log("SUBMIT CLUE - '", this.state.playerClue, "'");
-    const playerId = this.props.gameState.players.find(x => x.userId === this.props.userState.userId).playerId;
-    this.props.onSubmitClue(playerId, this.state.playerClue);
+    const clueId = this.props.gameState.clues.find(x => x.userId === this.props.userState.userId).playerId;
+    this.props.onSubmitClue(clueId, this.state.playerClue);
   }
 
   createMessage(gamePhase) {
