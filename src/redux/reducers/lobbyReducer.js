@@ -7,6 +7,7 @@ import {
   CANCEL_GAME,
   GET_GAMES,
   PLAY_GAME,
+  USER_LOGOUT,
 } from "../actions/types";
 
 const initialState = {
@@ -18,6 +19,14 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case USER_LOGOUT:
+      return {
+        //Clear the state
+        gameId: {},
+        joinedGame: null,
+        isUserCreator: false,
+        gamesList: [],
+      };
     case GET_GAMES:
       return {
         ...state,

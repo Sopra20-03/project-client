@@ -22,7 +22,7 @@ export default function (state = initialState, action) {
 
     case USER_LOGOUT:
       return {
-        ...state,
+        //Clear the state
         user: {},
       };
 

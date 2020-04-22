@@ -7,6 +7,7 @@ import {
   PLAYER_SET_ROLE,
   GAME_GETROUND,
   GAME_UPDATEROUND,
+  USER_LOGOUT,
 } from "../actions/types";
 
 const initialState = {
@@ -33,6 +34,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         gamePlayers: action.payload,
+      };
+
+    case USER_LOGOUT:
+      return {
+        //Clear the state
+        gameId: null,
+        userId: null,
+        gamePlayers: [],
+        roundNum: null,
+        round: null,
+        role: null,
+        selectedWord: null,
       };
 
     case GAME_GETROUND:
