@@ -22,7 +22,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    //Handle different cases
+    //Handle the different cases
     case GAME_LOADGAME:
       return {
         ...state,
