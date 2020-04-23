@@ -1,4 +1,6 @@
- const GameStates = {
+//TODO maybe call this Gamephases instead of GameStates -> no confusion with redux State
+
+const GameStates = {
     'SELECT_WORD': {
         value: 'SELECT_WORD',
         next: 'WRITE_CLUES'
