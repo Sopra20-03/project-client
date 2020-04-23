@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import ClueCard from "./ClueCard";
-import Colors from "../../views/design/Colors/Colors";
+import React, { Component } from 'react';
+import ClueCard from './ClueCard';
+import Colors from '../../views/design/Colors/Colors';
 // Redux
-import {connect} from "react-redux";
+import { connect } from 'react-redux';
 
 class Clues extends Component {
     constructor(props) {
@@ -31,17 +31,23 @@ class Clues extends Component {
     }
 
     render() {
-        return this.props.clues.map((clue, index) => {
-            //console.log(clue);
-            //console.log(index);
-            return (
-                <ClueCard
+        try {
+            return this.props.clues.map((clue, index) => {
+                //console.log(clue);
+                //console.log(index);
+                return (
+                  <ClueCard
                     key={clue}
                     borderColor={this.state.colors[index]}
                     clue={clue.word}
-                />
-            );
-        });
+                  />
+                );
+            });
+        } catch (e) {
+            return null;
+        }
+
+
     }
 }
 

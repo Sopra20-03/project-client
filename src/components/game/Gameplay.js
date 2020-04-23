@@ -1,25 +1,28 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import TimerInfo from "./TimerInfo";
-import PointsInfo from "./PointsInfo";
-import Table from "./Table";
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import AllPlayerBoxes from "./AllPlayerBoxes";
-import { SmallLogo } from "../../views/logos/SmallLogo";
-import { withRouter } from "react-router-dom";
-import { handleError } from "../../helpers/api";
-import LogoutIcon from "../../views/design/LogoutIcon";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import TimerInfo from './TimerInfo';
+import PointsInfo from './PointsInfo';
+import Table from './Table';
+import { BaseContainer, GameContainer } from '../../helpers/layout';
+import AllPlayerBoxes from './AllPlayerBoxes';
+import { SmallLogo } from '../../views/logos/SmallLogo';
+import { withRouter } from 'react-router-dom';
+import { handleError } from '../../helpers/api';
+import LogoutIcon from '../../views/design/LogoutIcon';
 //Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import {
-  gameLoadGame,
-  getGamePlayers,
-  playerSetRole,
-  gameGetRound,
-  gameUpdateRound,
+  advanceGameState,
   gameGetClues,
+  gameGetRound,
+  gameLoadGame,
   gameSubmitClue,
-} from "../../redux/actions/gameplayActions";
+  gameUpdateRound,
+  getGamePlayers,
+  playerSetRole
+} from '../../redux/actions/gameplayActions';
+import GameStates from '../../redux/reducers/gameStates';
+import Button from '@material-ui/core/Button';
 
 const InfoContainer = styled.div`
   display: flex;
@@ -153,6 +156,20 @@ class Gameplay extends Component {
     }
   }
 
+  async advanceState () {
+    try {
+      console.log (this.props.gameState.currentGameState);
+      console.log (GameStates[this.props.gameState.currentGameState.next]);
+      let nextGameState = GameStates[this.props.gameState.currentGameState.next];
+      const data = {
+        currentGameState: GameStates[this.props.gameState.currentGameState.next]
+      };
+      await this.props.advanceGameState (data);
+    } catch (e) {
+      alert (handleError (e));
+    }
+  }
+
   render() {
     return (
       <div>
@@ -161,7 +178,7 @@ class Gameplay extends Component {
             <SmallLogo />
             <LogoutIcon />
             <div></div>
-
+            <Button onClick={this.advanceState}>Next State</Button>
             <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
@@ -194,5 +211,6 @@ export default withRouter(
     gameUpdateRound,
     gameGetClues,
     gameSubmitClue,
+    advanceGameState
   })(Gameplay)
 );
