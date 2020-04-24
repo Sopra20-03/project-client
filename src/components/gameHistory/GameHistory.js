@@ -5,7 +5,7 @@ import {BaseContainer, GameContainer} from "../../helpers/layout";
 import {api, handleError} from "../../helpers/api";
 import Button from "../../views/design/Button";
 import {withRouter} from "react-router-dom";
-import LogoutIcon from "../../views/design/LogoutIcon";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 import GameHistoryTable from "./GameHistoryTable";
 import Colors from "../../views/design/Colors";
 import {SmallLogo} from "../../views/logos/SmallLogo";

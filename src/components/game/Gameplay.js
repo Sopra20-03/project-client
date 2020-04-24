@@ -8,7 +8,7 @@ import AllPlayerBoxes from "./AllPlayerBoxes";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 import { withRouter } from "react-router-dom";
 import { handleError } from "../../helpers/api";
-import LogoutIcon from "../../views/design/LogoutIcon";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 //Redux
 import { connect } from "react-redux";
 import {

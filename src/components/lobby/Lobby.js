@@ -1,19 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-
 import { BaseContainer, GameContainer } from "../../helpers/layout";
 import { handleError } from "../../helpers/api";
 import Button from "../../views/design/Button";
 import { withRouter } from "react-router-dom";
-import LogoutIcon from "../../views/design/LogoutIcon";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 import GameTable from "./GameTable";
 import Colors from "../../views/design/Colors";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 //Redux
 import { connect } from "react-redux";
 import { getGames, startGame } from "../../redux/actions/lobbyActions";
-import { store } from "../../store";
-import { element } from "prop-types";
+import GameHistoryIcon from "../../views/design/Icons/GameHistoryIcon";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -49,7 +47,7 @@ class Lobby extends React.Component {
     //2. If Player has joined a game, check if the creator has started it
     if (this.props.lobbyState.joinedGame != null) {
       const game = this.props.lobbyState.gamesList.find(
-        ({ gameId }) => gameId == this.props.lobbyState.joinedGame.gameId
+        ({ gameId }) => gameId === this.props.lobbyState.joinedGame.gameId
       );
 
       if (game.gameStatus === "RUNNING") {
@@ -77,7 +75,7 @@ class Lobby extends React.Component {
     console.log("StartGame()");
     const currentGameId = this.props.lobbyState.gameId;
     try {
-      if ((await this.props.startGame(currentGameId)) == 0) {
+      if ((await this.props.startGame(currentGameId)) === 0) {
         this.props.history.push(`/gameplay`);
       }
     } catch (error) {
@@ -103,6 +101,7 @@ class Lobby extends React.Component {
             <span style={Colors.textYellow}>b</span>
             <span style={Colors.textBlack}>b</span>
             <span style={Colors.textOrange}>y</span>
+            <GameHistoryIcon/>
             <LogoutIcon />
           </BoxHeader>
           {!this.props.lobbyState.gamesList == null ? (
@@ -112,7 +111,7 @@ class Lobby extends React.Component {
           )}
 
           {this.props.lobbyState.joinedGame != null ? (
-            this.props.lobbyState.isUserCreator == true ? (
+            this.props.lobbyState.isUserCreator === true ? (
               <h3 style={Colors.textGreen}>Press Start Game to begin!</h3>
             ) : (
               <h3 style={Colors.textRed}>

@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 //Redux
 import { connect } from "react-redux";
-import { logoutUser } from "../../redux/actions/userActions";
+import { logoutUser } from "../../../redux/actions/userActions";
 
 class LogoutIcon extends React.Component {
   constructor() {

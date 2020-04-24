@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { store } from "../../store";
 import { logoutUser } from "../../redux/actions/userActions";
 import { createGame, joinGame } from "../../redux/actions/lobbyActions";
-import LogoutIcon from "../../views/design/LogoutIcon";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 
 /**
