@@ -60,7 +60,7 @@ class Table extends Component {
             <MessageBox msg={this.createMessage("ROLE_ASSIGNMENT")} />
           </ContainerRow>
           <ContainerRow style={{ justifyContent: "center" }}>
-            {!this.props.clueSubmitted ? <InputField /> : <div/>}
+            {(this.props.ownerClue && this.props.ownerClue.word === null) ? <InputField /> : <div/>}
           </ContainerRow>
         </GameTable>
       </div>

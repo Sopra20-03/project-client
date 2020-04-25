@@ -167,7 +167,7 @@ class Gameplay extends Component {
 
             <TableContainer>
               <Table onSubmitClue={this.submitClue}
-                     clueSubmitted={(this.props.gameState.clues.find((x) => x.ownerId === this.props.gameState.playerId)).word !== null}
+                     ownerClue={this.props.gameState.clues.find((x) => x.ownerId === this.props.gameState.playerId)}
               />
             </TableContainer>
 
