@@ -93,9 +93,7 @@ class Gameplay extends Component {
     try {
       await this.props.getGamePlayers(this.props.gameState.gameId, this.props.gameState.userId);
     } catch (error) {
-      alert(
-        `Something went wrong while fetching the games: \n${handleError(error)}`
-      );
+      alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
     }
   }
 
@@ -104,7 +102,7 @@ class Gameplay extends Component {
       console.log("GameId in GameState: ");
       const requestData = {
         gameId: this.props.gameState.gameId,
-        //playerId: this.props.gameState.playerId,
+        playerId: this.props.gameState.playerId,
         clueId: clueId,
         word: word,
       };
@@ -163,7 +161,7 @@ class Gameplay extends Component {
             <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
-              <Table onSubmitClue = {this.submitClue} clues = {this.props.gameState.clues}/>
+              <Table onSubmitClue = {this.submitClue}/>
             </TableContainer>
 
             <InfoContainer>

@@ -49,7 +49,9 @@ class Table extends Component {
       <div>
         <GameTable>
           <ContainerRow>
-            <Clues clues = {this.props.clues}/>
+            <Clues clues = {this.props.gameState.clues} players = {this.props.gameState.gamePlayers.filter(
+                (x) => x.userId !== this.props.gameState.userId
+            )}/>
           </ContainerRow>
           <ContainerRow style={{ justifyContent: "center" }}>
             <WordCard />
