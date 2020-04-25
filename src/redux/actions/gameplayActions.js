@@ -19,9 +19,10 @@ export const getGamePlayers = (gameId, userId) => async (dispatch) => {
     });
     console.log("GETGAMEPLAYERS");
     console.log(response.data);
-    const currentPlayerId = response.data.find(x => x.userId === userId).playerId;
-    // console.log("CurrentUserId: ", userId);
-    // console.log("CurrentPlayerId: ", currentPlayerId);
+    let currentPlayerId = -1;
+    if (response.data.find(x => x.userId === userId)) {
+      currentPlayerId = response.data.find(x => x.userId === userId).playerId;
+    }
     dispatch({
       type: GET_GAME_PLAYERS,
       payload: {players: response.data, playerId: currentPlayerId},

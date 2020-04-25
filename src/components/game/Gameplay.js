@@ -8,7 +8,7 @@ import AllPlayerBoxes from "./AllPlayerBoxes";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 import { withRouter } from "react-router-dom";
 import { handleError } from "../../helpers/api";
-import LogoutIcon from "../../views/design/LogoutIcon";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 //Redux
 import { connect } from "react-redux";
 import {
@@ -18,6 +18,7 @@ import {
   gameGetRound,
   gameUpdateRound,
   gameGetClues,
+  gameSubmitClue,
 } from "../../redux/actions/gameplayActions";
 
 const InfoContainer = styled.div`
@@ -98,13 +99,28 @@ class Gameplay extends Component {
     }
   }
 
+  async submitClue(clueId, word) {
+    try {
+      console.log("GameId in GameState: ");
+      const requestData = {
+        gameId: this.props.gameState.gameId,
+        //playerId: this.props.gameState.playerId,
+        clueId: clueId,
+        word: word,
+      };
+      await this.props.gameSubmitClue(requestData);
+    } catch (error) {
+      alert(
+          `Something went wrong while submitting the clue: \n${handleError(error)}`
+      );
+    }
+  }
+
   playerUpdateRole() {
     let players = this.props.gameState.gamePlayers;
     if (players != null) {
-      let player = players.find(
-        ({ userId }) => userId === this.props.gameState.userId
-      );
-      this.props.playerSetRole(player.role);
+      let player = players.find((x) => x.userId === this.props.gameState.userId );
+      if (player) this.props.playerSetRole(player.role);
     }
   }
 
@@ -147,7 +163,7 @@ class Gameplay extends Component {
             <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
-              <Table clues={this.props.gameState.clues}/>
+              <Table onSubmitClue = {this.submitClue} clues = {this.props.gameState.clues}/>
             </TableContainer>
 
             <InfoContainer>
@@ -175,5 +191,6 @@ export default withRouter(
     gameGetRound,
     gameUpdateRound,
     gameGetClues,
+    gameSubmitClue,
   })(Gameplay)
 );
