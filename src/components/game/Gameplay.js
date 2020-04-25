@@ -172,7 +172,7 @@ class Gameplay extends Component {
             </TableContainer>
 
             <InfoContainer>
-              <PointsInfo score={this.props.gameState.score}/>
+              <PointsInfo score = {this.props.gameState.score}/>
               <TimerInfo round={this.props.gameState.roundNum}/>
             </InfoContainer>
           </GameContainer>

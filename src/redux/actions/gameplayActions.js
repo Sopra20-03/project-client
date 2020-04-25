@@ -111,9 +111,10 @@ export const gameSubmitGuess = (data) => async (dispatch) => {
     const response = await api.post(`/games/${data.gameId}/players/${data.playerId}/guess`, data, {
       withCredentials: true,
     });
+    const points = response.data.isValid ? 1 : 0;
     dispatch({
       type: GUESSER_SUBMITGUESS,
-      payload: response.data,
+      payload: points,
     });
   } catch (error) {
     alert(handleError(error));
