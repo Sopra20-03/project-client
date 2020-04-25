@@ -29,6 +29,7 @@ class Clues extends Component {
     componentDidMount() {
       console.log("Clues Mount");
         this.setupColors();
+        //console.log("Filtered list of clues: ", this.props.clues.filter((x) => x.ownerId !== this.props.gameState.userId));
         this.setState({
             clueCards: this.props.clues.filter((x) => x.ownerId !== this.props.gameState.userId),
             opponents: this.props.players.filter((x) => x.userId !== this.props.gameState.userId),
@@ -48,9 +49,9 @@ class Clues extends Component {
     }
 
     render() {
-        if (this.props.players !== null && this.props.clues !== null)
+        if (this.state.opponents !== null && this.state.clueCards !== null)
         {
-            return this.props.players.map((player, index) => {
+            return this.state.opponents.map((player, index) => {
                 if (player.role === "GUESSER") {
                     return (
                         <div>
@@ -63,10 +64,10 @@ class Clues extends Component {
                 else {
                     return (
                         <ClueCard
-                            key={this.props.clues[index].clueId}
+                            key={this.state.clueCards.find((x) => x.ownerId === player.playerId).clueId}
                             borderColor={this.state.colors[index]}
-                            owner={this.props.clues[index].ownerId}
-                            clue={this.props.clues[index].word}
+                            owner={this.state.clueCards.find((x) => x.ownerId === player.playerId).ownerId}
+                            clue={this.state.clueCards.find((x) => x.ownerId === player.playerId).word}
                         />
                     );
                 }
