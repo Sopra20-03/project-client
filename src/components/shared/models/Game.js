@@ -6,6 +6,7 @@ class Game {
         this.gameId = null;
         this.gameName = null;
         this.creatorUsername = null;
+        this.dateCreated = null;
         this.rounds = null;
         this.playerCount = null;
         this.currentRound = null;
