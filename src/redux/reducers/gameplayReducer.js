@@ -23,6 +23,7 @@ const initialState = {
   selectedWord: null,
   clues: [],
   gamePhase: null,
+  score: null,
 };
 
 export default function (state = initialState, action) {
@@ -55,6 +56,7 @@ export default function (state = initialState, action) {
         selectedWord: null,
         clues: [],
         gamePhase: null,
+        score: null,
       };
 
     case GAME_GETROUND:

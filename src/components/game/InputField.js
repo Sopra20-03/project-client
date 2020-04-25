@@ -64,8 +64,7 @@ function ClueWriter(props) {
     async function submitClue() {
         try {
             console.log("SUBMIT CLUE - '", props.clue, "'");
-            //const clueId = props.gameState.clues.find(x => x.userId === props.userState.userId).playerId;
-            const clueId = 1;
+            const clueId = props.gameState.clues.find(x => x.ownerId === props.gameState.playerId).clueId;
             const requestData = {
                 gameId: props.gameState.gameId,
                 playerId: props.gameState.playerId,

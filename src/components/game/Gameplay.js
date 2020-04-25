@@ -123,6 +123,11 @@ class Gameplay extends Component {
   }
 
   async getRound() {
+    //if round is over, advance to next round
+    if (this.props.gameState.round && this.props.gameState.round.roundStatus === "FINISHED") {
+      this.props.gameUpdateRound(this.props.gameState.roundNum+1);
+    }
+    // get round details
     try {
       const data = {
         gameId: this.props.gameState.gameId,
@@ -161,12 +166,14 @@ class Gameplay extends Component {
             <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
-              <Table onSubmitClue = {this.submitClue}/>
+              <Table onSubmitClue={this.submitClue}
+                     clueSubmitted={(this.props.gameState.clues.find((x) => x.ownerId === this.props.gameState.playerId)).word !== null}
+              />
             </TableContainer>
 
             <InfoContainer>
-              <PointsInfo />
-              <TimerInfo />
+              <PointsInfo score={this.props.gameState.score}/>
+              <TimerInfo round={this.props.gameState.roundNum}/>
             </InfoContainer>
           </GameContainer>
         </BaseContainer>

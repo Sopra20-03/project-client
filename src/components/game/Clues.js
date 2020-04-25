@@ -21,19 +21,12 @@ class Clues extends Component {
         super(props);
         this.state = {
             colors: [],
-            clueCards: [],
-            opponents: [],
         };
     }
 
     componentDidMount() {
       console.log("Clues Mount");
         this.setupColors();
-        //console.log("Filtered list of clues: ", this.props.clues.filter((x) => x.ownerId !== this.props.gameState.userId));
-        this.setState({
-            clueCards: this.props.clues.filter((x) => x.ownerId !== this.props.gameState.userId),
-            opponents: this.props.players.filter((x) => x.userId !== this.props.gameState.userId),
-        })
     }
 
 
@@ -49,42 +42,30 @@ class Clues extends Component {
     }
 
     render() {
-        if (this.state.opponents !== null && this.state.clueCards !== null)
+        if (this.props.players !== null && this.props.clues !== null)
         {
-            return this.state.opponents.map((player, index) => {
+            return this.props.players.filter((x) => x.userId !== this.props.gameState.userId).map((player, index) => {
                 if (player.role === "GUESSER") {
                     return (
                         <div>
                             <GuesserContainer>
-                                <HelpOutlineIcon style={{ fontSize: 60 , position: "relative",  bottom: 10}}/>
+                                <HelpOutlineIcon style={{ fontSize: 60 , position: "relative",  bottom: 10, color: this.state.colors[index]}}/>
                             </GuesserContainer>
                         </div>
                     );
                 }
-                else {
+                else if (this.props.clues.find((x) => x.ownerId === player.playerId)){
                     return (
                         <ClueCard
-                            key={this.state.clueCards.find((x) => x.ownerId === player.playerId).clueId}
+                            key={this.props.clues.find((x) => x.ownerId === player.playerId).clueId}
                             borderColor={this.state.colors[index]}
-                            owner={this.state.clueCards.find((x) => x.ownerId === player.playerId).ownerId}
-                            clue={this.state.clueCards.find((x) => x.ownerId === player.playerId).word}
+                            owner={this.props.clues.find((x) => x.ownerId === player.playerId).ownerId}
+                            clue={this.props.clues.find((x) => x.ownerId === player.playerId).word}
                         />
                     );
                 }
             });
         }
-
-        /*return this.props.clues.map((clue, index) => {
-            //console.log(clue);
-            //console.log(index);
-            return (
-                <ClueCard
-                    key={clue.clueId}
-                    borderColor={this.state.colors[index]}
-                    clue={clue.word}
-                />
-            );
-        });*/
     }
 }
 
