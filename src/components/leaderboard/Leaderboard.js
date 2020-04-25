@@ -72,7 +72,7 @@ class Leaderboard extends React.Component {
                         <span style={Colors.textPink}>d</span>
                         <LogoutIcon/>
                     </BoxHeader>
-                    {!this.state.sortedUsers === null ? (
+                    {!this.state.sortedUsers && !this.state.sortedUsers.length ? (
                         <div>There are no users yet!</div>
                     ) : (
                         <LeaderboardTable users={this.state.sortedUsers}/>

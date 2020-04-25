@@ -101,7 +101,7 @@ class GameHistory extends React.Component {
                         <span style={Colors.textPink}>y</span>
                         <LogoutIcon/>
                     </BoxHeader>
-                    {!this.state.userGames === null ? (
+                    {!this.state.userGames && !this.state.userGames.length ? (
                         <div>You have not played any games yet!</div>
                     ) : (
                         <GameHistoryTable games={this.state.userGames}/>
