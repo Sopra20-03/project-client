@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 import WordCard from "./WordCard";
-import WhiteTextField from "./InputField";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import InputField from "./InputField";
 import { ContainerRow } from "./Gameplay";
-import Colors from "../../views/design/Colors";
 import MessageBox from "./MessageBox";
 import Clues from "./Clues";
 
@@ -33,20 +31,8 @@ class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      playerGuess: null,
-      playerClue: null,
       gamePhase: null,
     };
-  }
-
-  handleInputChange(key, value) {
-    this.setState({ [key]: value });
-  }
-
-  handleSubmitClue() {
-    console.log("SUBMIT CLUE - '", this.state.playerClue, "'");
-    const clueId = this.props.gameState.clues.find(x => x.userId === this.props.userState.userId).playerId;
-    this.props.onSubmitClue(clueId, this.state.playerClue);
   }
 
   createMessage(gamePhase) {
@@ -63,7 +49,9 @@ class Table extends Component {
       <div>
         <GameTable>
           <ContainerRow>
-            <Clues clues = {this.props.clues}/>
+            <Clues clues = {this.props.gameState.clues} players = {this.props.gameState.gamePlayers.filter(
+                (x) => x.userId !== this.props.gameState.userId
+            )}/>
           </ContainerRow>
           <ContainerRow style={{ justifyContent: "center" }}>
             <WordCard />
@@ -72,20 +60,7 @@ class Table extends Component {
             <MessageBox msg={this.createMessage("ROLE_ASSIGNMENT")} />
           </ContainerRow>
           <ContainerRow style={{ justifyContent: "center" }}>
-            <WhiteTextField
-              label="Enter clue here..."
-              variant="filled"
-              id="clue"
-              onChange={(e) => {
-                this.handleInputChange("playerClue", e.target.value);
-              }}
-            />
-            <CheckCircleOutlineIcon
-              style={{ fontSize: 60, color: Colors.green }}
-              onClick={() => {
-                this.handleSubmitClue();
-              }}
-            ></CheckCircleOutlineIcon>
+            {(this.props.ownerClue && this.props.ownerClue.word === null) ? <InputField /> : <div/>}
           </ContainerRow>
         </GameTable>
       </div>

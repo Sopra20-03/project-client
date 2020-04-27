@@ -19,7 +19,7 @@ export default class PointsInfo extends Component {
       <div>
         <div>
           <Container>
-            <h1 style={{ margin: "0px" }}>0</h1>
+            <h1 style={{ margin: "0px" }}>{this.props.score}</h1>
             <h3 style={{ margin: "0px" }}>Points</h3>
           </Container>
         </div>

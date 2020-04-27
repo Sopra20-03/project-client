@@ -20,7 +20,7 @@ export default class TimerInfo extends Component {
       <div>
         <TimerInfoContainer>
           <h1 style={{ margin: "0px" }}>2:00</h1>
-          <h3 style={{ margin: "0px" }}>Round 1 of 13</h3>
+          <h3 style={{ margin: "0px" }}>Round {this.props.round} of 13</h3>
         </TimerInfoContainer>
       </div>
     );

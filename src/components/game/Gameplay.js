@@ -93,9 +93,7 @@ class Gameplay extends Component {
     try {
       await this.props.getGamePlayers(this.props.gameState.gameId, this.props.gameState.userId);
     } catch (error) {
-      alert(
-        `Something went wrong while fetching the games: \n${handleError(error)}`
-      );
+      alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
     }
   }
 
@@ -119,14 +117,17 @@ class Gameplay extends Component {
   playerUpdateRole() {
     let players = this.props.gameState.gamePlayers;
     if (players != null) {
-      let player = players.find(
-        ({ userId }) => userId === this.props.gameState.userId
-      );
-      this.props.playerSetRole(player.role);
+      let player = players.find((x) => x.userId === this.props.gameState.userId );
+      if (player) this.props.playerSetRole(player.role);
     }
   }
 
   async getRound() {
+    //if round is over, advance to next round
+    if (this.props.gameState.round && this.props.gameState.round.roundStatus === "FINISHED") {
+      this.props.gameUpdateRound(this.props.gameState.roundNum+1);
+    }
+    // get round details
     try {
       const data = {
         gameId: this.props.gameState.gameId,
@@ -165,12 +166,14 @@ class Gameplay extends Component {
             <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
-              <Table onSubmitClue = {this.submitClue} clues = {this.props.gameState.clues}/>
+              <Table onSubmitClue={this.submitClue}
+                     ownerClue={this.props.gameState.clues.find((x) => x.ownerId === this.props.gameState.playerId)}
+              />
             </TableContainer>
 
             <InfoContainer>
-              <PointsInfo />
-              <TimerInfo />
+              <PointsInfo score = {this.props.gameState.score}/>
+              <TimerInfo round={this.props.gameState.roundNum}/>
             </InfoContainer>
           </GameContainer>
         </BaseContainer>
