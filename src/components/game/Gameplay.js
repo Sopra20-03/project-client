@@ -10,16 +10,19 @@ import { withRouter } from "react-router-dom";
 import { handleError } from "../../helpers/api";
 import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 //Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import {
-  gameLoadGame,
-  getGamePlayers,
-  playerSetRole,
-  gameGetRound,
-  gameUpdateRound,
+  advanceGameState,
   gameGetClues,
+  gameGetRound,
+  gameLoadGame,
   gameSubmitClue,
-} from "../../redux/actions/gameplayActions";
+  gameUpdateRound,
+  getGamePlayers,
+  playerSetRole
+} from '../../redux/actions/gameplayActions';
+import GameStates from '../../redux/reducers/gameStates';
+import Button from '@material-ui/core/Button';
 
 const InfoContainer = styled.div`
   display: flex;
@@ -93,7 +96,9 @@ class Gameplay extends Component {
     try {
       await this.props.getGamePlayers(this.props.gameState.gameId, this.props.gameState.userId);
     } catch (error) {
-      alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
+      alert(
+        `Something went wrong while fetching the games: \n${handleError(error)}`
+      );
     }
   }
 
@@ -154,6 +159,20 @@ class Gameplay extends Component {
     }
   }
 
+  async advanceState () {
+    try {
+      console.log (this.props.gameState.currentGameState);
+      console.log (GameStates[this.props.gameState.currentGameState.next]);
+      let nextGameState = GameStates[this.props.gameState.currentGameState.next];
+      const data = {
+        currentGameState: GameStates[this.props.gameState.currentGameState.next]
+      };
+      await this.props.advanceGameState (data);
+    } catch (e) {
+      alert (handleError (e));
+    }
+  }
+
   render() {
     return (
       <div>
@@ -162,7 +181,7 @@ class Gameplay extends Component {
             <SmallLogo />
             <LogoutIcon />
             <div></div>
-
+            <Button onClick={this.advanceState}>Next State</Button>
             <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
@@ -197,5 +216,6 @@ export default withRouter(
     gameUpdateRound,
     gameGetClues,
     gameSubmitClue,
+    advanceGameState
   })(Gameplay)
 );

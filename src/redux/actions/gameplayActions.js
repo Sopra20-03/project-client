@@ -1,15 +1,17 @@
 import {
-  GUESSER_SELECTWORD,
-  CLUEWRITER_SUBMITCLUE,
-  GUESSER_SUBMITGUESS,
-  GAME_LOADGAME,
-  GET_GAME_PLAYERS,
-  PLAYER_SET_ROLE,
-  GAME_GETROUND,
-  GAME_UPDATEROUND,
-  GAME_GETCLUES,
-} from "./types";
-import { api, handleError } from "../../helpers/api";
+    ADVANCE_GAME_STATE,
+    CLUEWRITER_SUBMITCLUE,
+    GAME_GETCLUES,
+    GAME_GETROUND,
+    GAME_LOADGAME,
+    GAME_UPDATEROUND,
+    GAME_VALIDATECLUE,
+    GET_GAME_PLAYERS,
+    GUESSER_SELECTWORD,
+    GUESSER_SUBMITGUESS,
+    PLAYER_SET_ROLE
+} from './types';
+import { api, handleError } from '../../helpers/api';
 
 //Functions
 export const getGamePlayers = (gameId, userId) => async (dispatch) => {
@@ -33,22 +35,22 @@ export const getGamePlayers = (gameId, userId) => async (dispatch) => {
 };
 
 export const gameGetRound = (data) => async (dispatch) => {
-  try {
-    const response = await api.get(
-      `/games/${data.gameId}/rounds/${data.roundNum}`,
-      {
-        withCredentials: true,
-      }
-    );
-    console.log("GAMEGETROUND");
-    console.log(response.data);
-    dispatch({
-      type: GAME_GETROUND,
-      payload: response.data,
-    });
-  } catch (error) {
-    alert(handleError(error));
-  }
+    try {
+        const response = await api.get (
+          `/games/${data.gameId}/rounds/${data.roundNum}`,
+          {
+              withCredentials: true
+          }
+        );
+        console.log ('GAMEGETROUND');
+        console.log (response.data);
+        dispatch ({
+            type: GAME_GETROUND,
+            payload: response.data
+        });
+    } catch (error) {
+        alert (handleError (error));
+    }
 };
 
 export const gameUpdateRound = (roundNum) => async (dispatch) => {
@@ -122,31 +124,60 @@ export const gameSubmitGuess = (data) => async (dispatch) => {
 };
 
 export const gameGetClues = (data) => async (dispatch) => {
-  try {
-    const response = await api.get(
-        `/games/${data.gameId}/rounds/${data.roundNum}/clues`,
-        {
-          withCredentials: true,
-        }
-    );
-    console.log("***API CALL - GET CLUES***");
-    console.log(response.data);
-    dispatch({
-      type: GAME_GETCLUES,
-      payload: response.data,
-    });
-  } catch (error) {
-    alert(handleError(error));
-  }
+    try {
+        const response = await api.get (
+          `/games/${data.gameId}/rounds/${data.roundNum}/clues`,
+          {
+              withCredentials: true
+          }
+        );
+        console.log ('***API CALL - GET CLUES***');
+        console.log (response.data);
+        dispatch ({
+            type: GAME_GETCLUES,
+            payload: response.data
+        });
+    } catch (error) {
+        alert (handleError (error));
+    }
+};
+
+export const validateClue = (data) => async (dispatch) => {
+    try {
+        const response = await api.put (
+          `/games/${data.gameId}/rounds/${data.roundNum}/clues/${data.clueId}`,
+          {
+              withCredentials: true
+          }
+        );
+        console.log (response.data);
+        dispatch ({
+            type: GAME_VALIDATECLUE,
+            payload: data
+        });
+    } catch (error) {
+        alert (handleError (error));
+    }
 };
 
 export const gameLoadGame = (data) => async (dispatch) => {
-  try {
-    dispatch({
-      type: GAME_LOADGAME,
-      payload: data,
-    });
-  } catch (error) {
-    alert(handleError(error));
-  }
+    try {
+        dispatch ({
+            type: GAME_LOADGAME,
+            payload: data
+        });
+    } catch (error) {
+        alert (handleError (error));
+    }
+};
+
+export const advanceGameState = (data) => async (dispatch) => {
+    try {
+        dispatch ({
+            type: ADVANCE_GAME_STATE,
+            payload: data
+        });
+    } catch (e) {
+        alert (handleError (e));
+    }
 };

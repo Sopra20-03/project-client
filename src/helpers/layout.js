@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const DESKTOP_WIDTH = 1160;
 export const SMALL_LAPTOPS_WIDTH = 970;
