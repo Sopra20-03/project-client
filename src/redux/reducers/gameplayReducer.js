@@ -24,7 +24,7 @@ const initialState = {
   role: null,
   selectedWord: null,
   clues: [],
-  currentGameState: GameStates.SELECT_WORD
+  currentGameState: GameStates.SELECT_WORD,
   gamePhase: null,
   score: null,
 };
