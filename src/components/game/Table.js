@@ -57,7 +57,7 @@ class Table extends Component {
             <WordCard />
           </ContainerRow>
           <ContainerRow>
-            <MessageBox msg={this.createMessage("ROLE_ASSIGNMENT")} />
+            <MessageBox msg={this.createMessage("ROLE_ASSIGNMENT")} delay={3000} />
           </ContainerRow>
           <ContainerRow style={{ justifyContent: "center" }}>
             {(this.props.ownerClue && this.props.ownerClue.word === null) ? <InputField /> : <div/>}
