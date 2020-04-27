@@ -12,6 +12,7 @@ function GameHistoryRow(props) {
                 {" "}{props.game.gameId}{" "}
             </TableCell>
             <TableCell align="center"> {props.game.gameName} </TableCell>
+            <TableCell align="center"> {props.game.dateCreated} </TableCell>
             <TableCell align="center"> {props.game.gameMode} </TableCell>
             <TableCell align="center">{props.score ? props.score : 0} </TableCell>
         </TableRow>

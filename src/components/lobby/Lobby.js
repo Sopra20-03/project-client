@@ -12,6 +12,7 @@ import { SmallLogo } from "../../views/logos/SmallLogo";
 import { connect } from "react-redux";
 import { getGames, startGame } from "../../redux/actions/lobbyActions";
 import GameHistoryIcon from "../../views/design/Icons/GameHistoryIcon";
+import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -101,7 +102,8 @@ class Lobby extends React.Component {
             <span style={Colors.textYellow}>b</span>
             <span style={Colors.textBlack}>b</span>
             <span style={Colors.textOrange}>y</span>
-            <GameHistoryIcon/>
+            <LeaderboardIcon />
+            <GameHistoryIcon />
             <LogoutIcon />
           </BoxHeader>
           {!this.props.lobbyState.gamesList == null ? (

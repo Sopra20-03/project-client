@@ -30,6 +30,7 @@ class GameHistoryTable extends React.Component {
             <TableRow>
               <TableCell align="center">Game Id</TableCell>
               <TableCell align="center">Game Name</TableCell>
+              <TableCell align="center">Date</TableCell>
               <TableCell align="center">Game Mode</TableCell>
               <TableCell align="center">Team Score</TableCell>
             </TableRow>
