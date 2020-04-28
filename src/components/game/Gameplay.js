@@ -19,7 +19,8 @@ import {
   gameSubmitClue,
   gameUpdateRound,
   getGamePlayers,
-  playerSetRole
+  playerSetRole,
+  gameGetGame
 } from '../../redux/actions/gameplayActions';
 import GameStates from '../../redux/reducers/gameStates';
 import Button from '@material-ui/core/Button';
@@ -90,6 +91,9 @@ class Gameplay extends Component {
 
     //5. Get Clues
     await this.getClues();
+
+    //6. Get Score
+    await this.getGame();
   }
 
   async getPlayers() {
@@ -97,7 +101,17 @@ class Gameplay extends Component {
       await this.props.getGamePlayers(this.props.gameState.gameId, this.props.gameState.userId);
     } catch (error) {
       alert(
-        `Something went wrong while fetching the games: \n${handleError(error)}`
+        `Something went wrong while fetching the players: \n${handleError(error)}`
+      );
+    }
+  }
+
+  async getGame() {
+    try {
+      await this.props.gameGetGame({gameId: this.props.gameState.gameId});
+    } catch (error) {
+      alert(
+          `Something went wrong while fetching the game: \n${handleError(error)}`
       );
     }
   }
@@ -191,7 +205,7 @@ class Gameplay extends Component {
             </TableContainer>
 
             <InfoContainer>
-              <PointsInfo score = {this.props.gameState.score ? this.props.gameState.score: 0}/>
+              <PointsInfo score = {this.props.gameState.score ? this.props.gameState.score : 0}/>
               <TimerInfo round={this.props.gameState.roundNum}/>
             </InfoContainer>
           </GameContainer>
@@ -216,6 +230,7 @@ export default withRouter(
     gameUpdateRound,
     gameGetClues,
     gameSubmitClue,
-    advanceGameState
+    advanceGameState,
+    gameGetGame
   })(Gameplay)
 );

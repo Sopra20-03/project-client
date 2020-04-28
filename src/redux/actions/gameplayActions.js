@@ -2,6 +2,7 @@ import {
     ADVANCE_GAME_STATE,
     CLUEWRITER_SUBMITCLUE,
     GAME_GETCLUES,
+    GAME_GETGAME,
     GAME_GETROUND,
     GAME_LOADGAME,
     GAME_UPDATEROUND,
@@ -14,6 +15,20 @@ import {
 import { api, handleError } from '../../helpers/api';
 
 //Functions
+export const gameGetGame = (data) => async (dispatch) => {
+    try {
+        const response = await api.get (
+            `/games/${data.gameId}`,{ withCredentials: true}
+        );
+        dispatch ({
+            type: GAME_GETGAME,
+            payload: response.data
+        });
+    } catch (error) {
+        alert (handleError (error));
+    }
+};
+
 export const getGamePlayers = (gameId, userId) => async (dispatch) => {
   try {
     const response = await api.get(`/games/${gameId}/players`, {

@@ -3,6 +3,7 @@ import {
   ADVANCE_GAME_STATE,
   CLUEWRITER_SUBMITCLUE,
   GUESSER_SUBMITGUESS,
+  GAME_GETGAME,
   GAME_GETCLUES,
   GAME_GETROUND,
   GAME_LOADGAME,
@@ -37,6 +38,12 @@ export default function (state = initialState, action) {
         ...state,
         gameId: action.payload.gameId,
         userId: action.payload.userId,
+      };
+
+    case GAME_GETGAME:
+      return {
+        ...state,
+        score: action.payload.score
       };
 
     case GET_GAME_PLAYERS:
