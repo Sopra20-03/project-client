@@ -24,13 +24,14 @@ function Clues(props) {
                     <GuesserContainer>
                         <HelpOutlineIcon style={{ fontSize: 60 , position: "relative",  bottom: 10, color: color}}/>
                     </GuesserContainer>
-                :
+                : props.clues.length>0 ?
                 <ClueCard
                     key={props.players[index] ? props.clues.find((x) => x.ownerId === props.players[index].playerId).clueId : index}
                     borderColor={color}
                     owner={props.players[index] ? props.clues.find((x) => x.ownerId === props.players[index].playerId).ownerId : 'bot'}
-                    clue={props.players[index] ? props.clues.find((x) => x.ownerId === props.players[index].playerId).word : props.clues[index]}
-                />
+                    clue={props.players[index] ? props.clues.find((x) => x.ownerId === props.players[index].playerId).word : props.clues[index].word}
+                /> :
+                    <ClueCard key = {index} borderColor={color} clue={''}/>
                 ))
         );
 
