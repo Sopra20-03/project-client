@@ -157,7 +157,7 @@ class Gameplay extends Component {
       await this.props.gameGetRound(data);
     } catch (error) {
       alert(
-        `Something went wrong while fetching the games: \n${handleError(error)}`
+        `Something went wrong while fetching the round: \n${handleError(error)}`
       );
     }
   }
