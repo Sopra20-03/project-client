@@ -150,3 +150,14 @@ export const gameLoadGame = (data) => async (dispatch) => {
     alert(handleError(error));
   }
 };
+
+export const advanceGameState = (data) => async (dispatch) => {
+    try {
+        dispatch ({
+            type: ADVANCE_GAME_STATE,
+            payload: data
+        });
+    } catch (e) {
+        alert (handleError (e));
+    }
+};

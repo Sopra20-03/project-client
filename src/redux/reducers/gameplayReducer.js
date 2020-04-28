@@ -1,16 +1,18 @@
 //Import Actions
 import {
-  GUESSER_SELECTWORD,
+  ADVANCE_GAME_STATE,
   CLUEWRITER_SUBMITCLUE,
   GUESSER_SUBMITGUESS,
   GAME_GETCLUES,
-  GAME_LOADGAME,
-  GET_GAME_PLAYERS,
-  PLAYER_SET_ROLE,
   GAME_GETROUND,
+  GAME_LOADGAME,
   GAME_UPDATEROUND,
-  USER_LOGOUT,
-} from "../actions/types";
+  GET_GAME_PLAYERS,
+  GUESSER_SELECTWORD,
+  PLAYER_SET_ROLE,
+  USER_LOGOUT
+} from '../actions/types';
+import GameStates from './gameStates';
 
 const initialState = {
   gameId: null,
@@ -101,6 +103,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         clues: action.payload,
+      };
+
+    case ADVANCE_GAME_STATE:
+      return {
+        ...state,
+        gamePhase: action.payload
       };
 
     default:
