@@ -62,7 +62,7 @@ class Table extends Component {
             <MessageBox msg={this.createMessage("ROLE_ASSIGNMENT")} delay={3000} />
           </ContainerRow>
           <ContainerRow style={{ justifyContent: "center" }}>
-            {(this.props.ownerClue && this.props.ownerClue.word === null) ? <InputField /> : <div/>}
+            {(this.props.ownerClue && !this.props.ownerClue.word) || (this.props.gameState.role === 'GUESSER' && this.props.gameState.round.wordCard.selectedWord) ? <InputField /> : <div/>}
           </ContainerRow>
         </GameTable>
       </div>

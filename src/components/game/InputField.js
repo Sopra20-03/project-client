@@ -108,7 +108,6 @@ class InputField extends Component {
     }
 
     render() {
-        //TODO: Check actual role
         if (this.props.gameState.role === "GUESSER") {
             return (
                 <div>

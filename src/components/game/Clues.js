@@ -20,17 +20,18 @@ function Clues(props) {
     let colors = [Colors.blue, Colors.orange, Colors.violet, Colors.green];
         return (
             colors.map((color, index) => (
-                (props.players[index] && props.players[index].role === 'GUESSER') ?
-                    <GuesserContainer>
-                        <HelpOutlineIcon style={{ fontSize: 60 , position: "relative",  bottom: 10, color: color}}/>
-                    </GuesserContainer>
-                :
-                <ClueCard
-                    key={props.players[index] ? props.clues.find((x) => x.ownerId === props.players[index].playerId).clueId : index}
-                    borderColor={color}
-                    owner={props.players[index] ? props.clues.find((x) => x.ownerId === props.players[index].playerId).ownerId : 'bot'}
-                    clue={props.players[index] ? props.clues.find((x) => x.ownerId === props.players[index].playerId).word : props.clues[index]}
-                />
+                (props.gameState.round.roundStatus !== 'FINISHED' && props.gameState.round.wordCard.selectedWord && props.clues[index]) ?
+                    (props.players[index] && props.players[index].role === 'GUESSER') ?
+                        <GuesserContainer>
+                            <HelpOutlineIcon style={{ fontSize: 60 , position: "relative",  bottom: 10, color: color}}/>
+                        </GuesserContainer>
+                    : <ClueCard
+                        key={props.players[index] && props.clues.find((x) => x.ownerId === props.players[index].playerId) ? props.clues.find((x) => x.ownerId === props.players[index].playerId).clueId : index}
+                        borderColor={color}
+                        owner={props.players[index] && props.clues.find((x) => x.ownerId === props.players[index].playerId) ? props.clues.find((x) => x.ownerId === props.players[index].playerId).ownerId : 'bot'}
+                        clue={props.players[index] && props.clues.find((x) => x.ownerId === props.players[index].playerId) ? props.clues.find((x) => x.ownerId === props.players[index].playerId).word : props.clues[index].word}
+                    />
+                : <ClueCard key = {index} borderColor={color} clue={''}/>
                 ))
         );
 
