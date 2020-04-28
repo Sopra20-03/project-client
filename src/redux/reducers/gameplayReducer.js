@@ -3,6 +3,7 @@ import {
   ADVANCE_GAME_STATE,
   CLUEWRITER_SUBMITCLUE,
   GUESSER_SUBMITGUESS,
+  GAME_GETGAME,
   GAME_GETCLUES,
   GAME_GETROUND,
   GAME_LOADGAME,
@@ -24,6 +25,7 @@ const initialState = {
   role: null,
   selectedWord: null,
   clues: [],
+  currentGameState: GameStates.SELECT_WORD,
   gamePhase: null,
   score: null,
 };
@@ -36,6 +38,12 @@ export default function (state = initialState, action) {
         ...state,
         gameId: action.payload.gameId,
         userId: action.payload.userId,
+      };
+
+    case GAME_GETGAME:
+      return {
+        ...state,
+        score: action.payload.score
       };
 
     case GET_GAME_PLAYERS:
@@ -56,6 +64,7 @@ export default function (state = initialState, action) {
         round: null,
         role: null,
         selectedWord: null,
+        currentGameState: null,
         clues: [],
         gamePhase: null,
         score: null,
@@ -108,7 +117,7 @@ export default function (state = initialState, action) {
     case ADVANCE_GAME_STATE:
       return {
         ...state,
-        gamePhase: action.payload
+        currentGameState: action.payload
       };
 
     default:

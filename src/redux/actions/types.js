@@ -14,6 +14,7 @@ export const PLAY_GAME = "PLAY_GAME";
 
 //Gameplay Actions
 export const GET_GAME_PLAYERS = "GET_GAME_PLAYERS";
+export const GAME_GETGAME = "GAME_GETGAME";
 export const PLAYER_SET_ROLE = "PLAYER_SET_ROLE";
 export const GAME_LOADGAME = "GAME_LOADGAME";
 export const GAME_UPDATEROUND = "GAME_UPDATEROUND";

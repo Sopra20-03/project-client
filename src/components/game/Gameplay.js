@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import TimerInfo from './TimerInfo';
-import PointsInfo from './PointsInfo';
-import Table from './Table';
-import { BaseContainer, GameContainer } from '../../helpers/layout';
-import AllPlayerBoxes from './AllPlayerBoxes';
-import { SmallLogo } from '../../views/logos/SmallLogo';
-import { withRouter } from 'react-router-dom';
-import { handleError } from '../../helpers/api';
-import LogoutIcon from '../../views/design/Icons/LogoutIcon';
-import LogoutIcon from '../../views/design/LogoutIcon';
+import React, { Component } from "react";
+import styled from "styled-components";
+import TimerInfo from "./TimerInfo";
+import PointsInfo from "./PointsInfo";
+import Table from "./Table";
+import { BaseContainer, GameContainer } from "../../helpers/layout";
+import AllPlayerBoxes from "./AllPlayerBoxes";
+import { SmallLogo } from "../../views/logos/SmallLogo";
+import { withRouter } from "react-router-dom";
+import { handleError } from "../../helpers/api";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 //Redux
 import { connect } from 'react-redux';
 import {
@@ -19,8 +18,11 @@ import {
   gameSubmitClue,
   gameUpdateRound,
   getGamePlayers,
-  playerSetRole
+  playerSetRole,
+  gameGetGame
 } from '../../redux/actions/gameplayActions';
+import GameStates from '../../redux/reducers/gameStates';
+import Button from '@material-ui/core/Button';
 
 const InfoContainer = styled.div`
   display: flex;
@@ -88,13 +90,28 @@ class Gameplay extends Component {
 
     //5. Get Clues
     await this.getClues();
+
+    //6. Get Score
+    await this.getGame();
   }
 
   async getPlayers() {
     try {
       await this.props.getGamePlayers(this.props.gameState.gameId, this.props.gameState.userId);
     } catch (error) {
-      alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
+      alert(
+        `Something went wrong while fetching the players: \n${handleError(error)}`
+      );
+    }
+  }
+
+  async getGame() {
+    try {
+      await this.props.gameGetGame({gameId: this.props.gameState.gameId});
+    } catch (error) {
+      alert(
+          `Something went wrong while fetching the game: \n${handleError(error)}`
+      );
     }
   }
 
@@ -187,7 +204,7 @@ class Gameplay extends Component {
             </TableContainer>
 
             <InfoContainer>
-              <PointsInfo score = {this.props.gameState.score ? this.props.gameState.score: 0}/>
+              <PointsInfo score = {this.props.gameState.score ? this.props.gameState.score : 0}/>
               <TimerInfo round={this.props.gameState.roundNum}/>
             </InfoContainer>
           </GameContainer>
@@ -212,6 +229,7 @@ export default withRouter(
     gameUpdateRound,
     gameGetClues,
     gameSubmitClue,
-    advanceGameState
+    advanceGameState,
+    gameGetGame
   })(Gameplay)
 );
