@@ -10,16 +10,20 @@ import { withRouter } from "react-router-dom";
 import { handleError } from "../../helpers/api";
 import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 //Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import {
+  advanceGameState,
+  gameGetClues,
+  gameGetRound,
   gameLoadGame,
+  gameSubmitClue,
+  gameUpdateRound,
   getGamePlayers,
   playerSetRole,
-  gameGetRound,
-  gameUpdateRound,
-  gameGetClues,
-  gameSubmitClue,
-} from "../../redux/actions/gameplayActions";
+  gameGetGame
+} from '../../redux/actions/gameplayActions';
+import GameStates from '../../redux/reducers/gameStates';
+import Button from '@material-ui/core/Button';
 
 const InfoContainer = styled.div`
   display: flex;
@@ -87,13 +91,28 @@ class Gameplay extends Component {
 
     //5. Get Clues
     await this.getClues();
+
+    //6. Get Score
+    await this.getGame();
   }
 
   async getPlayers() {
     try {
       await this.props.getGamePlayers(this.props.gameState.gameId, this.props.gameState.userId);
     } catch (error) {
-      alert(`Something went wrong while fetching the games: \n${handleError(error)}`);
+      alert(
+        `Something went wrong while fetching the players: \n${handleError(error)}`
+      );
+    }
+  }
+
+  async getGame() {
+    try {
+      await this.props.gameGetGame({gameId: this.props.gameState.gameId});
+    } catch (error) {
+      alert(
+          `Something went wrong while fetching the game: \n${handleError(error)}`
+      );
     }
   }
 
@@ -154,6 +173,20 @@ class Gameplay extends Component {
     }
   }
 
+  async advanceState () {
+    try {
+      console.log (this.props.gameState.currentGameState);
+      console.log (GameStates[this.props.gameState.currentGameState.next]);
+      let nextGameState = GameStates[this.props.gameState.currentGameState.next];
+      const data = {
+        currentGameState: GameStates[this.props.gameState.currentGameState.next]
+      };
+      await this.props.advanceGameState (data);
+    } catch (e) {
+      alert (handleError (e));
+    }
+  }
+
   render() {
     return (
       <div>
@@ -162,7 +195,7 @@ class Gameplay extends Component {
             <SmallLogo />
             <LogoutIcon />
             <div></div>
-
+            <Button onClick={this.advanceState}>Next State</Button>
             <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
@@ -172,7 +205,7 @@ class Gameplay extends Component {
             </TableContainer>
 
             <InfoContainer>
-              <PointsInfo score = {this.props.gameState.score ? this.props.gameState.score: 0}/>
+              <PointsInfo score = {this.props.gameState.score ? this.props.gameState.score : 0}/>
               <TimerInfo round={this.props.gameState.roundNum}/>
             </InfoContainer>
           </GameContainer>
@@ -197,5 +230,7 @@ export default withRouter(
     gameUpdateRound,
     gameGetClues,
     gameSubmitClue,
+    advanceGameState,
+    gameGetGame
   })(Gameplay)
 );

@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 import usermale from '../../views/logos/user_male.png';
 import userfemale from '../../views/logos/user_female.png';
+import robot from '../../views/logos/robot.png'
+
 
 export const PlayerContainer = styled.div`
   display: flex;
@@ -20,12 +22,15 @@ export const PlayerContainer = styled.div`
 export default class PlayerBox extends Component {
 
     render() {
-        let userIcon = {};
+        let userIcon;
         if (this.props.gender === 'female') {
             userIcon = <img alt="" src= {userfemale} height="60rem" width="50rem"/>
         }
-        else {
+        else if (this.props.gender === 'male') {
             userIcon = <img alt="" src= {usermale} height="60rem" width="50rem"/>
+        }
+        else {
+            userIcon = <img alt="" src= {robot} height="60rem" width="50rem"/>
         }
 
         return (
