@@ -90,7 +90,7 @@ class Gameplay extends Component {
     await this.getRound();
 
     //5. Get Clues
-    if (this.props.gameState.round.wordCard.selectedWord) {
+    if (this.props.gameState.round && this.props.gameState.round.wordCard.selectedWord) {
       await this.getClues();
     }
 

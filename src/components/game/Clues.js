@@ -20,7 +20,7 @@ function Clues(props) {
     let colors = [Colors.blue, Colors.orange, Colors.violet, Colors.green];
         return (
             colors.map((color, index) => (
-                (props.gameState.round.roundStatus !== 'FINISHED' && props.gameState.round.wordCard.selectedWord && props.clues[index]) ?
+                (props.gameState.round && props.gameState.round.roundStatus !== 'FINISHED' && props.gameState.round.wordCard.selectedWord && props.clues[index]) ?
                     (props.players[index] && props.players[index].role === 'GUESSER') ?
                         <GuesserContainer>
                             <HelpOutlineIcon style={{ fontSize: 60 , position: "relative",  bottom: 10, color: color}}/>
