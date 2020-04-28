@@ -102,7 +102,6 @@ export default function (state = initialState, action) {
     case GUESSER_SUBMITGUESS:
       return {
         ...state,
-        score: this.score + action.payload,
         gamePhase: "CHECK_GUESS"
       };
 
