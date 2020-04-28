@@ -1,25 +1,26 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import TimerInfo from "./TimerInfo";
-import PointsInfo from "./PointsInfo";
-import Table from "./Table";
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import AllPlayerBoxes from "./AllPlayerBoxes";
-import { SmallLogo } from "../../views/logos/SmallLogo";
-import { withRouter } from "react-router-dom";
-import { handleError } from "../../helpers/api";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import TimerInfo from './TimerInfo';
+import PointsInfo from './PointsInfo';
+import Table from './Table';
+import { BaseContainer, GameContainer } from '../../helpers/layout';
+import AllPlayerBoxes from './AllPlayerBoxes';
+import { SmallLogo } from '../../views/logos/SmallLogo';
+import { withRouter } from 'react-router-dom';
+import { handleError } from '../../helpers/api';
+import LogoutIcon from '../../views/design/Icons/LogoutIcon';
 //Redux
 import { connect } from 'react-redux';
 import {
+  advanceGameState,
   gameGetClues,
+  gameGetGame,
   gameGetRound,
   gameLoadGame,
   gameSubmitClue,
   gameUpdateRound,
   getGamePlayers,
-  playerSetRole,
-  gameGetGame
+  playerSetRole
 } from '../../redux/actions/gameplayActions';
 import GameStates from '../../redux/reducers/gameStates';
 import Button from '@material-ui/core/Button';
@@ -176,7 +177,6 @@ class Gameplay extends Component {
     try {
       console.log (this.props.gameState.currentGameState);
       console.log (GameStates[this.props.gameState.currentGameState.next]);
-      let nextGameState = GameStates[this.props.gameState.currentGameState.next];
       const data = {
         currentGameState: GameStates[this.props.gameState.currentGameState.next]
       };
