@@ -10,18 +10,20 @@ function AllPlayerBoxes(props) {
   );
   let colors = [Colors.blue, Colors.orange, Colors.violet, Colors.green];
   let icons = ["female", "male", "female", "male"];
+
   return (
-    <ContainerRow>
-      {players.map((player, index) => (
-        <PlayerBox
-          key={player.playerId}
-          userName={player === null ? "empty" : player.userName}
-          gender={icons[index]}
-          borderColor={colors[index]}
-        />
-      ))}
-    </ContainerRow>
+      <ContainerRow>
+        {colors.map((color, index) => (
+            <PlayerBox
+                key={players[index] ? players[index].playerId : 'Bot'}
+                userName={players[index] ? players[index].userName : 'Bot'}
+                gender={players[index] ? icons[index] : 'bot'}
+                borderColor={color}
+            />
+        ))}
+      </ContainerRow>
   );
+
 }
 
 export default AllPlayerBoxes;

@@ -10,7 +10,10 @@ import GameStates from '../../redux/reducers/gameStates';
 export const CardContainer = styled.div`
   background-color: white;
   border-radius: 5px;
-  padding: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 5px;
+  padding-left: 5px;
   margin: auto;
   min-width: 7rem;
   min-height: 3rem;
@@ -49,7 +52,7 @@ export default class ClueCard extends Component {
         return (
           <div>
               <CardContainer style={{border: `2px solid ${this.props.borderColor}`}}>
-                  <p>{this.props.clue}</p>
+                  {this.props.clue}
                   {/*<FormControl component="fieldset">
                       <RadioGroup
                         onChange={this.handleChange}
