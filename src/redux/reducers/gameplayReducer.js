@@ -62,10 +62,11 @@ export default function (state = initialState, action) {
         roundNum: null,
         round: null,
         role: null,
+        selectedWord: null,
+        currentGameState: null,
         clues: [],
         gamePhase: null,
         score: null,
-        currentGameState: null
       };
 
     case GAME_GETROUND:

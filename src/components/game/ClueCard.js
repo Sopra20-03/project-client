@@ -5,7 +5,6 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import { FormControlLabel } from '@material-ui/core';
 import Radio from '@material-ui/core/Radio';
 import FormControl from '@material-ui/core/FormControl';
-import GameStates from '../../redux/reducers/gameStates';
 
 export const CardContainer = styled.div`
   background-color: white;
@@ -31,20 +30,16 @@ export default class ClueCard extends Component {
     componentDidMount () {
         this.setState({
             choice: null,
-            curState: GameStates.SELECT_WORD
         });
     }
 
     handleChange = (event) => {
         console.log (event.target.value);
         console.log (this.props);
+        this.props.clue.valid = event.target.value;
         this.setState ({
             choice: event.target.value
         });
-        //Just for testing/trying purposes
-        console.log (`Game State: ${this.state.curState}`);
-        let curiState = this.state.curState.value;
-        console.log (`OOOOOOO ${GameStates[curiState].value} OOOOOOOOOO`);
 
     };
 
@@ -53,14 +48,14 @@ export default class ClueCard extends Component {
           <div>
               <CardContainer style={{border: `2px solid ${this.props.borderColor}`}}>
                   {this.props.clue}
-                  {/*<FormControl component="fieldset">
+                  <FormControl component="fieldset">
                       <RadioGroup
                         onChange={this.handleChange}
                       >
                           <FormControlLabel value="true" control={<Radio/>} label="Valid"/>
                           <FormControlLabel value="false" control={<Radio/>} label="Invalid"/>
                       </RadioGroup>
-                  </FormControl>*/}
+                  </FormControl>
               </CardContainer>
           </div>
         );
