@@ -12,6 +12,8 @@ import {SmallLogo} from "../../views/logos/SmallLogo";
 //Redux
 import {connect} from "react-redux";
 import {getGames} from "../../redux/actions/lobbyActions";
+import {ContainerRow} from "../game/Gameplay";
+import PacmanLoader from "react-spinners/PacmanLoader";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -101,8 +103,8 @@ class GameHistory extends React.Component {
                         <span style={Colors.textPink}>y</span>
                         <LogoutIcon/>
                     </BoxHeader>
-                    {!this.state.userGames && !this.state.userGames.length ? (
-                        <div>You have not played any games yet!</div>
+                    {this.state.userGames.length < 1 ? (
+                        <ContainerRow style={{margin: 30}}><PacmanLoader/></ContainerRow>
                     ) : (
                         <GameHistoryTable games={this.state.userGames}/>
                     )}

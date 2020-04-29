@@ -13,6 +13,8 @@ import { connect } from "react-redux";
 import { getGames, startGame } from "../../redux/actions/lobbyActions";
 import GameHistoryIcon from "../../views/design/Icons/GameHistoryIcon";
 import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
+import {ContainerRow} from "../game/Gameplay";
+import PacmanLoader from "react-spinners/PacmanLoader";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -106,8 +108,8 @@ class Lobby extends React.Component {
             <GameHistoryIcon />
             <LogoutIcon />
           </BoxHeader>
-          {!this.props.lobbyState.gamesList == null ? (
-            <div />
+          {this.props.lobbyState.gamesList.length < 1 ? (
+              <ContainerRow style={{margin: 30}}><PacmanLoader/></ContainerRow>
           ) : (
             <GameTable games={this.props.lobbyState.gamesList} />
           )}
