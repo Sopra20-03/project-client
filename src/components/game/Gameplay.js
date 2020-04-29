@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import TimerInfo from './TimerInfo';
-import PointsInfo from './PointsInfo';
-import Table from './Table';
-import { BaseContainer, GameContainer } from '../../helpers/layout';
-import AllPlayerBoxes from './AllPlayerBoxes';
-import { SmallLogo } from '../../views/logos/SmallLogo';
-import { withRouter } from 'react-router-dom';
-import { handleError } from '../../helpers/api';
-import LogoutIcon from '../../views/design/Icons/LogoutIcon';
+import React, { Component } from "react";
+import styled from "styled-components";
+import TimerInfo from "./TimerInfo";
+import PointsInfo from "./PointsInfo";
+import Table from "./Table";
+import { BaseContainer, GameContainer } from "../../helpers/layout";
+import AllPlayerBoxes from "./AllPlayerBoxes";
+import { SmallLogo } from "../../views/logos/SmallLogo";
+import { withRouter } from "react-router-dom";
+import { handleError } from "../../helpers/api";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 //Redux
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import {
   advanceGameState,
   gameGetClues,
@@ -20,10 +20,13 @@ import {
   gameSubmitClue,
   gameUpdateRound,
   getGamePlayers,
-  playerSetRole
-} from '../../redux/actions/gameplayActions';
-import GameStates from '../../redux/reducers/gameStates';
-import Button from '@material-ui/core/Button';
+  playerSetRole,
+  timerRoundReset,
+  timerRoundStart,
+  timerRoundStop,
+} from "../../redux/actions/gameplayActions";
+import GameStates from "../../redux/reducers/gameStates";
+import Button from "@material-ui/core/Button";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -84,13 +87,16 @@ class Gameplay extends Component {
     await this.getPlayers();
 
     //3. Update Role for each round
-    this.playerUpdateRole();
+    await this.playerUpdateRole();
 
     //4. Get Round
     await this.getRound();
 
+    //Timer
+    await this.roundTimer();
+
     //5. Get Clues
-    if (this.props.gameState.round.wordCard.selectedWord) {
+    if (this.props.gameState.round.wordCard.selectedWord != null) {
       await this.getClues();
     }
 
@@ -100,20 +106,37 @@ class Gameplay extends Component {
 
   async getPlayers() {
     try {
-      await this.props.getGamePlayers(this.props.gameState.gameId, this.props.gameState.userId);
+      await this.props.getGamePlayers(
+        this.props.gameState.gameId,
+        this.props.gameState.userId
+      );
     } catch (error) {
       alert(
-        `Something went wrong while fetching the players: \n${handleError(error)}`
+        `Something went wrong while fetching the players: \n${handleError(
+          error
+        )}`
       );
+    }
+  }
+
+  async roundTimer() {
+    //1. Initialize & Start
+    if (this.props.gameState.timer == null) {
+      try {
+        await this.props.timerRoundReset(180);
+        await this.props.timerRoundStart();
+      } catch (error) {
+        alert(`Something went wrong : \n${handleError(error)}`);
+      }
     }
   }
 
   async getGame() {
     try {
-      await this.props.gameGetGame({gameId: this.props.gameState.gameId});
+      await this.props.gameGetGame({ gameId: this.props.gameState.gameId });
     } catch (error) {
       alert(
-          `Something went wrong while fetching the game: \n${handleError(error)}`
+        `Something went wrong while fetching the game: \n${handleError(error)}`
       );
     }
   }
@@ -130,7 +153,9 @@ class Gameplay extends Component {
       await this.props.gameSubmitClue(requestData);
     } catch (error) {
       alert(
-          `Something went wrong while submitting the clue: \n${handleError(error)}`
+        `Something went wrong while submitting the clue: \n${handleError(
+          error
+        )}`
       );
     }
   }
@@ -138,15 +163,20 @@ class Gameplay extends Component {
   playerUpdateRole() {
     let players = this.props.gameState.gamePlayers;
     if (players != null) {
-      let player = players.find((x) => x.userId === this.props.gameState.userId );
+      let player = players.find(
+        (x) => x.userId === this.props.gameState.userId
+      );
       if (player) this.props.playerSetRole(player.role);
     }
   }
 
   async getRound() {
     //if round is over, advance to next round
-    if (this.props.gameState.round && this.props.gameState.round.roundStatus === "FINISHED") {
-      this.props.gameUpdateRound(this.props.gameState.roundNum+1);
+    if (
+      this.props.gameState.round &&
+      this.props.gameState.round.roundStatus === "FINISHED"
+    ) {
+      this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
     }
     // get round details
     try {
@@ -171,20 +201,22 @@ class Gameplay extends Component {
       await this.props.gameGetClues(data);
     } catch (error) {
       alert(
-          `Something went wrong while fetching the clues: \n${handleError(error)}`);
+        `Something went wrong while fetching the clues: \n${handleError(error)}`
+      );
     }
   }
 
-  async advanceState () {
+  async advanceState() {
     try {
-      console.log (this.props.gameState.currentGameState);
-      console.log (GameStates[this.props.gameState.currentGameState.next]);
+      console.log(this.props.gameState.currentGameState);
+      console.log(GameStates[this.props.gameState.currentGameState.next]);
       const data = {
-        currentGameState: GameStates[this.props.gameState.currentGameState.next]
+        currentGameState:
+          GameStates[this.props.gameState.currentGameState.next],
       };
-      await this.props.advanceGameState (data);
+      await this.props.advanceGameState(data);
     } catch (e) {
-      alert (handleError (e));
+      alert(handleError(e));
     }
   }
 
@@ -200,14 +232,21 @@ class Gameplay extends Component {
             <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
-              <Table onSubmitClue={this.submitClue}
-                     ownerClue={this.props.gameState.clues.find((x) => x.ownerId === this.props.gameState.playerId)}
+              <Table
+                onSubmitClue={this.submitClue}
+                ownerClue={this.props.gameState.clues.find(
+                  (x) => x.ownerId === this.props.gameState.playerId
+                )}
               />
             </TableContainer>
 
             <InfoContainer>
-              <PointsInfo score = {this.props.gameState.score ? this.props.gameState.score : 0}/>
-              <TimerInfo round={this.props.gameState.roundNum}/>
+              <PointsInfo
+                score={
+                  this.props.gameState.score ? this.props.gameState.score : 0
+                }
+              />
+              <TimerInfo round={this.props.gameState.roundNum} />
             </InfoContainer>
           </GameContainer>
         </BaseContainer>
@@ -232,6 +271,9 @@ export default withRouter(
     gameGetClues,
     gameSubmitClue,
     advanceGameState,
-    gameGetGame
+    gameGetGame,
+    timerRoundReset,
+    timerRoundStart,
+    timerRoundStop,
   })(Gameplay)
 );
