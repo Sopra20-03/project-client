@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import TimerInfo from "./TimerInfo";
-import PointsInfo from "./PointsInfo";
-import Table from "./Table";
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import AllPlayerBoxes from "./AllPlayerBoxes";
-import { SmallLogo } from "../../views/logos/SmallLogo";
-import { withRouter } from "react-router-dom";
-import { handleError } from "../../helpers/api";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import TimerInfo from './TimerInfo';
+import PointsInfo from './PointsInfo';
+import Table from './Table';
+import { BaseContainer, GameContainer } from '../../helpers/layout';
+import AllPlayerBoxes from './AllPlayerBoxes';
+import { SmallLogo } from '../../views/logos/SmallLogo';
+import { withRouter } from 'react-router-dom';
+import { handleError } from '../../helpers/api';
+import LogoutIcon from '../../views/design/Icons/LogoutIcon';
 //Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import {
   advanceGameState,
   gameGetClues,
@@ -23,10 +23,10 @@ import {
   playerSetRole,
   timerRoundReset,
   timerRoundStart,
-  timerRoundStop,
-} from "../../redux/actions/gameplayActions";
-import GameStates from "../../redux/reducers/gameStates";
-import Button from "@material-ui/core/Button";
+  timerRoundStop
+} from '../../redux/actions/gameplayActions';
+import GameStates from '../../redux/reducers/gameStates';
+import Button from '@material-ui/core/Button';
 
 const InfoContainer = styled.div`
   display: flex;

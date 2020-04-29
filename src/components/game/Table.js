@@ -1,15 +1,13 @@
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
-import WordCard from "./WordCard";
-import InputField from "./InputField";
-import { ContainerRow } from "./Gameplay";
-import MessageBox from "./MessageBox";
-import Clues from "./Clues";
+import WordCard from './WordCard';
+import InputField from './InputField';
+import { ContainerRow } from './Gameplay';
+import MessageBox from './MessageBox';
+import Clues from './Clues';
 //Redux
-import { connect } from "react-redux";
-import { api } from "../../helpers/api";
-import Button from "@material-ui/core/Button";
+import { connect } from 'react-redux';
 
 export const GameTable = styled.div`
   display: flex;
@@ -49,20 +47,6 @@ class Table extends Component {
     else return "This is the default message";
   }
 
-  validateClues() {
-    this.props.gameState.clues.map((clue) => {
-      if (!clue.valid) {
-        api
-          .put(
-            `/games/${this.props.gameState.gameId}/rounds/${this.props.gameState.roundNum}/clues/${clue.id}`
-          )
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    });
-  }
-
   render() {
     if (this.props.gameState.round == null) {
       return <h3>Loading...</h3>;
@@ -72,13 +56,11 @@ class Table extends Component {
           <GameTable>
             <ContainerRow>
               <Clues
-                validateClues={this.validateClues}
                 clues={this.props.gameState.clues}
                 players={this.props.gameState.gamePlayers.filter(
                   (x) => x.userId !== this.props.gameState.userId
                 )}
               />
-              <Button onClick={this.validateClues()}>Submit vote</Button>
             </ContainerRow>
             <ContainerRow style={{ justifyContent: "center" }}>
               <WordCard />
