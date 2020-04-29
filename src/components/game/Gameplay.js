@@ -12,11 +12,11 @@ import LogoutIcon from '../../views/design/Icons/LogoutIcon';
 //Redux
 import { connect } from 'react-redux';
 import {
-  advanceGameState,
   gameGetClues,
   gameGetGame,
   gameGetRound,
   gameLoadGame,
+  gameSetState,
   gameSubmitClue,
   gameUpdateRound,
   getGamePlayers,
@@ -99,6 +99,9 @@ class Gameplay extends Component {
     if (this.props.gameState.round && this.props.gameState.round.wordCard.selectedWord) {
       await this.getClues();
     }
+
+    console.log("OOOO Get Game State OOOO")
+    this.getGameState();
 
     //6. Get Score
     await this.getGame();
@@ -220,6 +223,21 @@ class Gameplay extends Component {
     }
   }
 
+  getGameState () {
+    let gameState;
+    if(!this.props.gameState.round.wordCard.selectedWord) {
+      gameState = GameStates.SELECT_WORD;
+    } else if (this.props.gameState.clues.filter((clue) => clue.word === null).length > 0) {
+      console.log (this.props.gameState.clues.filter ((clue) => clue.word === null));
+      gameState = GameStates.WRITE_CLUES;
+      // Todo Check if all players have voted on all the clues --> guessing
+    } else {
+      gameState = GameStates.GUESSING;
+    }
+
+    this.props.gameSetState (gameState);
+  }
+
   render() {
     return (
       <div>
@@ -270,7 +288,7 @@ export default withRouter(
     gameUpdateRound,
     gameGetClues,
     gameSubmitClue,
-    advanceGameState,
+    gameSetState,
     gameGetGame,
     timerRoundReset,
     timerRoundStart,

@@ -1,23 +1,23 @@
 //Import Actions
 import {
-  ADVANCE_GAME_STATE,
   CLUEWRITER_SUBMITCLUE,
-  GUESSER_SUBMITGUESS,
-  GAME_GETGAME,
   GAME_GETCLUES,
+  GAME_GETGAME,
   GAME_GETROUND,
   GAME_LOADGAME,
+  GAME_SET_STATE,
   GAME_UPDATEROUND,
   GET_GAME_PLAYERS,
   GUESSER_SELECTWORD,
+  GUESSER_SUBMITGUESS,
   PLAYER_SET_ROLE,
-  USER_LOGOUT,
+  TIMER_ROUND_DECREMENT,
+  TIMER_ROUND_RESET,
   TIMER_ROUND_START,
   TIMER_ROUND_STOP,
-  TIMER_ROUND_RESET,
-  TIMER_ROUND_DECREMENT,
-} from "../actions/types";
-import GameStates from "./gameStates";
+  USER_LOGOUT
+} from '../actions/types';
+import GameStates from './gameStates';
 
 const initialState = {
   gameId: null,
@@ -80,7 +80,8 @@ export default function (state = initialState, action) {
     case GAME_GETROUND:
       return {
         ...state,
-        round: action.payload,
+        round: action.payload.round,
+        currentGameState: action.payload.gameState
       };
 
     case GAME_UPDATEROUND:
@@ -117,10 +118,11 @@ export default function (state = initialState, action) {
     case GAME_GETCLUES:
       return {
         ...state,
-        clues: action.payload,
+        clues: action.payload.clues,
+        currentGameState: action.payload.gameState
       };
 
-    case ADVANCE_GAME_STATE:
+    case GAME_SET_STATE:
       return {
         ...state,
         currentGameState: action.payload,

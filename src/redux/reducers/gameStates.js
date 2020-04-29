@@ -15,10 +15,6 @@ const GameStates = {
     },
     'GUESSING': {
         value: 'GUESSING',
-        next: 'RESET_ROLES'
-    },
-    'RESET_ROLES': {
-        value: 'RESET_ROLES',
         next: 'SELECT_WORD'
     }
 };

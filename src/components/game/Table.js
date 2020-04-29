@@ -8,6 +8,7 @@ import MessageBox from './MessageBox';
 import Clues from './Clues';
 //Redux
 import { connect } from 'react-redux';
+import GameStates from '../../redux/reducers/gameStates';
 
 export const GameTable = styled.div`
   display: flex;
@@ -34,12 +35,13 @@ class Table extends Component {
     };
   }
 
-  createMessage(gamePhase) {
+  createMessage() {
+    let gamePhase = "";
     if (gamePhase === "ROUND_ANNOUNCEMENT")
       return `Round ${this.props.gameState.roundNum} of 13`;
     else if (gamePhase === "ROLE_ASSIGNMENT")
       return `You are the ${this.props.gameState.role}`;
-    else if (gamePhase === "WAITING_FOR_CLUES")
+    else if (this.props.gameState.currentGameState === GameStates.WRITE_CLUES)
       return "Players are writing clues...";
     else if (gamePhase === "GUESSING")
       return "Waiting for guesser to guess word";
@@ -67,7 +69,7 @@ class Table extends Component {
             </ContainerRow>
             <ContainerRow>
               <MessageBox
-                msg={this.createMessage("ROLE_ASSIGNMENT")}
+                msg={this.createMessage}
                 delay={3000}
               />
             </ContainerRow>

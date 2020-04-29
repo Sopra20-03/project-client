@@ -1,22 +1,22 @@
 import {
-  ADVANCE_GAME_STATE,
   CLUEWRITER_SUBMITCLUE,
   GAME_GETCLUES,
   GAME_GETGAME,
   GAME_GETROUND,
   GAME_LOADGAME,
+  GAME_SET_STATE,
   GAME_UPDATEROUND,
-  GAME_VALIDATECLUE,
   GET_GAME_PLAYERS,
   GUESSER_SELECTWORD,
   GUESSER_SUBMITGUESS,
   PLAYER_SET_ROLE,
-  TIMER_ROUND_START,
-  TIMER_ROUND_STOP,
-  TIMER_ROUND_RESET,
   TIMER_ROUND_DECREMENT,
-} from "./types";
-import { api, handleError } from "../../helpers/api";
+  TIMER_ROUND_RESET,
+  TIMER_ROUND_START,
+  TIMER_ROUND_STOP
+} from './types';
+import { api, handleError } from '../../helpers/api';
+import GameStates from '../reducers/gameStates';
 
 //Functions
 export const gameGetGame = (data) => async (dispatch) => {
@@ -63,9 +63,20 @@ export const gameGetRound = (data) => async (dispatch) => {
     );
     console.log("GAMEGETROUND");
     console.log(response.data);
+    let gameState = GameStates.SELECT_WORD;
+
+
+    if (response.data.wordCard.selectedWord) {
+      gameState = GameStates.WRITE_CLUES;
+    }
+
+    const payload = {
+      round: response.data,
+      gameState: gameState
+    };
     dispatch({
       type: GAME_GETROUND,
-      payload: response.data,
+      payload: payload,
     });
   } catch (error) {
     alert(handleError(error));
@@ -113,6 +124,17 @@ export const playerSetRole = (role) => async (dispatch) => {
   }
 };
 
+export const gameSetState = (gameState) => async (dispatch) => {
+  try {
+    dispatch({
+      type: GAME_SET_STATE,
+      payload: gameState
+    })
+  } catch (e) {
+    alert (handleError (e));
+  }
+}
+
 export const gameSubmitClue = (data) => async (dispatch) => {
   try {
     const response = await api.post(
@@ -158,34 +180,28 @@ export const gameGetClues = (data) => async (dispatch) => {
         withCredentials: true,
       }
     );
+    let gameState = GameStates.SELECT_WORD;
+
+
+    if (!response.data.filter((x) => x.word === "")) {
+      gameState = GameStates.VALIDATE_CLUES;
+    }
+
+    const payload = {
+      clues: response.data,
+      gameState: gameState
+    };
     console.log("***API CALL - GET CLUES***");
     console.log(response.data);
     dispatch({
       type: GAME_GETCLUES,
-      payload: response.data,
+      payload: payload,
     });
   } catch (error) {
     alert(handleError(error));
   }
 };
 
-export const validateClue = (data) => async (dispatch) => {
-  try {
-    const response = await api.put(
-      `/games/${data.gameId}/rounds/${data.roundNum}/clues/${data.clueId}`,
-      {
-        withCredentials: true,
-      }
-    );
-    console.log(response.data);
-    dispatch({
-      type: GAME_VALIDATECLUE,
-      payload: data,
-    });
-  } catch (error) {
-    alert(handleError(error));
-  }
-};
 
 export const gameLoadGame = (data) => async (dispatch) => {
   try {
@@ -195,17 +211,6 @@ export const gameLoadGame = (data) => async (dispatch) => {
     });
   } catch (error) {
     alert(handleError(error));
-  }
-};
-
-export const advanceGameState = (data) => async (dispatch) => {
-  try {
-    dispatch({
-      type: ADVANCE_GAME_STATE,
-      payload: data,
-    });
-  } catch (e) {
-    alert(handleError(e));
   }
 };
 
