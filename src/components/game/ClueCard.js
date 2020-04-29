@@ -5,6 +5,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import { FormControlLabel } from '@material-ui/core';
 import Radio from '@material-ui/core/Radio';
 import FormControl from '@material-ui/core/FormControl';
+import { connect } from 'react-redux';
+import { api, handleError } from '../../helpers/api';
 
 export const CardContainer = styled.div`
   background-color: white;
@@ -21,49 +23,71 @@ export const CardContainer = styled.div`
   margin-right: 2rem;
 `;
 
-export default class ClueCard extends Component {
+class ClueCard extends Component {
 
     constructor (props) {
         super (props);
     }
 
     componentDidMount () {
-        this.setState({
-            choice: null,
-        });
+
     }
 
-    handleChange = (event) => {
+    vote = (event) => {
+        console.log ('OOOOO API Call - Put Clues OOOOOO');
         console.log (event.target.value);
-        console.log (this.props);
-        this.props.clue.valid = event.target.value;
-        this.setState ({
-            choice: event.target.value
-        });
-
+        console.log (this.props.gameState.gameId);
+        console.log (this.props.gameState.roundNum);
+        console.log (this.props.clue);
+        api.put (`/games/${this.props.gameState.gameId}/rounds/${this.props.gameState.roundNum}/clues/${this.props.clue.clueId}`,
+          {
+              vote: event.target.value
+          },
+          {
+              withCredentials: true
+          })
+          .then (() => {
+              this.setState ({
+                  voted: true
+              })
+          })
+          .catch ((e) => {
+              alert(handleError(e));
+          });
+        console.log (this.props.gameState.clues);
     };
 
     render () {
         return (
             this.props.role === 'GUESSER' ? (
                 <CardContainer style={{border: `2px solid ${this.props.borderColor}`}}>
-                    {this.props.clue}
+                    {this.props.clue.word}
                 </CardContainer>
                 ) : (
                 <div>
               <CardContainer style={{border: `2px solid ${this.props.borderColor}`}}>
-                  {this.props.clue}
-                  <FormControl component="fieldset">
-                      <RadioGroup
-                        onChange={this.handleChange}
-                      >
-                          <FormControlLabel value="true" control={<Radio/>} label="Valid"/>
-                          <FormControlLabel value="false" control={<Radio/>} label="Invalid"/>
-                      </RadioGroup>
-                  </FormControl>
+                  {this.props.clue.word}
+                  <br/>
+                  {0===0 ?
+                    <FormControl component="fieldset">
+                        <RadioGroup
+                          onClick={this.vote}
+                        >
+                            <FormControlLabel value="true" control={<Radio/>} label="Valid"/>
+                            <FormControlLabel value="false" control={<Radio/>} label="Invalid"/>
+                        </RadioGroup>
+                    </FormControl> :
+                    <div/>}
               </CardContainer>
           </div>)
         );
     }
-
 }
+
+const mapStateToProps = (state) => ({
+    lobbyState: state.lobbyReducer,
+    gameState: state.gameplayReducer,
+    userState: state.userReducer
+});
+
+export default connect (mapStateToProps, {}) (ClueCard);
