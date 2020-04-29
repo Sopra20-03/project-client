@@ -70,6 +70,7 @@ function Clues(props) {
                   ).word
                 : props.clues[index].word
             }
+            role={props.gameState.role}
           />
         )
       ) : (

@@ -45,7 +45,12 @@ export default class ClueCard extends Component {
 
     render () {
         return (
-          <div>
+            this.props.role === 'GUESSER' ? (
+                <CardContainer style={{border: `2px solid ${this.props.borderColor}`}}>
+                    {this.props.clue}
+                </CardContainer>
+                ) : (
+                <div>
               <CardContainer style={{border: `2px solid ${this.props.borderColor}`}}>
                   {this.props.clue}
                   <FormControl component="fieldset">
@@ -57,7 +62,7 @@ export default class ClueCard extends Component {
                       </RadioGroup>
                   </FormControl>
               </CardContainer>
-          </div>
+          </div>)
         );
     }
 
