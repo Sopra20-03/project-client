@@ -8,6 +8,8 @@ import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 import LeaderboardTable from "./LeaderboardTable";
 import Colors from "../../views/design/Colors";
 import {SmallLogo} from "../../views/logos/SmallLogo";
+import PacmanLoader from 'react-spinners/PacmanLoader';
+import {ContainerRow} from "../game/Gameplay";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -72,8 +74,8 @@ class Leaderboard extends React.Component {
                         <span style={Colors.textPink}>d</span>
                         <LogoutIcon/>
                     </BoxHeader>
-                    {!this.state.sortedUsers && !this.state.sortedUsers.length ? (
-                        <div>There are no users yet!</div>
+                    {this.state.sortedUsers.length < 1 ? (
+                        <ContainerRow style={{margin: 30}}><PacmanLoader/></ContainerRow>
                     ) : (
                         <LeaderboardTable users={this.state.sortedUsers}/>
                     )}

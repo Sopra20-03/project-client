@@ -15,7 +15,7 @@ function AllPlayerBoxes(props) {
       <ContainerRow>
         {colors.map((color, index) => (
             <PlayerBox
-                key={players[index] ? players[index].playerId : 'Bot'}
+                key={players[index] ? players[index].playerId : index}
                 userName={players[index] ? players[index].userName : 'Bot'}
                 gender={players[index] ? icons[index] : 'bot'}
                 borderColor={color}

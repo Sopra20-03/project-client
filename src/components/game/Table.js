@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import styled from "styled-components";
 
-import WordCard from './WordCard';
-import InputField from './InputField';
-import { ContainerRow } from './Gameplay';
-import MessageBox from './MessageBox';
-import Clues from './Clues';
-import Button from '@material-ui/core/Button';
+import WordCard from "./WordCard";
+import InputField from "./InputField";
+import { ContainerRow } from "./Gameplay";
+import MessageBox from "./MessageBox";
+import Clues from "./Clues";
 //Redux
-import { connect } from 'react-redux';
-
+import { connect } from "react-redux";
+import { api } from "../../helpers/api";
+import Button from "@material-ui/core/Button";
 
 export const GameTable = styled.div`
   display: flex;
@@ -37,36 +37,71 @@ class Table extends Component {
   }
 
   createMessage(gamePhase) {
-    if (gamePhase === "ROUND_ANNOUNCEMENT") return `Round ${this.props.gameState.roundNum} of 13`;
-    else if (gamePhase === "ROLE_ASSIGNMENT") return `You are the ${this.props.gameState.role}`;
-    else if (gamePhase === "WAITING_FOR_CLUES") return "Players are writing clues...";
-    else if (gamePhase === "GUESSING") return "Waiting for guesser to guess word";
+    if (gamePhase === "ROUND_ANNOUNCEMENT")
+      return `Round ${this.props.gameState.roundNum} of 13`;
+    else if (gamePhase === "ROLE_ASSIGNMENT")
+      return `You are the ${this.props.gameState.role}`;
+    else if (gamePhase === "WAITING_FOR_CLUES")
+      return "Players are writing clues...";
+    else if (gamePhase === "GUESSING")
+      return "Waiting for guesser to guess word";
     else if (gamePhase === "GUESS_VALIDATION") return `Guess was CORRECT`;
     else return "This is the default message";
   }
 
+  validateClues() {
+    this.props.gameState.clues.map((clue) => {
+      if (!clue.valid) {
+        api
+          .put(
+            `/games/${this.props.gameState.gameId}/rounds/${this.props.gameState.roundNum}/clues/${clue.id}`
+          )
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
+  }
+
   render() {
-    return (
-      <div>
-        <GameTable>
-          <ContainerRow>
-            <Clues clues = {this.props.gameState.clues} players = {this.props.gameState.gamePlayers.filter(
-                (x) => x.userId !== this.props.gameState.userId
-            )}/>
-            {/* <Button >Submit vote</Button> */}
-          </ContainerRow>
-          <ContainerRow style={{ justifyContent: "center" }}>
-            <WordCard />
-          </ContainerRow>
-          <ContainerRow>
-            <MessageBox msg={this.createMessage("ROLE_ASSIGNMENT")} delay={3000} />
-          </ContainerRow>
-          <ContainerRow style={{ justifyContent: "center" }}>
-            {(this.props.ownerClue && this.props.ownerClue.word === null) ? <InputField /> : <div/>}
-          </ContainerRow>
-        </GameTable>
-      </div>
-    );
+    if (this.props.gameState.round == null) {
+      return <h3>Loading...</h3>;
+    } else {
+      return (
+        <div>
+          <GameTable>
+            <ContainerRow>
+              <Clues
+                validateClues={this.validateClues}
+                clues={this.props.gameState.clues}
+                players={this.props.gameState.gamePlayers.filter(
+                  (x) => x.userId !== this.props.gameState.userId
+                )}
+              />
+              <Button onClick={this.validateClues()}>Submit vote</Button>
+            </ContainerRow>
+            <ContainerRow style={{ justifyContent: "center" }}>
+              <WordCard />
+            </ContainerRow>
+            <ContainerRow>
+              <MessageBox
+                msg={this.createMessage("ROLE_ASSIGNMENT")}
+                delay={3000}
+              />
+            </ContainerRow>
+            <ContainerRow style={{ justifyContent: "center" }}>
+              {(this.props.ownerClue && !this.props.ownerClue.word) ||
+              (this.props.gameState.role === "GUESSER" &&
+                this.props.gameState.round.wordCard.selectedWord) ? (
+                <InputField />
+              ) : (
+                <div />
+              )}
+            </ContainerRow>
+          </GameTable>
+        </div>
+      );
+    }
   }
 }
 

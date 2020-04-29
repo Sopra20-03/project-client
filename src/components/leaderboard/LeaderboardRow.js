@@ -6,7 +6,7 @@ function LeaderboardRow(props) {
     return (
         <TableRow key={props.user.id}>
             <TableCell component="th" scope="row" align="center">
-                {" "}{props.user.id}{" "}
+                {" "}{props.rank}{" "}
             </TableCell>
             <TableCell align="center"> {props.user.username} </TableCell>
             <TableCell align="center"> {props.user.dateCreated} </TableCell>
