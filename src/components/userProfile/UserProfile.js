@@ -110,7 +110,7 @@ class UserProfile extends React.Component {
 
                 <UserInfoBox user = {this.props.userState.user}/>
 
-                <h2>Game History</h2>
+                <h1>Game History</h1>
                 {this.state.userGames.length < 1 ? (
                     <ContainerRow style={{margin: 30}}><PacmanLoader/></ContainerRow>
                 ) : (
