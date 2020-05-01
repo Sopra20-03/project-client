@@ -22,6 +22,7 @@ export const PlayerContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 7rem;
+  height: 6rem;
   background-color: white;
   border-radius: 5px;
   padding: 5px;
