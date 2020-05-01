@@ -100,7 +100,6 @@ class Gameplay extends Component {
       await this.getClues();
     }
 
-    console.log("OOOO Get Game State OOOO")
     this.getGameState();
 
     //6. Get Score
@@ -228,7 +227,6 @@ class Gameplay extends Component {
     if(!this.props.gameState.round.wordCard.selectedWord) {
       gameState = GameStates.SELECT_WORD;
     } else if (this.props.gameState.clues.filter((clue) => clue.word === null).length > 0) {
-      console.log (this.props.gameState.clues.filter ((clue) => clue.word === null));
       gameState = GameStates.WRITE_CLUES;
       // Todo Check if all players have voted on all the clues --> guessing
     } else {

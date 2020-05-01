@@ -29,7 +29,6 @@ const initialState = {
   role: null,
   clues: [],
   currentGameState: GameStates.SELECT_WORD,
-  gamePhase: null,
   score: null,
   timers: null,
   timer: null,
@@ -71,7 +70,6 @@ export default function (state = initialState, action) {
         role: null,
         clues: [],
         currentGameState: GameStates.SELECT_WORD,
-        gamePhase: null,
         score: null,
         timers: null,
         timer: null,
@@ -80,8 +78,7 @@ export default function (state = initialState, action) {
     case GAME_GETROUND:
       return {
         ...state,
-        round: action.payload.round,
-        currentGameState: action.payload.gameState
+        round: action.payload,
       };
 
     case GAME_UPDATEROUND:
@@ -100,26 +97,23 @@ export default function (state = initialState, action) {
       return {
         ...state,
         round: action.payload,
-        gamePhase: "WRITING_CLUES",
       };
 
     case CLUEWRITER_SUBMITCLUE:
       return {
         ...state,
-        gamePhase: "GUESSING",
       };
 
     case GUESSER_SUBMITGUESS:
       return {
         ...state,
-        gamePhase: "CHECK_GUESS",
       };
 
     case GAME_GETCLUES:
       return {
         ...state,
         clues: action.payload.clues,
-        currentGameState: action.payload.gameState
+        currentGameState: action.payload.gameState,
       };
 
     case GAME_SET_STATE:

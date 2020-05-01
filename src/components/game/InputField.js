@@ -95,7 +95,6 @@ class InputField extends Component {
         this.state = {
             guess: null,
             clue: null,
-            gamePhase: null,
         };
     }
 

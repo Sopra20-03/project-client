@@ -63,20 +63,10 @@ export const gameGetRound = (data) => async (dispatch) => {
     );
     console.log("GAMEGETROUND");
     console.log(response.data);
-    let gameState = GameStates.SELECT_WORD;
 
-
-    if (response.data.wordCard.selectedWord) {
-      gameState = GameStates.WRITE_CLUES;
-    }
-
-    const payload = {
-      round: response.data,
-      gameState: gameState
-    };
     dispatch({
       type: GAME_GETROUND,
-      payload: payload,
+      payload: response.data,
     });
   } catch (error) {
     alert(handleError(error));
@@ -133,7 +123,7 @@ export const gameSetState = (gameState) => async (dispatch) => {
   } catch (e) {
     alert (handleError (e));
   }
-}
+};
 
 export const gameSubmitClue = (data) => async (dispatch) => {
   try {

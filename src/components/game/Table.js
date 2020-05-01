@@ -31,7 +31,7 @@ class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gamePhase: null,
+      msgGamePhase: null,
     };
   }
 
