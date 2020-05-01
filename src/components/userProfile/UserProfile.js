@@ -5,7 +5,6 @@ import {api, handleError} from "../../helpers/api";
 import { withRouter } from "react-router-dom";
 import Button from "../../views/design/Button";
 import Colors from "../../views/design/Colors";
-import PropTypes from "prop-types";
 
 //Redux
 import { connect } from "react-redux";
@@ -18,6 +17,7 @@ import {ContainerRow} from "../game/Gameplay";
 import PacmanLoader from "react-spinners/PacmanLoader";
 import {getGames} from "../../redux/actions/lobbyActions";
 import UserInfoBox from "./UserInfoBox";
+import LobbyIcon from "../../views/design/Icons/LobbyIcon";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -103,6 +103,7 @@ class UserProfile extends React.Component {
                     <span style={Colors.textBlue}>i</span>
                     <span style={Colors.textGreen}>l</span>
                     <span style={Colors.textYellow}>e</span>
+                    <LobbyIcon />
                     <LeaderboardIcon />
                     <GameHistoryIcon />
                     <LogoutIcon />
@@ -116,14 +117,6 @@ class UserProfile extends React.Component {
                 ) : (
                     <GameHistoryTable games={this.state.userGames}/>
                 )}
-
-                <Button
-                    onClick={() => {
-                        this.props.history.push("/lobby");
-                    }}
-                >
-                    Go to Lobby
-                </Button>
             </GameContainer>
             </Container>
         );

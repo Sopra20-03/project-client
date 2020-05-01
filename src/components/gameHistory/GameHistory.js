@@ -14,6 +14,9 @@ import {connect} from "react-redux";
 import {getGames} from "../../redux/actions/lobbyActions";
 import {ContainerRow} from "../game/Gameplay";
 import PacmanLoader from "react-spinners/PacmanLoader";
+import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
+import ProfileIcon from "../../views/design/Icons/GameHistoryIcon";
+import LobbyIcon from "../../views/design/Icons/LobbyIcon";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -101,6 +104,9 @@ class GameHistory extends React.Component {
                         <span style={Colors.textOrange}>o</span>
                         <span style={Colors.textRed}>r</span>
                         <span style={Colors.textPink}>y</span>
+                        <LobbyIcon />
+                        <LeaderboardIcon />
+                        <ProfileIcon />
                         <LogoutIcon/>
                     </BoxHeader>
                     {this.state.userGames.length < 1 ? (
@@ -108,14 +114,6 @@ class GameHistory extends React.Component {
                     ) : (
                         <GameHistoryTable games={this.state.userGames}/>
                     )}
-
-                    <Button
-                        onClick={() => {
-                            this.props.history.push("/lobby");
-                        }}
-                    >
-                        Go to Lobby
-                    </Button>
                 </GameContainer>
             </Container>
         );
