@@ -76,9 +76,6 @@ class Gameplay extends Component {
   }
 
   async runGame() {
-    //1. TODO Get Gamestatus, check if it is running/ checkRound
-    await this.manageGamePhase();
-
     //2. Get Players
     await this.getPlayers();
 
@@ -87,9 +84,6 @@ class Gameplay extends Component {
 
     //4. Get Round
     await this.getRound();
-
-    //Timer
-    await this.roundTimer();
 
     //5. Get Clues
     if (this.props.gameState.round.wordCard.selectedWord != null) {
@@ -218,39 +212,6 @@ class Gameplay extends Component {
               />
               <TimerInfo round={this.props.gameState.roundNum} />
             </InfoContainer>
-
-            <div>
-              {this.props.gameState.gamePhase != null ? (
-                <h2>{this.props.gameState.gamePhase}</h2>
-              ) : (
-                <h2>Null</h2>
-              )}
-
-              <button
-                onClick={() => {
-                  console.log("Timer Start");
-                  this.props.timerRoundStart();
-                }}
-              >
-                Timer Start
-              </button>
-              <button
-                onClick={() => {
-                  console.log("Timer Stop");
-                  this.props.timerRoundStop();
-                }}
-              >
-                Timer Stop
-              </button>
-              <button
-                onClick={() => {
-                  console.log("Timer Reset");
-                  this.props.timerRoundReset(15);
-                }}
-              >
-                Timer Reset
-              </button>
-            </div>
           </GameContainer>
         </BaseContainer>
       </div>
