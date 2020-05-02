@@ -1,32 +1,27 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import TimerInfo from './TimerInfo';
-import PointsInfo from './PointsInfo';
-import Table from './Table';
-import { BaseContainer, GameContainer } from '../../helpers/layout';
-import AllPlayerBoxes from './AllPlayerBoxes';
-import { SmallLogo } from '../../views/logos/SmallLogo';
-import { withRouter } from 'react-router-dom';
-import { handleError } from '../../helpers/api';
-import LogoutIcon from '../../views/design/Icons/LogoutIcon';
+import React, { Component } from "react";
+import styled from "styled-components";
+import TimerInfo from "./TimerInfo";
+import PointsInfo from "./PointsInfo";
+import Table from "./Table";
+import { BaseContainer, GameContainer } from "../../helpers/layout";
+import AllPlayerBoxes from "./AllPlayerBoxes";
+import { SmallLogo } from "../../views/logos/SmallLogo";
+import { withRouter } from "react-router-dom";
+import { handleError } from "../../helpers/api";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 //Redux
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import {
   gameGetClues,
   gameGetGame,
   gameGetRound,
   gameLoadGame,
-  gameSetState,
   gameSubmitClue,
   gameUpdateRound,
   getGamePlayers,
   playerSetRole,
-  timerRoundReset,
-  timerRoundStart,
-  timerRoundStop
-} from '../../redux/actions/gameplayActions';
-import GameStates from '../../redux/reducers/gameStates';
-import Button from '@material-ui/core/Button';
+} from "../../redux/actions/gameplayActions";
+import Button from "@material-ui/core/Button";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -82,6 +77,7 @@ class Gameplay extends Component {
 
   async runGame() {
     //1. TODO Get Gamestatus, check if it is running/ checkRound
+    await this.manageGamePhase();
 
     //2. Get Players
     await this.getPlayers();
@@ -96,11 +92,9 @@ class Gameplay extends Component {
     await this.roundTimer();
 
     //5. Get Clues
-    if (this.props.gameState.round && this.props.gameState.round.wordCard.selectedWord) {
+    if (this.props.gameState.round.wordCard.selectedWord != null) {
       await this.getClues();
     }
-
-    this.getGameState();
 
     //6. Get Score
     await this.getGame();
@@ -118,18 +112,6 @@ class Gameplay extends Component {
           error
         )}`
       );
-    }
-  }
-
-  async roundTimer() {
-    //1. Initialize & Start
-    if (this.props.gameState.timer == null) {
-      try {
-        await this.props.timerRoundReset(180);
-        await this.props.timerRoundStart();
-      } catch (error) {
-        alert(`Something went wrong : \n${handleError(error)}`);
-      }
     }
   }
 
@@ -208,34 +190,6 @@ class Gameplay extends Component {
     }
   }
 
-  async advanceState() {
-    try {
-      console.log(this.props.gameState.currentGameState);
-      console.log(GameStates[this.props.gameState.currentGameState.next]);
-      const data = {
-        currentGameState:
-          GameStates[this.props.gameState.currentGameState.next],
-      };
-      await this.props.advanceGameState(data);
-    } catch (e) {
-      alert(handleError(e));
-    }
-  }
-
-  getGameState () {
-    let gameState;
-    if(!this.props.gameState.round.wordCard.selectedWord) {
-      gameState = GameStates.SELECT_WORD;
-    } else if (this.props.gameState.clues.filter((clue) => clue.word === null).length > 0) {
-      gameState = GameStates.WRITE_CLUES;
-      // Todo Check if all players have voted on all the clues --> guessing
-    } else {
-      gameState = GameStates.GUESSING;
-    }
-
-    this.props.gameSetState (gameState);
-  }
-
   render() {
     return (
       <div>
@@ -264,6 +218,39 @@ class Gameplay extends Component {
               />
               <TimerInfo round={this.props.gameState.roundNum} />
             </InfoContainer>
+
+            <div>
+              {this.props.gameState.gamePhase != null ? (
+                <h2>{this.props.gameState.gamePhase}</h2>
+              ) : (
+                <h2>Null</h2>
+              )}
+
+              <button
+                onClick={() => {
+                  console.log("Timer Start");
+                  this.props.timerRoundStart();
+                }}
+              >
+                Timer Start
+              </button>
+              <button
+                onClick={() => {
+                  console.log("Timer Stop");
+                  this.props.timerRoundStop();
+                }}
+              >
+                Timer Stop
+              </button>
+              <button
+                onClick={() => {
+                  console.log("Timer Reset");
+                  this.props.timerRoundReset(15);
+                }}
+              >
+                Timer Reset
+              </button>
+            </div>
           </GameContainer>
         </BaseContainer>
       </div>
@@ -286,10 +273,6 @@ export default withRouter(
     gameUpdateRound,
     gameGetClues,
     gameSubmitClue,
-    gameSetState,
     gameGetGame,
-    timerRoundReset,
-    timerRoundStart,
-    timerRoundStop,
   })(Gameplay)
 );

@@ -10,13 +10,14 @@ import {
   GUESSER_SELECTWORD,
   GUESSER_SUBMITGUESS,
   PLAYER_SET_ROLE,
-  TIMER_ROUND_DECREMENT,
-  TIMER_ROUND_RESET,
-  TIMER_ROUND_START,
-  TIMER_ROUND_STOP
-} from './types';
-import { api, handleError } from '../../helpers/api';
-import GameStates from '../reducers/gameStates';
+  TIMER_DECREMENT,
+  TIMER_CLEAR,
+  TIMER_START,
+  TIMER_STOP,
+} from "./types";
+
+import { api, handleError } from "../../helpers/api";
+import GameStates from "../reducers/gameStates";
 
 //Functions
 export const gameGetGame = (data) => async (dispatch) => {
@@ -118,10 +119,10 @@ export const gameSetState = (gameState) => async (dispatch) => {
   try {
     dispatch({
       type: GAME_SET_STATE,
-      payload: gameState
-    })
+      payload: gameState,
+    });
   } catch (e) {
-    alert (handleError (e));
+    alert(handleError(e));
   }
 };
 
@@ -172,14 +173,13 @@ export const gameGetClues = (data) => async (dispatch) => {
     );
     let gameState = GameStates.SELECT_WORD;
 
-
     if (!response.data.filter((x) => x.word === "")) {
       gameState = GameStates.VALIDATE_CLUES;
     }
 
     const payload = {
       clues: response.data,
-      gameState: gameState
+      gameState: gameState,
     };
     console.log("***API CALL - GET CLUES***");
     console.log(response.data);
@@ -191,7 +191,6 @@ export const gameGetClues = (data) => async (dispatch) => {
     alert(handleError(error));
   }
 };
-
 
 export const gameLoadGame = (data) => async (dispatch) => {
   try {
@@ -205,44 +204,46 @@ export const gameLoadGame = (data) => async (dispatch) => {
 };
 
 //Timer Actions
-export const timerRoundReset = (data) => async (dispatch) => {
-  console.log("timerRoundReset() Action");
+//Configures the timer with countdown time & timer and starts
+export const timerStart = (data) => async (dispatch) => {
+  //Clear Existing Timer
   try {
     dispatch({
-      type: TIMER_ROUND_RESET,
+      type: TIMER_CLEAR,
       payload: data,
     });
   } catch (e) {
     alert(handleError(e));
   }
-};
 
-export const timerRoundStart = () => async (dispatch) => {
-  console.log("timerRoundStart() Action");
-
-  try {
-    let mytimer = setInterval(async () => {
-      console.log("1s");
-      dispatch({
-        type: TIMER_ROUND_DECREMENT,
-        payload: null,
-      });
-    }, 1000);
-
+  //Set New Timer
+  let mytimer = setInterval(async () => {
     dispatch({
-      type: TIMER_ROUND_START,
-      payload: mytimer,
+      type: TIMER_DECREMENT,
+      payload: null,
+    });
+  }, 1000);
+
+  const timerData = {
+    timer: mytimer,
+    seconds: data,
+  };
+  //Configure & Start
+  try {
+    dispatch({
+      type: TIMER_START,
+      payload: timerData,
     });
   } catch (e) {
     alert(handleError(e));
   }
 };
 
-export const timerRoundDecrement = () => async (dispatch) => {
-  console.log("timerRoundDecrement() Action");
+export const timerStop = () => async (dispatch) => {
+  //Clear Existing Timer
   try {
     dispatch({
-      type: TIMER_ROUND_DECREMENT,
+      type: TIMER_STOP,
       payload: null,
     });
   } catch (e) {
@@ -250,11 +251,11 @@ export const timerRoundDecrement = () => async (dispatch) => {
   }
 };
 
-export const timerRoundStop = () => async (dispatch) => {
-  console.log("timerRoundStop() Action");
+export const timerClear = () => async (dispatch) => {
+  //Clear Existing Timer
   try {
     dispatch({
-      type: TIMER_ROUND_STOP,
+      type: TIMER_CLEAR,
       payload: null,
     });
   } catch (e) {

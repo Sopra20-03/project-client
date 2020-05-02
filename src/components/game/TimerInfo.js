@@ -20,9 +20,9 @@ class TimerInfo extends Component {
     return (
       <div>
         <TimerInfoContainer>
-          {this.props.gameState.timers != null ? (
+          {this.props.gameState.timer.timer != null ? (
             <h1 style={{ margin: "0px" }}>
-              {this.props.gameState.timers.round.seconds}
+              {this.props.gameState.timer.seconds}
             </h1>
           ) : (
             <h1 style={{ margin: "0px" }}>2:00</h1>

@@ -11,13 +11,13 @@ import {
   GUESSER_SELECTWORD,
   GUESSER_SUBMITGUESS,
   PLAYER_SET_ROLE,
-  TIMER_ROUND_DECREMENT,
-  TIMER_ROUND_RESET,
-  TIMER_ROUND_START,
-  TIMER_ROUND_STOP,
-  USER_LOGOUT
-} from '../actions/types';
-import GameStates from './gameStates';
+  TIMER_CLEAR,
+  TIMER_START,
+  TIMER_STOP,
+  TIMER_DECREMENT,
+  USER_LOGOUT,
+} from "../actions/types";
+import GameStates from "./gameStates";
 
 const initialState = {
   gameId: null,
@@ -28,10 +28,13 @@ const initialState = {
   round: null,
   role: null,
   clues: [],
-  currentGameState: GameStates.SELECT_WORD,
+  currentGameState: null,
   score: null,
-  timers: null,
-  timer: null,
+  timer: {
+    seconds: null,
+    timer: null,
+    state: null,
+  },
 };
 
 export default function (state = initialState, action) {
@@ -123,45 +126,65 @@ export default function (state = initialState, action) {
       };
 
     //Timer
-    case TIMER_ROUND_RESET:
-      console.log(" Timer Round Reset Reducer");
-      const roundTimer = {
-        seconds: action.payload,
-      };
+    case TIMER_START:
+      console.log("TIMER START");
+      console.log(action.payload);
       return {
         ...state,
-        timers: {
-          ...state.timers,
-          round: roundTimer,
+        timer: {
+          ...state.timer,
+          timer: action.payload.timer,
+          seconds: action.payload.seconds,
+          state: "RUNNING",
         },
       };
 
-    case TIMER_ROUND_START:
-      console.log(" Timer Round Start Reducer");
+    case TIMER_DECREMENT:
+      if (state.timer.timer != null && state.timer.state === "RUNNING") {
+        //Finished
+        if (state.timer.seconds == 0) {
+          return {
+            ...state,
+            timer: {
+              ...state.timer,
+              seconds: 0,
+              state: "FINISHED",
+            },
+          };
+        }
+
+        //Else
+        return {
+          ...state,
+          timer: {
+            ...state.timer,
+            seconds: state.timer.seconds - 1,
+          },
+        };
+      }
       return {
         ...state,
-        timer: action.payload,
       };
 
-    case TIMER_ROUND_DECREMENT:
-      console.log(" Timer Round Decrement Reducer");
-      const decrement = {
-        seconds: state.timers.round.seconds - 1,
-      };
+    case TIMER_STOP:
+      if (state.timer.timer != null) {
+        clearInterval(state.timer.timer);
+      }
       return {
         ...state,
-        timers: {
-          ...state.timers,
-          round: decrement,
+        timer: {
+          ...state.timer,
+          state: "STOPPED",
         },
       };
 
-    case TIMER_ROUND_STOP:
-      console.log(" Timer Round Stop Reducer");
-      clearInterval(state.timer);
+    case TIMER_CLEAR:
+      if (state.timer.timer != null) {
+        clearInterval(state.timer.timer);
+      }
       return {
         ...state,
-        timer: null,
+        timer: { seconds: null, timer: null, state: null },
       };
 
     default:
