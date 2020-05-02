@@ -14,6 +14,7 @@ import {
   TIMER_CLEAR,
   TIMER_START,
   TIMER_STOP,
+  GAME_CLEAR,
 } from "./types";
 
 import { api, handleError } from "../../helpers/api";
@@ -56,6 +57,9 @@ export const getGamePlayers = (gameId, userId) => async (dispatch) => {
 
 export const gameGetRound = (data) => async (dispatch) => {
   try {
+    if (data.roundNum > 13) {
+      return null;
+    }
     const response = await api.get(
       `/games/${data.gameId}/rounds/${data.roundNum}`,
       {
@@ -165,21 +169,17 @@ export const gameSubmitGuess = (data) => async (dispatch) => {
 
 export const gameGetClues = (data) => async (dispatch) => {
   try {
+    if (data.roundNum > 13) {
+      return null;
+    }
     const response = await api.get(
       `/games/${data.gameId}/rounds/${data.roundNum}/clues`,
       {
         withCredentials: true,
       }
     );
-    let gameState = GameStates.SELECT_WORD;
-
-    if (!response.data.filter((x) => x.word === "")) {
-      gameState = GameStates.VALIDATE_CLUES;
-    }
-
     const payload = {
       clues: response.data,
-      gameState: gameState,
     };
     console.log("***API CALL - GET CLUES***");
     console.log(response.data);
@@ -203,9 +203,20 @@ export const gameLoadGame = (data) => async (dispatch) => {
   }
 };
 
+export const gameClearGame = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: GAME_CLEAR,
+      payload: null,
+    });
+  } catch (error) {
+    alert(handleError(error));
+  }
+};
+
 //Timer Actions
 //Configures the timer with countdown time & timer and starts
-export const timerStart = (data) => async (dispatch) => {
+export const timerStart = (data, func) => async (dispatch) => {
   //Clear Existing Timer
   try {
     dispatch({
@@ -220,7 +231,7 @@ export const timerStart = (data) => async (dispatch) => {
   let mytimer = setInterval(async () => {
     dispatch({
       type: TIMER_DECREMENT,
-      payload: null,
+      payload: func,
     });
   }, 1000);
 
@@ -229,6 +240,7 @@ export const timerStart = (data) => async (dispatch) => {
     seconds: data,
   };
   //Configure & Start
+
   try {
     dispatch({
       type: TIMER_START,

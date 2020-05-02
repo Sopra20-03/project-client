@@ -15,6 +15,7 @@ import {
   TIMER_START,
   TIMER_STOP,
   TIMER_DECREMENT,
+  GAME_CLEAR,
   USER_LOGOUT,
 } from "../actions/types";
 import GameStates from "./gameStates";
@@ -53,6 +54,28 @@ export default function (state = initialState, action) {
         score: action.payload.score,
       };
 
+    case GAME_CLEAR:
+      if (state.timer.timer != null) {
+        clearInterval(state.timer.timer);
+      }
+      return {
+        gameId: null,
+        userId: null,
+        playerId: null,
+        gamePlayers: [],
+        roundNum: null,
+        round: null,
+        role: null,
+        clues: [],
+        currentGameState: null,
+        score: null,
+        timer: {
+          seconds: null,
+          timer: null,
+          state: null,
+        },
+      };
+
     case GET_GAME_PLAYERS:
       return {
         ...state,
@@ -72,7 +95,7 @@ export default function (state = initialState, action) {
         round: null,
         role: null,
         clues: [],
-        currentGameState: GameStates.SELECT_WORD,
+        currentGameState: null,
         score: null,
         timers: null,
         timer: null,
@@ -116,7 +139,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         clues: action.payload.clues,
-        currentGameState: action.payload.gameState,
       };
 
     case GAME_SET_STATE:
@@ -127,8 +149,6 @@ export default function (state = initialState, action) {
 
     //Timer
     case TIMER_START:
-      console.log("TIMER START");
-      console.log(action.payload);
       return {
         ...state,
         timer: {
@@ -143,6 +163,8 @@ export default function (state = initialState, action) {
       if (state.timer.timer != null && state.timer.state === "RUNNING") {
         //Finished
         if (state.timer.seconds == 0) {
+          clearInterval(state.timer.timer);
+          action.payload();
           return {
             ...state,
             timer: {

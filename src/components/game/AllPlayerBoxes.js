@@ -9,21 +9,20 @@ function AllPlayerBoxes(props) {
     (x) => x.userId !== store.getState().gameplayReducer.userId
   );
   let colors = [Colors.blue, Colors.orange, Colors.violet, Colors.green];
-  let icons = ['bird', 'butterfly', 'owl', 'dog'];
+  let icons = ["bird", "butterfly", "owl", "dog"];
 
   return (
-      <ContainerRow>
-        {colors.map((color, index) => (
-            <PlayerBox
-                key={players[index] ? players[index].playerId : index}
-                userName={players[index] ? players[index].userName : 'Bot'}
-                icon={players[index] ? icons[index] : 'bot'}
-                borderColor={color}
-            />
-        ))}
-      </ContainerRow>
+    <ContainerRow>
+      {colors.map((color, index) => (
+        <PlayerBox
+          key={colors[index]}
+          userName={players[index] ? players[index].userName : "Bot"}
+          icon={players[index] ? icons[index] : "bot"}
+          borderColor={color}
+        />
+      ))}
+    </ContainerRow>
   );
-
 }
 
 export default AllPlayerBoxes;
