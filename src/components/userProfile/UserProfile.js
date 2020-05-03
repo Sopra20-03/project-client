@@ -18,9 +18,10 @@ import UserInfoBox from './UserInfoBox';
 import LobbyIcon from '../../views/design/Icons/LobbyIcon';
 import { BoxHeader } from '../lobby/Lobby';
 
-const Container = styled (BaseContainer)`
-  color: white;
+const Container = styled(BaseContainer)`
+  color: ${Colors.black};
   text-align: center;
+  margin-bottom: 40px;
 `;
 
 class UserProfile extends React.Component {

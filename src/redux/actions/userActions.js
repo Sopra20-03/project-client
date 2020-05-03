@@ -1,4 +1,4 @@
-import { USER_REGISTER, USER_LOGIN, USER_LOGOUT } from "./types";
+import { USER_REGISTER, USER_LOGIN, GET_USER_DETAILS, USER_LOGOUT } from "./types";
 import { api, handleError } from "../../helpers/api";
 import User from "../../components/shared/models/User";
 
@@ -23,6 +23,21 @@ export const loginUser = (userData) => async (dispatch) => {
     const user = new User(response.data);
     dispatch({
       type: USER_LOGIN,
+      payload: user,
+    });
+  } catch (error) {
+    alert(handleError(error));
+  }
+};
+
+export const getUserDetails = (userId) => async (dispatch) => {
+  try {
+    const response = await api.get(`/users/${userId}`, {
+      withCredentials: true,
+    });
+    const user = new User(response.data);
+    dispatch({
+      type: GET_USER_DETAILS,
       payload: user,
     });
   } catch (error) {
