@@ -1,5 +1,5 @@
 //Import Actions
-import { USER_REGISTER, USER_LOGIN, USER_LOGOUT } from "../actions/types";
+import {USER_REGISTER, USER_LOGIN, USER_LOGOUT, GET_USER_DETAILS} from "../actions/types";
 
 const initialState = {
   user: {},
@@ -15,6 +15,12 @@ export default function (state = initialState, action) {
       };
 
     case USER_LOGIN:
+      return {
+        ...state,
+        user: action.payload,
+      };
+
+    case GET_USER_DETAILS:
       return {
         ...state,
         user: action.payload,
