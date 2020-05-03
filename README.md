@@ -8,6 +8,7 @@ Read and go through those Tutorials, It will make your life easier!
 - Do this React [Getting Started](https://reactjs.org/tutorial/tutorial.html) Tutorial (it doesn’t assume any existing React knowledge)
 - Get an Understanding of [CSS](http://localhost:3000) and [HTML](https://www.w3schools.com/html/html_intro.asp)!
 
+
 Once you have done all of this, in the template there are two main external dependencies that you should look at:
 
 - [styled-components](https://www.styled-components.com/docs)
