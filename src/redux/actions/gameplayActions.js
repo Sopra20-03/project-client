@@ -66,7 +66,8 @@ export const gameGetRound = (data) => async (dispatch) => {
     return null;
   }
   try {
-    if (data.roundNum > 13) {
+    //Demo 3 Rounds
+    if (data.roundNum > 3) {
       return null;
     }
     const response = await api.get(
@@ -180,7 +181,7 @@ export const gameSubmitGuess = (data) => async (dispatch) => {
       payload: points,
     });
   } catch (error) {
-    alert(handleError(error));
+    console.log(handleError(error));
   }
 };
 
@@ -189,7 +190,8 @@ export const gameGetClues = (data) => async (dispatch) => {
     return null;
   }
   try {
-    if (data.roundNum > 13) {
+    //Demo 3 Rounds
+    if (data.roundNum > 3) {
       return null;
     }
     const response = await api.get(

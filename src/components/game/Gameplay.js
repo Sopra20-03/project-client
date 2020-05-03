@@ -91,7 +91,8 @@ class Gameplay extends Component {
 
   async runGame() {
     //Check Rounds
-    if (this.props.gameState.roundNum > 13) {
+    //DEMO: 3 Rounds
+    if (this.props.gameState.roundNum > 3) {
       this.props.gameClearGame();
       this.props.history.push(`/lobby`);
       return;
@@ -365,7 +366,6 @@ export default withRouter(
     timerStart,
     timerStop,
     timerClear,
-    gameSubmitClue,
     gameSubmitGuess,
   })(Gameplay)
 );
