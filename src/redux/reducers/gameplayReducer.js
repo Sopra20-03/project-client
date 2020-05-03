@@ -98,7 +98,11 @@ export default function (state = initialState, action) {
         currentGameState: null,
         score: null,
         timers: null,
-        timer: null,
+        timer: {
+          seconds: null,
+          timer: null,
+          state: null,
+        },
       };
 
     case GAME_GETROUND:
@@ -122,7 +126,6 @@ export default function (state = initialState, action) {
     case GUESSER_SELECTWORD:
       return {
         ...state,
-        round: action.payload,
       };
 
     case CLUEWRITER_SUBMITCLUE:

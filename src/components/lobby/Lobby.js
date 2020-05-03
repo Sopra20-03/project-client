@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import { getGames, startGame } from "../../redux/actions/lobbyActions";
 import ProfileIcon from "../../views/design/Icons/GameHistoryIcon";
 import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
-import {ContainerRow} from "../game/Gameplay";
+import { ContainerRow } from "../game/Gameplay";
 import PacmanLoader from "react-spinners/PacmanLoader";
 import LobbyIcon from "../../views/design/Icons/LobbyIcon";
 
@@ -23,11 +23,14 @@ const Container = styled(BaseContainer)`
 `;
 
 const BoxHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+
   font-size: 50px;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 10px;
-  margin: auto;
+  margin-left: 50px;
   margin-bottom: 20px;
 `;
 
@@ -111,7 +114,9 @@ class Lobby extends React.Component {
             <LogoutIcon />
           </BoxHeader>
           {this.props.lobbyState.gamesList.length < 1 ? (
-              <ContainerRow style={{margin: 30}}><PacmanLoader/></ContainerRow>
+            <ContainerRow style={{ margin: 30 }}>
+              <PacmanLoader color={"#00a4ea"} />
+            </ContainerRow>
           ) : (
             <GameTable games={this.props.lobbyState.gamesList} />
           )}

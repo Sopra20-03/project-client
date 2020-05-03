@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const DESKTOP_WIDTH = 1160;
 export const SMALL_LAPTOPS_WIDTH = 970;
@@ -10,7 +10,7 @@ export const BaseContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 100%
+  width: 100%;
 `;
 
 export const LoginContainer = styled.div`

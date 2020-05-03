@@ -90,10 +90,12 @@ class Gameplay extends Component {
   }
 
   async runGame() {
+    //Check Rounds
     if (this.props.gameState.roundNum > 13) {
       this.props.gameClearGame();
       alert("Game Over");
       this.props.history.push(`/lobby`);
+      return;
     }
     //1. Get Players
     await this.getPlayers();
@@ -105,8 +107,10 @@ class Gameplay extends Component {
     await this.getRound();
 
     //4. Get Clues
-    if (this.props.gameState.round.wordCard.selectedWord != null) {
-      await this.getClues();
+    if (this.props.gameState.round.roundNum == this.props.gameState.roundNum) {
+      if (this.props.gameState.round.wordCard.selectedWord != null) {
+        await this.getClues();
+      }
     }
 
     //5. Get Game Phase or State
@@ -224,18 +228,17 @@ class Gameplay extends Component {
       gameState = GameStates.GUESSING;
     }
 
-    //Phase Change
-    if (
-      this.props.gameState.currentGameState != null &&
-      gameState != this.props.gameState.currentGameState
-    ) {
-      console.log("###PHASE CHANGE###");
-      console.log(
-        "OLD Store currentGameState:" +
-          this.props.gameState.currentGameState.value
-      );
-      console.log("NEW Var gameState:" + gameState.value);
-      this.gamePhaseChange(gameState);
+    //Initial
+    if (this.props.gameState.currentGameState == null) {
+      if (gameState == GameStates.SELECT_WORD) {
+        this.gamePhaseChange(gameState);
+      }
+    } else {
+      if (gameState != this.props.gameState.currentGameState) {
+        //Phase Change
+        console.log("###PHASE CHANGE###");
+        this.gamePhaseChange(gameState);
+      }
     }
     this.props.gameSetState(gameState);
   }
@@ -244,11 +247,7 @@ class Gameplay extends Component {
   gamePhaseChange(gameState) {
     console.log("PhaseChange Timer Reset");
 
-    //SELECT WORD
-    if (
-      gameState == GameStates.SELECT_WORD &&
-      this.props.gameState.role === "GUESSER"
-    ) {
+    if (gameState == GameStates.SELECT_WORD) {
       let timeoutFunction = () => {
         const data = {
           gameId: this.props.gameState.gameId,
@@ -256,16 +255,19 @@ class Gameplay extends Component {
           selectedWord: this.props.gameState.round.wordCard.word1,
         };
 
-        this.props.guesserSelectWord(data);
+        if (this.props.gameState.role === "GUESSER") {
+          this.props.guesserSelectWord(data);
+        }
       };
-      this.props.timerStart(30, timeoutFunction);
+
+      if (this.props.gameState.role === "GUESSER") {
+        this.props.timerStart(30, timeoutFunction);
+      } else {
+        this.props.timerClear();
+      }
     }
 
-    //WRITE_CLUES
-    if (
-      gameState == GameStates.WRITE_CLUES &&
-      this.props.gameState.role === "CLUE_WRITER"
-    ) {
+    if (gameState == GameStates.WRITE_CLUES) {
       let timeoutFunction = () => {
         let clue = this.props.gameState.clues.find(
           (x) => x.ownerId == this.props.gameState.playerId
@@ -277,43 +279,38 @@ class Gameplay extends Component {
           word: "N/A",
         };
 
-        this.props.gameSubmitClue(data);
+        if (this.props.gameState.role === "CLUE_WRITER") {
+          this.props.gameSubmitClue(data);
+        }
       };
-      this.props.timerStart(45, timeoutFunction);
+
+      if (this.props.gameState.role === "CLUE_WRITER") {
+        this.props.timerStart(45, timeoutFunction);
+      } else {
+        this.props.timerClear();
+      }
     }
 
-    //GUESSING
-    if (
-      gameState == GameStates.GUESSING &&
-      this.props.gameState.role === "GUESSER"
-    ) {
+    if (gameState == GameStates.GUESSING) {
       let timeoutFunction = () => {
         const data = {
           gameId: this.props.gameState.gameId,
           playerId: this.props.gameState.playerId,
           word: "N/A",
         };
-        this.props.gameSubmitGuess(data);
+        if (this.props.gameState.role === "GUESSER") {
+          this.props.gameSubmitGuess(data);
+        }
       };
-      this.props.timerStart(60, timeoutFunction);
+      if (this.props.gameState.role === "GUESSER") {
+        this.props.timerStart(60, timeoutFunction);
+      } else {
+        this.props.timerClear();
+      }
     }
   }
 
   render() {
-    if (
-      this.props.gameState.gameId == null ||
-      this.props.gameState.userId == null ||
-      this.props.gameState.playerId == null ||
-      this.props.gameState.gamePlayers.length == 0 ||
-      this.props.gameState.roundNum == null ||
-      this.props.gameState.round == null ||
-      this.props.gameState.role == null ||
-      this.props.gameState.currentGameState == null ||
-      this.props.gameState.score == null ||
-      this.props.gameState.timer.timer == null
-    ) {
-      return <div></div>;
-    }
     return (
       <div>
         <BaseContainer>

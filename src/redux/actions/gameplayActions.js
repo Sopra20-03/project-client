@@ -98,10 +98,9 @@ export const guesserSelectWord = (data) => async (dispatch) => {
         withCredentials: true,
       }
     );
-    const round = response.data;
     dispatch({
       type: GUESSER_SELECTWORD,
-      payload: round,
+      payload: null,
     });
   } catch (error) {
     alert(handleError(error));
