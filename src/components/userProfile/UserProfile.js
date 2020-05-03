@@ -3,7 +3,6 @@ import styled from "styled-components";
 import {BaseContainer, GameContainer} from "../../helpers/layout";
 import {api, handleError} from "../../helpers/api";
 import { withRouter } from "react-router-dom";
-import Button from "../../views/design/Button";
 import Colors from "../../views/design/Colors";
 
 //Redux
@@ -20,8 +19,9 @@ import UserInfoBox from "./UserInfoBox";
 import LobbyIcon from "../../views/design/Icons/LobbyIcon";
 
 const Container = styled(BaseContainer)`
-  color: white;
+  color: ${Colors.black};
   text-align: center;
+  margin-bottom: 40px;
 `;
 
 const BoxHeader = styled.div`
