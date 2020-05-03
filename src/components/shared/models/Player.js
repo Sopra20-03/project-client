@@ -7,6 +7,7 @@ class Player {
         this.role = null;
         this.userId = null;
         this.username = null;
+        this.icon = null;
         Object.assign(this, data);
     }
 }

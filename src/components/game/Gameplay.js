@@ -1,32 +1,36 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import TimerInfo from './TimerInfo';
-import PointsInfo from './PointsInfo';
-import Table from './Table';
-import { BaseContainer, GameContainer } from '../../helpers/layout';
-import AllPlayerBoxes from './AllPlayerBoxes';
-import { SmallLogo } from '../../views/logos/SmallLogo';
-import { withRouter } from 'react-router-dom';
-import { handleError } from '../../helpers/api';
-import LogoutIcon from '../../views/design/Icons/LogoutIcon';
+import React, { Component } from "react";
+import styled from "styled-components";
+import TimerInfo from "./TimerInfo";
+import PointsInfo from "./PointsInfo";
+import RoleInfo from "./RoleInfo";
+import Table from "./Table";
+import { BaseContainer, GameContainer } from "../../helpers/layout";
+import AllPlayerBoxes from "./AllPlayerBoxes";
+import { SmallLogo } from "../../views/logos/SmallLogo";
+import { withRouter } from "react-router-dom";
+import { handleError } from "../../helpers/api";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
+import GameStates from "../../redux/reducers/gameStates";
 //Redux
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import {
   gameGetClues,
   gameGetGame,
   gameGetRound,
   gameLoadGame,
-  gameSetState,
+  guesserSelectWord,
   gameSubmitClue,
+  gameSetState,
   gameUpdateRound,
+  gameClearGame,
   getGamePlayers,
   playerSetRole,
-  timerRoundReset,
-  timerRoundStart,
-  timerRoundStop
-} from '../../redux/actions/gameplayActions';
-import GameStates from '../../redux/reducers/gameStates';
-import Button from '@material-ui/core/Button';
+  timerStart,
+  timerStop,
+  gameSubmitGuess,
+  timerClear,
+} from "../../redux/actions/gameplayActions";
+import Button from "@material-ui/core/Button";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -71,7 +75,12 @@ class Gameplay extends Component {
     };
     this.props.gameLoadGame(gameData);
     //2. Set RoundNum to 1
-    this.props.gameUpdateRound(1);
+    if (this.props.gameState.roundNum != null) {
+      this.props.gameUpdateRound(this.props.gameState.roundNum);
+    } else {
+      this.props.gameUpdateRound(1);
+    }
+
     //3. Start Polling
     this.timer = setInterval(async () => await this.runGame(), 1000);
   }
@@ -81,30 +90,36 @@ class Gameplay extends Component {
   }
 
   async runGame() {
-    //1. TODO Get Gamestatus, check if it is running/ checkRound
+    //Check Rounds
+    if (this.props.gameState.roundNum > 13) {
+      this.props.gameClearGame();
+      this.props.history.push(`/lobby`);
+      return;
+    } else {
+      //1. Get Players
+      await this.getPlayers();
 
-    //2. Get Players
-    await this.getPlayers();
+      //2. Update Role for each round
+      await this.playerUpdateRole();
 
-    //3. Update Role for each round
-    await this.playerUpdateRole();
+      //3. Get Round
+      await this.getRound();
 
-    //4. Get Round
-    await this.getRound();
+      //4. Get Clues
+      if (
+        this.props.gameState.round.roundNum == this.props.gameState.roundNum
+      ) {
+        if (this.props.gameState.round.wordCard.selectedWord != null) {
+          await this.getClues();
+        }
+      }
 
-    //Timer
-    await this.roundTimer();
+      //5. Get Game Phase or State
+      await this.getGameState();
 
-    //5. Get Clues
-    if (this.props.gameState.round && this.props.gameState.round.wordCard.selectedWord) {
-      await this.getClues();
+      //6. Get Score
+      await this.getGame();
     }
-
-    console.log("OOOO Get Game State OOOO")
-    this.getGameState();
-
-    //6. Get Score
-    await this.getGame();
   }
 
   async getPlayers() {
@@ -119,18 +134,6 @@ class Gameplay extends Component {
           error
         )}`
       );
-    }
-  }
-
-  async roundTimer() {
-    //1. Initialize & Start
-    if (this.props.gameState.timer == null) {
-      try {
-        await this.props.timerRoundReset(180);
-        await this.props.timerRoundStart();
-      } catch (error) {
-        alert(`Something went wrong : \n${handleError(error)}`);
-      }
     }
   }
 
@@ -182,6 +185,7 @@ class Gameplay extends Component {
       this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
     }
     // get round details
+
     try {
       const data = {
         gameId: this.props.gameState.gameId,
@@ -209,33 +213,99 @@ class Gameplay extends Component {
     }
   }
 
-  async advanceState() {
-    try {
-      console.log(this.props.gameState.currentGameState);
-      console.log(GameStates[this.props.gameState.currentGameState.next]);
-      const data = {
-        currentGameState:
-          GameStates[this.props.gameState.currentGameState.next],
-      };
-      await this.props.advanceGameState(data);
-    } catch (e) {
-      alert(handleError(e));
-    }
-  }
-
-  getGameState () {
+  async getGameState() {
     let gameState;
-    if(!this.props.gameState.round.wordCard.selectedWord) {
+    if (!this.props.gameState.round.wordCard.selectedWord) {
       gameState = GameStates.SELECT_WORD;
-    } else if (this.props.gameState.clues.filter((clue) => clue.word === null).length > 0) {
-      console.log (this.props.gameState.clues.filter ((clue) => clue.word === null));
+    } else if (
+      this.props.gameState.clues.filter((clue) => clue.word === null).length > 0
+    ) {
       gameState = GameStates.WRITE_CLUES;
       // Todo Check if all players have voted on all the clues --> guessing
     } else {
       gameState = GameStates.GUESSING;
     }
 
-    this.props.gameSetState (gameState);
+    //Initial
+    if (this.props.gameState.currentGameState == null) {
+      if (gameState == GameStates.SELECT_WORD) {
+        this.gamePhaseChange(gameState);
+      }
+    } else {
+      if (gameState != this.props.gameState.currentGameState) {
+        //Phase Change
+        console.log("###PHASE CHANGE###");
+        this.gamePhaseChange(gameState);
+      }
+    }
+    this.props.gameSetState(gameState);
+  }
+
+  //Phase Change
+  gamePhaseChange(gameState) {
+    console.log("PhaseChange Timer Reset");
+
+    if (gameState == GameStates.SELECT_WORD) {
+      let timeoutFunction = () => {
+        const data = {
+          gameId: this.props.gameState.gameId,
+          roundNum: this.props.gameState.roundNum,
+          selectedWord: this.props.gameState.round.wordCard.word1,
+        };
+
+        if (this.props.gameState.role === "GUESSER") {
+          this.props.guesserSelectWord(data);
+        }
+      };
+
+      if (this.props.gameState.role === "GUESSER") {
+        this.props.timerStart(30, timeoutFunction);
+      } else {
+        this.props.timerClear();
+      }
+    }
+
+    if (gameState == GameStates.WRITE_CLUES) {
+      let timeoutFunction = () => {
+        let clue = this.props.gameState.clues.find(
+          (x) => x.ownerId == this.props.gameState.playerId
+        );
+        const data = {
+          gameId: this.props.gameState.gameId,
+          playerId: this.props.gameState.playerId,
+          clueId: clue.clueId,
+          word: "N/A",
+        };
+
+        if (this.props.gameState.role === "CLUE_WRITER") {
+          this.props.gameSubmitClue(data);
+        }
+      };
+
+      if (this.props.gameState.role === "CLUE_WRITER") {
+        this.props.timerStart(45, timeoutFunction);
+      } else {
+        this.props.timerClear();
+      }
+    }
+
+    if (gameState == GameStates.GUESSING) {
+      let timeoutFunction = () => {
+        const data = {
+          gameId: this.props.gameState.gameId,
+          playerId: this.props.gameState.playerId,
+          word: "N/A",
+        };
+        if (this.props.gameState.role === "GUESSER") {
+          this.props.gameSubmitGuess(data);
+        }
+      };
+      if (this.props.gameState.role === "GUESSER") {
+        this.props.timerStart(60, timeoutFunction);
+      } else {
+        this.props.timerClear();
+      }
+    }
   }
 
   render() {
@@ -246,7 +316,6 @@ class Gameplay extends Component {
             <SmallLogo />
             <LogoutIcon />
             <div></div>
-            <Button onClick={this.advanceState}>Next State</Button>
             <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
 
             <TableContainer>
@@ -264,6 +333,7 @@ class Gameplay extends Component {
                   this.props.gameState.score ? this.props.gameState.score : 0
                 }
               />
+              <RoleInfo role={this.props.gameState.role} />
               <TimerInfo round={this.props.gameState.roundNum} />
             </InfoContainer>
           </GameContainer>
@@ -283,6 +353,8 @@ export default withRouter(
   connect(mapStateToProps, {
     gameLoadGame,
     getGamePlayers,
+    guesserSelectWord,
+    gameClearGame,
     playerSetRole,
     gameGetRound,
     gameUpdateRound,
@@ -290,8 +362,10 @@ export default withRouter(
     gameSubmitClue,
     gameSetState,
     gameGetGame,
-    timerRoundReset,
-    timerRoundStart,
-    timerRoundStop,
+    timerStart,
+    timerStop,
+    timerClear,
+    gameSubmitClue,
+    gameSubmitGuess,
   })(Gameplay)
 );

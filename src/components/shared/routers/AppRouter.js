@@ -10,6 +10,7 @@ import Gameplay from "../../game/Gameplay";
 import Test from "../../Test";
 import GameHistory from "../../gameHistory/GameHistory";
 import Leaderboard from "../../leaderboard/Leaderboard";
+import UserProfile from "../../userProfile/UserProfile";
 
 /**
  * Main router of your application.
@@ -88,6 +89,15 @@ class AppRouter extends React.Component {
               </RouteGuard>
             )}
           />
+            <Route
+                path="/userprofile"
+                exact
+                render={() => (
+                    <RouteGuard>
+                        <UserProfile />
+                    </RouteGuard>
+                )}
+            />
           <Route
             path="/leaderboard"
             exact

@@ -8,6 +8,7 @@ import {
   GET_GAMES,
   PLAY_GAME,
   USER_LOGOUT,
+  GAME_CLEAR,
 } from "../actions/types";
 
 const initialState = {
@@ -31,6 +32,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         gamesList: action.payload,
+      };
+
+    case GAME_CLEAR:
+      return {
+        gameId: {},
+        joinedGame: null,
+        isUserCreator: false,
+        gamesList: [],
       };
 
     case GAME_CREATION:

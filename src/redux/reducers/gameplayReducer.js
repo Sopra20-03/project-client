@@ -11,13 +11,14 @@ import {
   GUESSER_SELECTWORD,
   GUESSER_SUBMITGUESS,
   PLAYER_SET_ROLE,
-  TIMER_ROUND_DECREMENT,
-  TIMER_ROUND_RESET,
-  TIMER_ROUND_START,
-  TIMER_ROUND_STOP,
-  USER_LOGOUT
-} from '../actions/types';
-import GameStates from './gameStates';
+  TIMER_CLEAR,
+  TIMER_START,
+  TIMER_STOP,
+  TIMER_DECREMENT,
+  GAME_CLEAR,
+  USER_LOGOUT,
+} from "../actions/types";
+import GameStates from "./gameStates";
 
 const initialState = {
   gameId: null,
@@ -28,11 +29,13 @@ const initialState = {
   round: null,
   role: null,
   clues: [],
-  currentGameState: GameStates.SELECT_WORD,
-  gamePhase: null,
+  currentGameState: null,
   score: null,
-  timers: null,
-  timer: null,
+  timer: {
+    seconds: null,
+    timer: null,
+    state: null,
+  },
 };
 
 export default function (state = initialState, action) {
@@ -49,6 +52,28 @@ export default function (state = initialState, action) {
       return {
         ...state,
         score: action.payload.score,
+      };
+
+    case GAME_CLEAR:
+      if (state.timer.timer != null) {
+        clearInterval(state.timer.timer);
+      }
+      return {
+        gameId: null,
+        userId: null,
+        playerId: null,
+        gamePlayers: [],
+        roundNum: null,
+        round: null,
+        role: null,
+        clues: [],
+        currentGameState: null,
+        score: null,
+        timer: {
+          seconds: null,
+          timer: null,
+          state: null,
+        },
       };
 
     case GET_GAME_PLAYERS:
@@ -70,18 +95,20 @@ export default function (state = initialState, action) {
         round: null,
         role: null,
         clues: [],
-        currentGameState: GameStates.SELECT_WORD,
-        gamePhase: null,
+        currentGameState: null,
         score: null,
         timers: null,
-        timer: null,
+        timer: {
+          seconds: null,
+          timer: null,
+          state: null,
+        },
       };
 
     case GAME_GETROUND:
       return {
         ...state,
-        round: action.payload.round,
-        currentGameState: action.payload.gameState
+        round: action.payload,
       };
 
     case GAME_UPDATEROUND:
@@ -99,27 +126,22 @@ export default function (state = initialState, action) {
     case GUESSER_SELECTWORD:
       return {
         ...state,
-        round: action.payload,
-        gamePhase: "WRITING_CLUES",
       };
 
     case CLUEWRITER_SUBMITCLUE:
       return {
         ...state,
-        gamePhase: "GUESSING",
       };
 
     case GUESSER_SUBMITGUESS:
       return {
         ...state,
-        gamePhase: "CHECK_GUESS",
       };
 
     case GAME_GETCLUES:
       return {
         ...state,
         clues: action.payload.clues,
-        currentGameState: action.payload.gameState
       };
 
     case GAME_SET_STATE:
@@ -129,45 +151,65 @@ export default function (state = initialState, action) {
       };
 
     //Timer
-    case TIMER_ROUND_RESET:
-      console.log(" Timer Round Reset Reducer");
-      const roundTimer = {
-        seconds: action.payload,
-      };
+    case TIMER_START:
       return {
         ...state,
-        timers: {
-          ...state.timers,
-          round: roundTimer,
+        timer: {
+          ...state.timer,
+          timer: action.payload.timer,
+          seconds: action.payload.seconds,
+          state: "RUNNING",
         },
       };
 
-    case TIMER_ROUND_START:
-      console.log(" Timer Round Start Reducer");
+    case TIMER_DECREMENT:
+      if (state.timer.timer != null && state.timer.state === "RUNNING") {
+        //Finished
+        if (state.timer.seconds == 0) {
+          clearInterval(state.timer.timer);
+          action.payload();
+          return {
+            ...state,
+            timer: {
+              ...state.timer,
+              seconds: 0,
+              state: "FINISHED",
+            },
+          };
+        }
+
+        //Else
+        return {
+          ...state,
+          timer: {
+            ...state.timer,
+            seconds: state.timer.seconds - 1,
+          },
+        };
+      }
       return {
         ...state,
-        timer: action.payload,
       };
 
-    case TIMER_ROUND_DECREMENT:
-      console.log(" Timer Round Decrement Reducer");
-      const decrement = {
-        seconds: state.timers.round.seconds - 1,
-      };
+    case TIMER_STOP:
+      if (state.timer.timer != null) {
+        clearInterval(state.timer.timer);
+      }
       return {
         ...state,
-        timers: {
-          ...state.timers,
-          round: decrement,
+        timer: {
+          ...state.timer,
+          state: "STOPPED",
         },
       };
 
-    case TIMER_ROUND_STOP:
-      console.log(" Timer Round Stop Reducer");
-      clearInterval(state.timer);
+    case TIMER_CLEAR:
+      if (state.timer.timer != null) {
+        clearInterval(state.timer.timer);
+      }
       return {
         ...state,
-        timer: null,
+        timer: { seconds: null, timer: null, state: null },
       };
 
     default:

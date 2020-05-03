@@ -3,6 +3,8 @@ import { withRouter } from "react-router-dom";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import PulseLoader from "react-spinners/PulseLoader";
+
 export const TimerInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -17,21 +19,40 @@ export const TimerInfoContainer = styled.div`
 
 class TimerInfo extends Component {
   render() {
-    return (
-      <div>
-        <TimerInfoContainer>
-          {this.props.gameState.timers != null ? (
-            <h1 style={{ margin: "0px" }}>
-              {this.props.gameState.timers.round.seconds}
-            </h1>
-          ) : (
-            <h1 style={{ margin: "0px" }}>2:00</h1>
-          )}
+    if (this.props.gameState.timer.timer == null) {
+      return (
+        <div>
+          <TimerInfoContainer>
+            <PulseLoader />
+            <h3 style={{ margin: "0px" }}>Round {this.props.round} of 13</h3>
+          </TimerInfoContainer>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <TimerInfoContainer>
+            {this.props.gameState.timer.seconds <= 10 ? (
+              <h1
+                style={{
+                  margin: "0px",
+                  color: "#de0006",
+                  fontWeight: "1000",
+                }}
+              >
+                {this.props.gameState.timer.seconds}
+              </h1>
+            ) : (
+              <h1 style={{ margin: "0px" }}>
+                {this.props.gameState.timer.seconds}
+              </h1>
+            )}
 
-          <h3 style={{ margin: "0px" }}>Round {this.props.round} of 13</h3>
-        </TimerInfoContainer>
-      </div>
-    );
+            <h3 style={{ margin: "0px" }}>Round {this.props.round} of 13</h3>
+          </TimerInfoContainer>
+        </div>
+      );
+    }
   }
 }
 const mapStateToProps = (state) => ({

@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import styled from "styled-components";
 
-import WordCard from './WordCard';
-import InputField from './InputField';
-import { ContainerRow } from './Gameplay';
-import MessageBox from './MessageBox';
-import Clues from './Clues';
+import WordCard from "./WordCard";
+import InputField from "./InputField";
+import { ContainerRow } from "./Gameplay";
+import MessageBox from "./MessageBox";
+import Clues from "./Clues";
+import GameStates from "../../redux/reducers/gameStates";
 //Redux
-import { connect } from 'react-redux';
-import GameStates from '../../redux/reducers/gameStates';
+import { connect } from "react-redux";
 
 export const GameTable = styled.div`
   display: flex;
@@ -30,23 +30,28 @@ export const GameTable = styled.div`
 class Table extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      gamePhase: null,
-    };
   }
 
   createMessage() {
-    let gamePhase = "";
-    if (gamePhase === "ROUND_ANNOUNCEMENT")
-      return `Round ${this.props.gameState.roundNum} of 13`;
-    else if (gamePhase === "ROLE_ASSIGNMENT")
-      return `You are the ${this.props.gameState.role}`;
-    else if (this.props.gameState.currentGameState === GameStates.WRITE_CLUES)
-      return "Players are writing clues...";
-    else if (gamePhase === "GUESSING")
-      return "Waiting for guesser to guess word";
-    else if (gamePhase === "GUESS_VALIDATION") return `Guess was CORRECT`;
-    else return "This is the default message";
+    if (this.props.gameState.role === "GUESSER") {
+      if (this.props.gameState.currentGameState == GameStates.SELECT_WORD)
+        return "Please select a word!";
+      if (this.props.gameState.currentGameState == GameStates.WRITE_CLUES)
+        return "Clue writers are writing the clues!";
+      if (this.props.gameState.currentGameState == GameStates.VALIDATE_CLUES)
+        return "Clue writers are validating the clues!";
+      if (this.props.gameState.currentGameState == GameStates.GUESSING)
+        return "Please submit your guess!";
+    } else {
+      if (this.props.gameState.currentGameState == GameStates.SELECT_WORD)
+        return "Guesser is selecting a word!";
+      if (this.props.gameState.currentGameState == GameStates.WRITE_CLUES)
+        return "Please submit your clue!";
+      if (this.props.gameState.currentGameState == GameStates.VALIDATE_CLUES)
+        return "Please validate the clues!";
+      if (this.props.gameState.currentGameState == GameStates.GUESSING)
+        return "Guesser is guessing!";
+    }
   }
 
   render() {
@@ -68,10 +73,7 @@ class Table extends Component {
               <WordCard />
             </ContainerRow>
             <ContainerRow>
-              <MessageBox
-                msg={this.createMessage}
-                delay={3000}
-              />
+              <MessageBox msg={this.createMessage()} />
             </ContainerRow>
             <ContainerRow style={{ justifyContent: "center" }}>
               {(this.props.ownerClue && !this.props.ownerClue.word) ||

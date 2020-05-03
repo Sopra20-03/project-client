@@ -10,16 +10,21 @@ import {
   GUESSER_SELECTWORD,
   GUESSER_SUBMITGUESS,
   PLAYER_SET_ROLE,
-  TIMER_ROUND_DECREMENT,
-  TIMER_ROUND_RESET,
-  TIMER_ROUND_START,
-  TIMER_ROUND_STOP
-} from './types';
-import { api, handleError } from '../../helpers/api';
-import GameStates from '../reducers/gameStates';
+  TIMER_DECREMENT,
+  TIMER_CLEAR,
+  TIMER_START,
+  TIMER_STOP,
+  GAME_CLEAR,
+} from "./types";
+
+import { api, handleError } from "../../helpers/api";
+import GameStates from "../reducers/gameStates";
 
 //Functions
 export const gameGetGame = (data) => async (dispatch) => {
+  if (data.gameId == null) {
+    return null;
+  }
   try {
     const response = await api.get(`/games/${data.gameId}`, {
       withCredentials: true,
@@ -34,6 +39,9 @@ export const gameGetGame = (data) => async (dispatch) => {
 };
 
 export const getGamePlayers = (gameId, userId) => async (dispatch) => {
+  if (gameId == null || userId == null) {
+    return null;
+  }
   try {
     const response = await api.get(`/games/${gameId}/players`, {
       withCredentials: true,
@@ -54,7 +62,13 @@ export const getGamePlayers = (gameId, userId) => async (dispatch) => {
 };
 
 export const gameGetRound = (data) => async (dispatch) => {
+  if (data.roundNum == null || data.gameId == null) {
+    return null;
+  }
   try {
+    if (data.roundNum > 13) {
+      return null;
+    }
     const response = await api.get(
       `/games/${data.gameId}/rounds/${data.roundNum}`,
       {
@@ -63,20 +77,10 @@ export const gameGetRound = (data) => async (dispatch) => {
     );
     console.log("GAMEGETROUND");
     console.log(response.data);
-    let gameState = GameStates.SELECT_WORD;
 
-
-    if (response.data.wordCard.selectedWord) {
-      gameState = GameStates.WRITE_CLUES;
-    }
-
-    const payload = {
-      round: response.data,
-      gameState: gameState
-    };
     dispatch({
       type: GAME_GETROUND,
-      payload: payload,
+      payload: response.data,
     });
   } catch (error) {
     alert(handleError(error));
@@ -95,6 +99,9 @@ export const gameUpdateRound = (roundNum) => async (dispatch) => {
 };
 
 export const guesserSelectWord = (data) => async (dispatch) => {
+  if (data.roundNum == null || data.gameId == null) {
+    return null;
+  }
   try {
     const response = await api.put(
       `/games/${data.gameId}/rounds/${data.roundNum}`,
@@ -103,10 +110,9 @@ export const guesserSelectWord = (data) => async (dispatch) => {
         withCredentials: true,
       }
     );
-    const round = response.data;
     dispatch({
       type: GUESSER_SELECTWORD,
-      payload: round,
+      payload: null,
     });
   } catch (error) {
     alert(handleError(error));
@@ -128,14 +134,17 @@ export const gameSetState = (gameState) => async (dispatch) => {
   try {
     dispatch({
       type: GAME_SET_STATE,
-      payload: gameState
-    })
+      payload: gameState,
+    });
   } catch (e) {
-    alert (handleError (e));
+    alert(handleError(e));
   }
-}
+};
 
 export const gameSubmitClue = (data) => async (dispatch) => {
+  if (data.playerId == null || data.gameId == null || data.clueId == null) {
+    return null;
+  }
   try {
     const response = await api.post(
       `/games/${data.gameId}/players/${data.playerId}/clue/${data.clueId}`,
@@ -154,6 +163,9 @@ export const gameSubmitClue = (data) => async (dispatch) => {
 };
 
 export const gameSubmitGuess = (data) => async (dispatch) => {
+  if (data.playerId == null || data.gameId == null) {
+    return null;
+  }
   try {
     const response = await api.post(
       `/games/${data.gameId}/players/${data.playerId}/guess`,
@@ -173,23 +185,21 @@ export const gameSubmitGuess = (data) => async (dispatch) => {
 };
 
 export const gameGetClues = (data) => async (dispatch) => {
+  if (data.roundNum == null || data.gameId == null) {
+    return null;
+  }
   try {
+    if (data.roundNum > 13) {
+      return null;
+    }
     const response = await api.get(
       `/games/${data.gameId}/rounds/${data.roundNum}/clues`,
       {
         withCredentials: true,
       }
     );
-    let gameState = GameStates.SELECT_WORD;
-
-
-    if (!response.data.filter((x) => x.word === "")) {
-      gameState = GameStates.VALIDATE_CLUES;
-    }
-
     const payload = {
       clues: response.data,
-      gameState: gameState
     };
     console.log("***API CALL - GET CLUES***");
     console.log(response.data);
@@ -202,7 +212,6 @@ export const gameGetClues = (data) => async (dispatch) => {
   }
 };
 
-
 export const gameLoadGame = (data) => async (dispatch) => {
   try {
     dispatch({
@@ -214,45 +223,59 @@ export const gameLoadGame = (data) => async (dispatch) => {
   }
 };
 
-//Timer Actions
-export const timerRoundReset = (data) => async (dispatch) => {
-  console.log("timerRoundReset() Action");
+export const gameClearGame = () => async (dispatch) => {
   try {
     dispatch({
-      type: TIMER_ROUND_RESET,
+      type: GAME_CLEAR,
+      payload: null,
+    });
+  } catch (error) {
+    alert(handleError(error));
+  }
+};
+
+//Timer Actions
+//Configures the timer with countdown time & timer and starts
+export const timerStart = (data, func) => async (dispatch) => {
+  //Clear Existing Timer
+  try {
+    dispatch({
+      type: TIMER_CLEAR,
       payload: data,
     });
   } catch (e) {
     alert(handleError(e));
   }
-};
 
-export const timerRoundStart = () => async (dispatch) => {
-  console.log("timerRoundStart() Action");
+  //Set New Timer
+  let mytimer = setInterval(async () => {
+    dispatch({
+      type: TIMER_DECREMENT,
+      payload: func,
+    });
+  }, 1000);
+
+  const timerData = {
+    timer: mytimer,
+    seconds: data,
+  };
+  //Configure & Start
 
   try {
-    let mytimer = setInterval(async () => {
-      console.log("1s");
-      dispatch({
-        type: TIMER_ROUND_DECREMENT,
-        payload: null,
-      });
-    }, 1000);
-
     dispatch({
-      type: TIMER_ROUND_START,
-      payload: mytimer,
+      type: TIMER_START,
+      payload: timerData,
     });
   } catch (e) {
     alert(handleError(e));
   }
 };
 
-export const timerRoundDecrement = () => async (dispatch) => {
-  console.log("timerRoundDecrement() Action");
+export const timerStop = () => async (dispatch) => {
+  //Clear Existing Timer
   try {
     dispatch({
-      type: TIMER_ROUND_DECREMENT,
+      type: TIMER_STOP,
       payload: null,
     });
   } catch (e) {
@@ -260,11 +283,11 @@ export const timerRoundDecrement = () => async (dispatch) => {
   }
 };
 
-export const timerRoundStop = () => async (dispatch) => {
-  console.log("timerRoundStop() Action");
+export const timerClear = () => async (dispatch) => {
+  //Clear Existing Timer
   try {
     dispatch({
-      type: TIMER_ROUND_STOP,
+      type: TIMER_CLEAR,
       payload: null,
     });
   } catch (e) {

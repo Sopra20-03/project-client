@@ -10,6 +10,9 @@ import Colors from "../../views/design/Colors";
 import {SmallLogo} from "../../views/logos/SmallLogo";
 import PacmanLoader from 'react-spinners/PacmanLoader';
 import {ContainerRow} from "../game/Gameplay";
+import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
+import ProfileIcon from "../../views/design/Icons/GameHistoryIcon";
+import LobbyIcon from "../../views/design/Icons/LobbyIcon";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -72,6 +75,9 @@ class Leaderboard extends React.Component {
                         <span style={Colors.textOrange}>a</span>
                         <span style={Colors.textRed}>r</span>
                         <span style={Colors.textPink}>d</span>
+                        <LobbyIcon />
+                        <LeaderboardIcon />
+                        <ProfileIcon />
                         <LogoutIcon/>
                     </BoxHeader>
                     {this.state.sortedUsers.length < 1 ? (
@@ -79,14 +85,6 @@ class Leaderboard extends React.Component {
                     ) : (
                         <LeaderboardTable users={this.state.sortedUsers}/>
                     )}
-
-                    <Button
-                        onClick={() => {
-                            this.props.history.push("/lobby");
-                        }}
-                    >
-                        Go to Lobby
-                    </Button>
                 </GameContainer>
             </Container>
         );

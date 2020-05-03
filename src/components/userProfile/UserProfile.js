@@ -1,26 +1,27 @@
 import React from "react";
 import styled from "styled-components";
-
 import {BaseContainer, GameContainer} from "../../helpers/layout";
 import {api, handleError} from "../../helpers/api";
-import Button from "../../views/design/Button";
-import {withRouter} from "react-router-dom";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
-import GameHistoryTable from "./GameHistoryTable";
+import { withRouter } from "react-router-dom";
 import Colors from "../../views/design/Colors";
-import {SmallLogo} from "../../views/logos/SmallLogo";
+
 //Redux
-import {connect} from "react-redux";
-import {getGames} from "../../redux/actions/lobbyActions";
+import { connect } from "react-redux";
+import {SmallLogo} from "../../views/logos/SmallLogo";
+import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
+import GameHistoryIcon from "../../views/design/Icons/GameHistoryIcon";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
+import GameHistoryTable from "../gameHistory/GameHistoryTable";
 import {ContainerRow} from "../game/Gameplay";
 import PacmanLoader from "react-spinners/PacmanLoader";
-import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
-import ProfileIcon from "../../views/design/Icons/GameHistoryIcon";
+import {getGames} from "../../redux/actions/lobbyActions";
+import UserInfoBox from "./UserInfoBox";
 import LobbyIcon from "../../views/design/Icons/LobbyIcon";
 
 const Container = styled(BaseContainer)`
-  color: white;
+  color: ${Colors.black};
   text-align: center;
+  margin-bottom: 40px;
 `;
 
 const BoxHeader = styled.div`
@@ -32,7 +33,9 @@ const BoxHeader = styled.div`
   margin-bottom: 20px;
 `;
 
-class GameHistory extends React.Component {
+
+
+class UserProfile extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -86,45 +89,42 @@ class GameHistory extends React.Component {
         }
     }
 
+
     render() {
-        console.log("Render Game History");
         return (
             <Container>
-                <GameContainer>
-                    <SmallLogo/>
-                    <BoxHeader>
-                        <span style={Colors.textOrange}>G</span>
-                        <span style={Colors.textRed}>a</span>
-                        <span style={Colors.textPink}>m</span>
-                        <span style={Colors.textViolet}>e </span>
-                        <span style={Colors.textBlue}>H</span>
-                        <span style={Colors.textGreen}>i</span>
-                        <span style={Colors.textYellow}>s</span>
-                        <span style={Colors.textBlack}>t</span>
-                        <span style={Colors.textOrange}>o</span>
-                        <span style={Colors.textRed}>r</span>
-                        <span style={Colors.textPink}>y</span>
-                        <LobbyIcon />
-                        <LeaderboardIcon />
-                        <ProfileIcon />
-                        <LogoutIcon/>
-                    </BoxHeader>
-                    {this.state.userGames.length < 1 ? (
-                        <ContainerRow style={{margin: 30}}><PacmanLoader/></ContainerRow>
-                    ) : (
-                        <GameHistoryTable games={this.state.userGames}/>
-                    )}
-                </GameContainer>
+            <GameContainer>
+                <SmallLogo />
+                <BoxHeader>
+                    <span style={Colors.textOrange}>P</span>
+                    <span style={Colors.textRed}>r</span>
+                    <span style={Colors.textPink}>o</span>
+                    <span style={Colors.textViolet}>f</span>
+                    <span style={Colors.textBlue}>i</span>
+                    <span style={Colors.textGreen}>l</span>
+                    <span style={Colors.textYellow}>e</span>
+                    <LobbyIcon />
+                    <LeaderboardIcon />
+                    <GameHistoryIcon />
+                    <LogoutIcon />
+                </BoxHeader>
+
+                <UserInfoBox user = {this.props.userState.user}/>
+
+                <h1>Game History</h1>
+                {this.state.userGames.length < 1 ? (
+                    <ContainerRow style={{margin: 30}}><PacmanLoader/></ContainerRow>
+                ) : (
+                    <GameHistoryTable games={this.state.userGames}/>
+                )}
+            </GameContainer>
             </Container>
         );
     }
 }
-
 const mapStateToProps = (state) => ({
     userState: state.userReducer,
     lobbyState: state.lobbyReducer,
 });
 
-export default withRouter(
-    connect(mapStateToProps, {getGames})(GameHistory)
-);
+export default withRouter(connect(mapStateToProps, {getGames})(UserProfile));

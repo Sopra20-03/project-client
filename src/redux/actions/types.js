@@ -1,6 +1,7 @@
 //User Actions
 export const USER_REGISTER = "USER_REGISTER";
 export const USER_LOGIN = "USER_LOGIN";
+export const GET_USER_DETAILS = "GET_USER_DETAILS";
 export const USER_LOGOUT = "USER_LOGOUT";
 
 //Lobby Actions
@@ -22,11 +23,12 @@ export const GAME_GETROUND = "GAME_GETROUND";
 export const GUESSER_SELECTWORD = "GUESSER_SELECTWORD";
 export const CLUEWRITER_SUBMITCLUE = "CLUEWRITER_SUBMITCLUE";
 export const GAME_GETCLUES = "GAME_GETCLUES";
+export const GAME_CLEAR = "GAME_CLEAR";
 export const GUESSER_SUBMITGUESS = "GUESSER_SUBMITGUESS";
 export const GAME_VALIDATECLUE = "GAME_VALIDATECLUE";
-export const GAME_SET_STATE = 'GAME_SET_STATE';
+export const GAME_SET_STATE = "GAME_SET_STATE";
 //Timer Actions in GamePlay Actions
-export const TIMER_ROUND_START = "TIMER_ROUND_START";
-export const TIMER_ROUND_STOP = "TIMER_ROUND_STOP";
-export const TIMER_ROUND_RESET = "TIMER_ROUND_RESET";
-export const TIMER_ROUND_DECREMENT = "TIMER_ROUND_DECREMENT";
+export const TIMER_CLEAR = "TIMER_CLEAR";
+export const TIMER_START = "TIMER_START";
+export const TIMER_STOP = "TIMER_STOP";
+export const TIMER_DECREMENT = "TIMER_DECREMENT";

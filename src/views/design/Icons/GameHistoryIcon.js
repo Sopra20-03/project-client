@@ -1,11 +1,11 @@
 import React from "react";
 import Tooltip from "@material-ui/core/Tooltip";
-import HistoryIcon from '@material-ui/icons/History';
+import PersonIcon from '@material-ui/icons/Person';
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
 
-class GameHistoryIcon extends React.Component {
+class ProfileIcon extends React.Component {
   constructor() {
     super();
   }
@@ -22,15 +22,15 @@ class GameHistoryIcon extends React.Component {
           top: 20,
         }}
         onClick={() => {
-            this.props.history.push("/gamehistory");
+            this.props.history.push("/userprofile");
         }}
       >
-        <Tooltip disableFocusListener disableTouchListener title="Game History">
-          <HistoryIcon style={{ fontSize: 30 }} />
+        <Tooltip disableFocusListener disableTouchListener title="User Profile">
+          <PersonIcon style={{ fontSize: 30 }} />
         </Tooltip>
       </Button>
     );
   }
 }
 
-export default withRouter(GameHistoryIcon);
+export default withRouter(ProfileIcon);
