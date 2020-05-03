@@ -22,6 +22,9 @@ import GameStates from "../reducers/gameStates";
 
 //Functions
 export const gameGetGame = (data) => async (dispatch) => {
+  if (data.gameId == null) {
+    return null;
+  }
   try {
     const response = await api.get(`/games/${data.gameId}`, {
       withCredentials: true,
@@ -36,6 +39,9 @@ export const gameGetGame = (data) => async (dispatch) => {
 };
 
 export const getGamePlayers = (gameId, userId) => async (dispatch) => {
+  if (gameId == null || userId == null) {
+    return null;
+  }
   try {
     const response = await api.get(`/games/${gameId}/players`, {
       withCredentials: true,
@@ -56,6 +62,9 @@ export const getGamePlayers = (gameId, userId) => async (dispatch) => {
 };
 
 export const gameGetRound = (data) => async (dispatch) => {
+  if (data.roundNum == null || data.gameId == null) {
+    return null;
+  }
   try {
     if (data.roundNum > 13) {
       return null;
@@ -90,6 +99,9 @@ export const gameUpdateRound = (roundNum) => async (dispatch) => {
 };
 
 export const guesserSelectWord = (data) => async (dispatch) => {
+  if (data.roundNum == null || data.gameId == null) {
+    return null;
+  }
   try {
     const response = await api.put(
       `/games/${data.gameId}/rounds/${data.roundNum}`,
@@ -130,6 +142,9 @@ export const gameSetState = (gameState) => async (dispatch) => {
 };
 
 export const gameSubmitClue = (data) => async (dispatch) => {
+  if (data.playerId == null || data.gameId == null || data.clueId == null) {
+    return null;
+  }
   try {
     const response = await api.post(
       `/games/${data.gameId}/players/${data.playerId}/clue/${data.clueId}`,
@@ -148,6 +163,9 @@ export const gameSubmitClue = (data) => async (dispatch) => {
 };
 
 export const gameSubmitGuess = (data) => async (dispatch) => {
+  if (data.playerId == null || data.gameId == null) {
+    return null;
+  }
   try {
     const response = await api.post(
       `/games/${data.gameId}/players/${data.playerId}/guess`,
@@ -167,6 +185,9 @@ export const gameSubmitGuess = (data) => async (dispatch) => {
 };
 
 export const gameGetClues = (data) => async (dispatch) => {
+  if (data.roundNum == null || data.gameId == null) {
+    return null;
+  }
   try {
     if (data.roundNum > 13) {
       return null;

@@ -90,7 +90,7 @@ class ClueCard extends Component {
         >
           {this.props.clue.word}
           <br />
-          {0 === 0 ? (
+          {1 === 0 ? (
             <FormControl component="fieldset">
               <RadioGroup onClick={this.vote}>
                 <FormControlLabel

@@ -93,31 +93,33 @@ class Gameplay extends Component {
     //Check Rounds
     if (this.props.gameState.roundNum > 13) {
       this.props.gameClearGame();
-      alert("Game Over");
       this.props.history.push(`/lobby`);
       return;
-    }
-    //1. Get Players
-    await this.getPlayers();
+    } else {
+      //1. Get Players
+      await this.getPlayers();
 
-    //2. Update Role for each round
-    await this.playerUpdateRole();
+      //2. Update Role for each round
+      await this.playerUpdateRole();
 
-    //3. Get Round
-    await this.getRound();
+      //3. Get Round
+      await this.getRound();
 
-    //4. Get Clues
-    if (this.props.gameState.round.roundNum == this.props.gameState.roundNum) {
-      if (this.props.gameState.round.wordCard.selectedWord != null) {
-        await this.getClues();
+      //4. Get Clues
+      if (
+        this.props.gameState.round.roundNum == this.props.gameState.roundNum
+      ) {
+        if (this.props.gameState.round.wordCard.selectedWord != null) {
+          await this.getClues();
+        }
       }
+
+      //5. Get Game Phase or State
+      await this.getGameState();
+
+      //6. Get Score
+      await this.getGame();
     }
-
-    //5. Get Game Phase or State
-    await this.getGameState();
-
-    //6. Get Score
-    await this.getGame();
   }
 
   async getPlayers() {
@@ -183,11 +185,7 @@ class Gameplay extends Component {
       this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
     }
     // get round details
-    if (this.props.gameState.roundNum > 13) {
-      this.props.gameClearGame();
-      alert("Game Over");
-      this.props.history.push(`/lobby`);
-    }
+
     try {
       const data = {
         gameId: this.props.gameState.gameId,
