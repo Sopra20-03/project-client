@@ -91,6 +91,8 @@ class Gameplay extends Component {
 
   async runGame() {
     //Check Rounds
+    //DEMO: 3 Rounds
+
     if (this.props.gameState.roundNum > 3) {
       this.props.gameClearGame();
       this.props.history.push(`/lobby`);
