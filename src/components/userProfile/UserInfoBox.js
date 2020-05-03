@@ -16,7 +16,7 @@ const UserInfoContainer = styled.div`
   border-radius: 5px 5px 5px 5px;
   padding: 10px;
   position: relative;
-  width: 50%;
+  width: 40%;
   border: 2px solid ${Colors.black};
 `;
 
@@ -27,8 +27,9 @@ const UserInfoGrid = styled.div`
   margin-right: 10px;
 `;
 
-const InfoTable = styled.div`
+const InfoTable = styled.table`
     text-align: left;
+    width: 80%;
 `;
 
 const ProfileTextInput = styled.input`
@@ -109,7 +110,7 @@ class UserInfoBox extends React.Component {
                             <h4 style={{margin: "0"}}>{this.props.user.username}</h4>
                         </PlayerContainer>
                         <div>
-                            <table style={{textAlign: 'left'}}>
+                            <InfoTable>
                                 <tr>
                                     <td style={{width: '55%'}}>
                                         <span style={Colors.textOrange}>User Id : </span>
@@ -169,7 +170,7 @@ class UserInfoBox extends React.Component {
                                             style={this.props.user.status === 'ONLINE' ? Colors.textGreen : Colors.textBlack}>{this.props.user.status}</span>
                                     </td>
                                 </tr>
-                            </table>
+                            </InfoTable>
                         </div>
                     </UserInfoGrid>
                     {this.state.editMode ? (

@@ -60,7 +60,7 @@ class ClueCard extends Component {
   };
 
   render() {
-    if (this.props.gameState.currentGameState == GameStates.SELECT_WORD) {
+    if (this.props.gameState.currentGameState === GameStates.SELECT_WORD) {
       return (
         <CardContainer
           style={{ border: `2px solid ${this.props.borderColor}` }}
@@ -77,7 +77,7 @@ class ClueCard extends Component {
             : { border: `6px solid red` }
         }
       >
-        {this.props.clue.isValid ? this.props.clue.word : ""}
+        {this.props.gameState.currentGameState === GameStates.GUESSING && this.props.clue.isValid ? this.props.clue.word : ""}
       </CardContainer>
     ) : (
       <div>

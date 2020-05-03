@@ -92,6 +92,7 @@ class Gameplay extends Component {
   async runGame() {
     //Check Rounds
     //DEMO: 3 Rounds
+
     if (this.props.gameState.roundNum > 3) {
       this.props.gameClearGame();
       this.props.history.push(`/lobby`);
@@ -108,7 +109,7 @@ class Gameplay extends Component {
 
       //4. Get Clues
       if (
-        this.props.gameState.round.roundNum == this.props.gameState.roundNum
+        this.props.gameState.round.roundNum === this.props.gameState.roundNum
       ) {
         if (this.props.gameState.round.wordCard.selectedWord != null) {
           await this.getClues();
@@ -229,11 +230,11 @@ class Gameplay extends Component {
 
     //Initial
     if (this.props.gameState.currentGameState == null) {
-      if (gameState == GameStates.SELECT_WORD) {
+      if (gameState === GameStates.SELECT_WORD) {
         this.gamePhaseChange(gameState);
       }
     } else {
-      if (gameState != this.props.gameState.currentGameState) {
+      if (gameState !== this.props.gameState.currentGameState) {
         //Phase Change
         console.log("###PHASE CHANGE###");
         this.gamePhaseChange(gameState);
@@ -246,7 +247,7 @@ class Gameplay extends Component {
   gamePhaseChange(gameState) {
     console.log("PhaseChange Timer Reset");
 
-    if (gameState == GameStates.SELECT_WORD) {
+    if (gameState === GameStates.SELECT_WORD) {
       let timeoutFunction = () => {
         const data = {
           gameId: this.props.gameState.gameId,
@@ -266,10 +267,10 @@ class Gameplay extends Component {
       }
     }
 
-    if (gameState == GameStates.WRITE_CLUES) {
+    if (gameState === GameStates.WRITE_CLUES) {
       let timeoutFunction = () => {
         let clue = this.props.gameState.clues.find(
-          (x) => x.ownerId == this.props.gameState.playerId
+          (x) => x.ownerId === this.props.gameState.playerId
         );
         const data = {
           gameId: this.props.gameState.gameId,
@@ -290,7 +291,7 @@ class Gameplay extends Component {
       }
     }
 
-    if (gameState == GameStates.GUESSING) {
+    if (gameState === GameStates.GUESSING) {
       let timeoutFunction = () => {
         const data = {
           gameId: this.props.gameState.gameId,

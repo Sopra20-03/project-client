@@ -34,22 +34,22 @@ class Table extends Component {
 
   createMessage() {
     if (this.props.gameState.role === "GUESSER") {
-      if (this.props.gameState.currentGameState == GameStates.SELECT_WORD)
+      if (this.props.gameState.currentGameState === GameStates.SELECT_WORD)
         return "Please select a word!";
-      if (this.props.gameState.currentGameState == GameStates.WRITE_CLUES)
+      if (this.props.gameState.currentGameState === GameStates.WRITE_CLUES)
         return "Clue writers are writing the clues!";
-      if (this.props.gameState.currentGameState == GameStates.VALIDATE_CLUES)
+      if (this.props.gameState.currentGameState === GameStates.VALIDATE_CLUES)
         return "Clue writers are validating the clues!";
-      if (this.props.gameState.currentGameState == GameStates.GUESSING)
+      if (this.props.gameState.currentGameState === GameStates.GUESSING)
         return "Please submit your guess!";
     } else {
-      if (this.props.gameState.currentGameState == GameStates.SELECT_WORD)
+      if (this.props.gameState.currentGameState === GameStates.SELECT_WORD)
         return "Guesser is selecting a word!";
-      if (this.props.gameState.currentGameState == GameStates.WRITE_CLUES)
+      if (this.props.gameState.currentGameState === GameStates.WRITE_CLUES)
         return "Please submit your clue!";
-      if (this.props.gameState.currentGameState == GameStates.VALIDATE_CLUES)
+      if (this.props.gameState.currentGameState === GameStates.VALIDATE_CLUES)
         return "Please validate the clues!";
-      if (this.props.gameState.currentGameState == GameStates.GUESSING)
+      if (this.props.gameState.currentGameState === GameStates.GUESSING)
         return "Guesser is guessing!";
     }
   }
