@@ -9,7 +9,7 @@ function AllPlayerBoxes(props) {
     (x) => x.userId !== store.getState().gameplayReducer.userId
   );
   let colors = [Colors.blue, Colors.orange, Colors.violet, Colors.green];
-  let icons = ["bird", "butterfly", "owl", "dog"];
+  let icons = ["dog", "butterfly", "owl", "bird"];
 
   return (
     <ContainerRow>
