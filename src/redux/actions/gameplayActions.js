@@ -189,7 +189,7 @@ export const gameGetClues = (data) => async (dispatch) => {
     return null;
   }
   try {
-    if (data.roundNum > 13) {
+    if (data.roundNum > 3) {
       return null;
     }
     const response = await api.get(
