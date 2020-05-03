@@ -1,15 +1,15 @@
-import React from "react";
-import styled from "styled-components";
-import { BaseContainer, LoginContainer } from "../../helpers/layout";
-import { handleError } from "../../helpers/api";
-import { withRouter } from "react-router-dom";
-import Button from "../../views/design/Button";
-import Colors from "../../views/design/Colors";
-import PropTypes from "prop-types";
+import React from 'react';
+import styled from 'styled-components';
+import { BaseContainer, LoginContainer } from '../../helpers/layout';
+import { handleError } from '../../helpers/api';
+import { withRouter } from 'react-router-dom';
+import Button from '../../views/design/Button';
+import Colors from '../../views/design/Colors';
+import PropTypes from 'prop-types';
 //Redux
-import { connect } from "react-redux";
-import { loginUser } from "../../redux/actions/userActions";
-import { LargeLogo } from "../../views/logos/LargeLogo";
+import { connect } from 'react-redux';
+import { loginUser } from '../../redux/actions/userActions';
+import { LargeLogo } from '../../views/logos/LargeLogo';
 
 export const FormContainer = styled.div`
   margin-top: 6em;
@@ -66,10 +66,10 @@ export const TextInput = styled.input`
 
 export const Link = styled.a`
   text-decoration: none;
-
+  transition: .5s;
   &:hover {
-    text-decoration: underline;
-    transition-duration: 1s;
+    font-size: 20px;
+    font-weight: bold;
   }
 `;
 
@@ -83,98 +83,99 @@ export const Link = styled.a`
  * @Class
  */
 class Login extends React.Component {
-  /**
-   * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
-   * The constructor for a React component is called before it is mounted (rendered).
-   * In this case the initial state is defined in the constructor. The state is a JS object containing two fields: name and username
-   * These fields are then handled in the onChange() methods in the resp. InputFields
-   */
-  constructor() {
-    super();
-    this.state = {
-      username: null,
-      password: null,
-    };
-  }
-
-  async login() {
-    try {
-      const formData = new FormData();
-      formData.append("username", this.state.username);
-      formData.append("password", this.state.password);
-
-      await this.props.loginUser(formData);
-
-      this.props.history.push(`/lobby`);
-    } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+    /**
+     * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
+     * The constructor for a React component is called before it is mounted (rendered).
+     * In this case the initial state is defined in the constructor. The state is a JS object containing two fields: name and username
+     * These fields are then handled in the onChange() methods in the resp. InputFields
+     */
+    constructor () {
+        super ();
+        this.state = {
+            username: null,
+            password: null
+        };
     }
-  }
 
-  handleInputChange(key, value) {
-    // Example: if the key is username, this statement is the equivalent to the following one:
-    // this.setState({'username': value});
-    this.setState({ [key]: value });
-  }
+    async login () {
+        try {
+            const formData = new FormData ();
+            formData.append ('username', this.state.username);
+            formData.append ('password', this.state.password);
 
-  /**
-   * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
-   * Initialization that requires DOM nodes should go here.
-   * If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
-   * You may call setState() immediately in componentDidMount().
-   * It will trigger an extra rendering, but it will happen before the browser updates the screen.
-   */
-  componentDidMount() {}
+            await this.props.loginUser (formData);
 
-  render() {
-    return (
-      <BaseContainer>
-        <LargeLogo/>
-        <FormContainer>
-          <LoginContainer>
-            <FormHeader>
-              <span style={Colors.textOrange}>L</span>
-              <span style={Colors.textRed}>o</span>
-              <span style={Colors.textPink}>g</span>
-              <span style={Colors.textViolet}>i</span>
-              <span style={Colors.textBlue}>n </span>
-              <span style={Colors.textGreen}>N</span>
-              <span style={Colors.textYellow}>o</span>
-              <span style={Colors.textBlack}>w</span>
-            </FormHeader>
+            this.props.history.push (`/lobby`);
+        } catch (error) {
+            alert (`Something went wrong during the login: \n${handleError (error)}`);
+        }
+    }
 
-            <TextInput
-              onChange={(e) => {
-                this.handleInputChange("username", e.target.value);
-              }}
-              type="text"
-              placeholder="Username"
-            ></TextInput>
-            <TextInput
-              onChange={(e) => {
-                this.handleInputChange("password", e.target.value);
-              }}
-              type="password"
-              placeholder="Password"
-            ></TextInput>
-            <br></br>
-            <Button
-              disabled={!this.state.username || !this.state.password}
-              onClick={() => {
-                this.login();
-              }}
-            >
-              Login
-            </Button>
-            <br></br>
-            <Link href="/register">
-              Don't have an account yet? Register here!
-            </Link>
-          </LoginContainer>
-        </FormContainer>
-      </BaseContainer>
-    );
-  }
+    handleInputChange (key, value) {
+        // Example: if the key is username, this statement is the equivalent to the following one:
+        // this.setState({'username': value});
+        this.setState ({[key]: value});
+    }
+
+    /**
+     * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
+     * Initialization that requires DOM nodes should go here.
+     * If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
+     * You may call setState() immediately in componentDidMount().
+     * It will trigger an extra rendering, but it will happen before the browser updates the screen.
+     */
+    componentDidMount () {
+    }
+
+    render () {
+        return (
+          <BaseContainer>
+              <LargeLogo/>
+              <FormContainer>
+                  <LoginContainer>
+                      <FormHeader>
+                          <span style={Colors.textOrange}>L</span>
+                          <span style={Colors.textRed}>o</span>
+                          <span style={Colors.textPink}>g</span>
+                          <span style={Colors.textViolet}>i</span>
+                          <span style={Colors.textBlue}>n </span>
+                          <span style={Colors.textGreen}>N</span>
+                          <span style={Colors.textYellow}>o</span>
+                          <span style={Colors.textBlack}>w</span>
+                      </FormHeader>
+
+                      <TextInput
+                        onChange={(e) => {
+                            this.handleInputChange ('username', e.target.value);
+                        }}
+                        type="text"
+                        placeholder="Username"
+                      ></TextInput>
+                      <TextInput
+                        onChange={(e) => {
+                            this.handleInputChange ('password', e.target.value);
+                        }}
+                        type="password"
+                        placeholder="Password"
+                      ></TextInput>
+                      <br></br>
+                      <Button
+                        disabled={!this.state.username || !this.state.password}
+                        onClick={() => {
+                            this.login ();
+                        }}
+                      >
+                          Login
+                      </Button>
+                      <br></br>
+                      <Link href="/register">
+                          Don't have an account yet?<br/> Register here!
+                      </Link>
+                  </LoginContainer>
+              </FormContainer>
+          </BaseContainer>
+        );
+    }
 }
 
 /**
@@ -183,6 +184,6 @@ class Login extends React.Component {
  */
 
 Login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
+    loginUser: PropTypes.func.isRequired
 };
-export default withRouter(connect(null, { loginUser })(Login));
+export default withRouter (connect (null, {loginUser}) (Login));
