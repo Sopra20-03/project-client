@@ -6,6 +6,7 @@ import Colors from "../../views/design/Colors";
 import {handleError} from "../../helpers/api";
 import {connect} from "react-redux";
 import {gameSubmitClue, gameSubmitGuess} from "../../redux/actions/gameplayActions";
+import GameStates from "../../redux/reducers/gameStates";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -107,7 +108,7 @@ class InputField extends Component {
     }
 
     render() {
-        if (this.props.gameState.role === "GUESSER") {
+        if (this.props.gameState.role === "GUESSER" && this.props.gameState.currentGameState === GameStates.GUESSING) {
             return (
                 <div>
                     <WhiteTextField
@@ -125,7 +126,7 @@ class InputField extends Component {
                 />
                 </div>
             );
-        } else {
+        } else if (this.props.gameState.role === "CLUE_WRITER") {
             return (
                 <div>
                     <WhiteTextField
@@ -144,6 +145,8 @@ class InputField extends Component {
                     />
                 </div>
             );
+        } else {
+            return (<div/>);
         }
     }
 }
