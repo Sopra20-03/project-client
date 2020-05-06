@@ -1,130 +1,120 @@
-import React from "react";
-import styled from "styled-components";
-import {BaseContainer, GameContainer} from "../../helpers/layout";
-import {api, handleError} from "../../helpers/api";
-import { withRouter } from "react-router-dom";
-import Button from "../../views/design/Button";
-import Colors from "../../views/design/Colors";
-
+import React from 'react';
+import styled from 'styled-components';
+import { BaseContainer, GameContainer } from '../../helpers/layout';
+import { api, handleError } from '../../helpers/api';
+import { withRouter } from 'react-router-dom';
+import Colors from '../../views/design/Colors';
 //Redux
-import { connect } from "react-redux";
-import {SmallLogo} from "../../views/logos/SmallLogo";
-import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
-import GameHistoryIcon from "../../views/design/Icons/GameHistoryIcon";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
-import GameHistoryTable from "../gameHistory/GameHistoryTable";
-import {ContainerRow} from "../game/Gameplay";
-import PacmanLoader from "react-spinners/PacmanLoader";
-import {getGames} from "../../redux/actions/lobbyActions";
-import UserInfoBox from "./UserInfoBox";
-import LobbyIcon from "../../views/design/Icons/LobbyIcon";
+import { connect } from 'react-redux';
+import { SmallLogo } from '../../views/logos/SmallLogo';
+import LeaderboardIcon from '../../views/design/Icons/LeaderboardIcon';
+import GameHistoryIcon from '../../views/design/Icons/GameHistoryIcon';
+import LogoutIcon from '../../views/design/Icons/LogoutIcon';
+import GameHistoryTable from '../gameHistory/GameHistoryTable';
+import { ContainerRow } from '../game/Gameplay';
+import PacmanLoader from 'react-spinners/PacmanLoader';
+import { getGames } from '../../redux/actions/lobbyActions';
+import UserInfoBox from './UserInfoBox';
+import LobbyIcon from '../../views/design/Icons/LobbyIcon';
+import { BoxHeader } from '../lobby/Lobby';
 
 const Container = styled(BaseContainer)`
-  color: white;
+  color: ${Colors.black};
   text-align: center;
+  margin-bottom: 40px;
 `;
-
-const BoxHeader = styled.div`
-  font-size: 50px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 10px;
-  margin: auto;
-  margin-bottom: 20px;
-`;
-
-
 
 class UserProfile extends React.Component {
-    constructor() {
-        super();
+    constructor () {
+        super ();
         this.state = {
-            userGames: [],
+            userGames: []
         };
     }
 
-    componentDidMount() {
-        this.timer = setInterval(async () => await this.loadGameHistory(), 3000);
+    componentDidMount () {
+        this.timer = setInterval (async () => await this.loadGameHistory (), 3000);
     }
 
-    componentWillUnmount() {
-        clearInterval(this.timer);
+    componentWillUnmount () {
+        clearInterval (this.timer);
     }
 
-    async loadGameHistory() {
+    async loadGameHistory () {
         //1. Get Games
-        await this.getGames();
+        await this.getGames ();
         //2. Filter down to only games this user was a player in
-        this.props.lobbyState.gamesList.map((game) => (
-            this.getPlayers(game)
+        this.props.lobbyState.gamesList.map ((game) => (
+          this.getPlayers (game)
         ));
     }
 
-    async getPlayers(game) {
-        const playerInGame = (p) => p.userId===this.props.userState.user.id;
-        const gameAlreadyInList = this.state.userGames.some(g => game.gameId === g.gameId);
+    async getPlayers (game) {
+        const playerInGame = (p) => p.userId === this.props.userState.user.id;
+        const gameAlreadyInList = this.state.userGames.some (g => game.gameId === g.gameId);
         try {
-            const response = await api.get(`/games/${game.gameId}/players`, {
-                withCredentials: true,
+            const response = await api.get (`/games/${game.gameId}/players`, {
+                withCredentials: true
             });
-            console.log("***API CALL - Get Players*** ");
-            console.log("GameId: ", game.gameId, "PlayerInGame?: ", response.data.some(playerInGame));
-            console.log("GameAlreadyInList: ", gameAlreadyInList);
-            if (response.data.some(playerInGame) && !gameAlreadyInList)
-                this.state.userGames.push(game);
+            console.log ('***API CALL - Get Players*** ');
+            console.log ('GameId: ', game.gameId, 'PlayerInGame?: ', response.data.some (playerInGame));
+            console.log ('GameAlreadyInList: ', gameAlreadyInList);
+            if (response.data.some (playerInGame) && !gameAlreadyInList)
+                this.state.userGames.push (game);
         } catch (error) {
-            alert(`Something went wrong while fetching the players: \n${handleError(error)}`);
+            alert (`Something went wrong while fetching the players: \n${handleError (error)}`);
         }
     }
 
     //getGames
-    async getGames() {
-        console.log("getGames() Game History");
+    async getGames () {
+        console.log ('getGames() Game History');
         try {
-            await this.props.getGames();
+            await this.props.getGames ();
         } catch (error) {
-            alert(
-                `Something went wrong while fetching the games: \n${handleError(error)}`
+            alert (
+              `Something went wrong while fetching the games: \n${handleError (error)}`
             );
         }
     }
 
-
-    render() {
+    render () {
         return (
-            <Container>
-            <GameContainer>
-                <SmallLogo />
-                <BoxHeader>
-                    <span style={Colors.textOrange}>P</span>
-                    <span style={Colors.textRed}>r</span>
-                    <span style={Colors.textPink}>o</span>
-                    <span style={Colors.textViolet}>f</span>
-                    <span style={Colors.textBlue}>i</span>
-                    <span style={Colors.textGreen}>l</span>
-                    <span style={Colors.textYellow}>e</span>
-                    <LobbyIcon />
-                    <LeaderboardIcon />
-                    <GameHistoryIcon />
-                    <LogoutIcon />
-                </BoxHeader>
+          <Container>
+              <GameContainer>
+                  <SmallLogo/>
+                  <BoxHeader>
+                      <span style={Colors.textOrange}>P</span>
+                      <span style={Colors.textRed}>r</span>
+                      <span style={Colors.textPink}>o</span>
+                      <span style={Colors.textViolet}>f</span>
+                      <span style={Colors.textBlue}>i</span>
+                      <span style={Colors.textGreen}>l</span>
+                      <span style={Colors.textYellow}>e</span>
 
-                <UserInfoBox user = {this.props.userState.user}/>
+                      <LobbyIcon/>
+                      <LeaderboardIcon/>
+                      <GameHistoryIcon/>
+                      <LogoutIcon/>
+                  </BoxHeader>
 
-                <h1>Game History</h1>
-                {this.state.userGames.length < 1 ? (
+                  <UserInfoBox user={this.props.userState.user}/>
+
+                  <h1>Game History</h1>
+                  {this.state.userGames.length < 1 ? (
                     <ContainerRow style={{margin: 30}}><PacmanLoader/></ContainerRow>
-                ) : (
+                  ) : (
                     <GameHistoryTable games={this.state.userGames}/>
-                )}
-            </GameContainer>
-            </Container>
+                  )}
+              </GameContainer>
+          </Container>
         );
     }
 }
+
 const mapStateToProps = (state) => ({
     userState: state.userReducer,
-    lobbyState: state.lobbyReducer,
+    lobbyState: state.lobbyReducer
 });
 
-export default withRouter(connect(mapStateToProps, {getGames})(UserProfile));
+export default withRouter (connect (mapStateToProps, {getGames}) (UserProfile));

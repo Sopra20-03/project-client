@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import {BaseContainer} from "../../helpers/layout";
 import {PlayerContainer} from "../game/PlayerBox";
 import Colors from "../../views/design/Colors/Colors";
 import butterfly from '../../views/logos/010-butterfly.png';
@@ -20,6 +21,10 @@ import owl from "../../views/logos/007-owl.png";
 import bee from "../../views/logos/008-bee.png";
 import swan from "../../views/logos/009-swan.png";
 import robot from "../../views/logos/robot.png";
+
+import {api, handleError} from "../../helpers/api";
+import { connect } from "react-redux";
+import {getUserDetails} from "../../redux/actions/userActions";
 
 
 const UserInfoContainer = styled.div`

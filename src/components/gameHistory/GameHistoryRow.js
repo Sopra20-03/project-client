@@ -14,7 +14,7 @@ function GameHistoryRow(props) {
             <TableCell align="center"> {props.game.gameName} </TableCell>
             <TableCell align="center"> {props.game.dateCreated} </TableCell>
             <TableCell align="center"> {props.game.gameMode} </TableCell>
-            <TableCell align="center">{props.score ? props.score : 0} </TableCell>
+            <TableCell align="center">{props.game.score ? props.game.score : 0} </TableCell>
         </TableRow>
     );
 }
