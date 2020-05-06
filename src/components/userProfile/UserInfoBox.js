@@ -5,6 +5,7 @@ import Colors from "../../views/design/Colors/Colors";
 import butterfly from '../../views/logos/010-butterfly.png';
 import Button from "../../views/design/Button";
 import {ContainerRow} from "../game/Gameplay";
+import IconMenu from "./IconMenu";
 import {api, handleError} from "../../helpers/api";
 import { connect } from "react-redux";
 import {getUserDetails} from "../../redux/actions/userActions";
@@ -112,7 +113,7 @@ class UserInfoBox extends React.Component {
     }
 
     chooseIcon() {
-        switch(this.state.icon){
+        switch(this.props.user.icon){
             case "female":
                 return userfemale;
             case "male":
@@ -146,7 +147,7 @@ class UserInfoBox extends React.Component {
         return (
             <ContainerRow>
                 <UserInfoContainer>
-                    <h3>WELCOME {this.props.user.name} !</h3>
+                    <h3 style={{"text-transform": "uppercase"}}>WELCOME {this.props.user.name} !</h3>
                     <UserInfoGrid>
                         <PlayerContainer style={{border: `2px solid ${Colors.blue}`, justifySelf: 'center', margin: 0}}>
                             {<img alt="" src={this.chooseIcon()} height="60rem" width="50rem"/>}
@@ -196,9 +197,12 @@ class UserInfoBox extends React.Component {
                                     </td>
                                     <td>
                                         {this.state.editMode ? (
+                                            <div>
                                             <ProfileTextInput onChange={e => {
                                                 this.handleInputChange('icon', e.target.value);
                                             }} type='text' placeholder='Icon' defaultValue={this.state.icon}></ProfileTextInput>
+                                            <IconMenu/>
+                                            </div>
                                         ) : (
                                             this.state.icon
                                         )}
