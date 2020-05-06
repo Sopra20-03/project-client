@@ -9,8 +9,8 @@ function LeaderboardRow(props) {
                 {" "}{props.rank}{" "}
             </TableCell>
             <TableCell align="center"> {props.user.username} </TableCell>
-            <TableCell align="center"> {props.user.dateCreated} </TableCell>
-            <TableCell align="center">{props.user.score ? props.user.score : 0} </TableCell>
+            <TableCell align="center"> {props.user.nrOfPlayedGames} </TableCell>
+            <TableCell align="center">{props.user.totalGameScore ? props.user.totalGameScore : 0} </TableCell>
         </TableRow>
     );
 }
