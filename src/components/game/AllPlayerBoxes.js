@@ -9,7 +9,6 @@ function AllPlayerBoxes(props) {
     (x) => x.userId !== store.getState().gameplayReducer.userId
   );
   let colors = [Colors.blue, Colors.orange, Colors.violet, Colors.green];
-  let icons = ["dog", "butterfly", "owl", "bird"];
 
   return (
     <ContainerRow>
@@ -17,7 +16,7 @@ function AllPlayerBoxes(props) {
         <PlayerBox
           key={colors[index]}
           userName={players[index] ? players[index].userName : "Bot"}
-          icon={players[index] ? icons[index] : "bot"}
+          icon={players[index] ? props.icons[index] : "bot"}
           borderColor={color}
         />
       ))}
