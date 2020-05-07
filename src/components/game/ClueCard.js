@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import styled from "styled-components";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import { FormControlLabel } from "@material-ui/core";
-import Radio from "@material-ui/core/Radio";
-import FormControl from "@material-ui/core/FormControl";
-import { connect } from "react-redux";
-import { api, handleError } from "../../helpers/api";
-import GameStates from "../../redux/reducers/gameStates";
-import SquareLoader from "react-spinners/SquareLoader";
+import styled from 'styled-components';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import { FormControlLabel } from '@material-ui/core';
+import Radio from '@material-ui/core/Radio';
+import FormControl from '@material-ui/core/FormControl';
+import { connect } from 'react-redux';
+import { api, handleError } from '../../helpers/api';
+import GameStates from '../../redux/reducers/gameStates';
+import { ScaleLoader } from 'react-spinners';
 
 export const CardContainer = styled.div`
   background-color: white;
@@ -65,7 +65,7 @@ class ClueCard extends Component {
         <CardContainer
           style={{ border: `2px solid ${this.props.borderColor}` }}
         >
-          <SquareLoader color={this.props.borderColor} />
+          <ScaleLoader color={this.props.borderColor} />
         </CardContainer>
       );
     }
