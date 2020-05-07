@@ -16,6 +16,7 @@ import LeaderboardIcon from '../../views/design/Icons/LeaderboardIcon';
 import { ContainerRow } from '../game/Gameplay';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 import LobbyIcon from '../../views/design/Icons/LobbyIcon';
+import Grid from '@material-ui/core/Grid';
 
 const Container = styled (BaseContainer)`
   color: white;
@@ -23,16 +24,17 @@ const Container = styled (BaseContainer)`
 `;
 
 export const BoxHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  font-size: 50px;
+  font-size: 3.2em;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 10px;
+  letter-spacing: 0.25em;
   margin-left: 50px;
-  margin-bottom: 20px;
 `;
+
+const WelcomeMessage = styled.h2`
+    letter-spacing: 0.1em;
+    font-size: 2em
+`
 
 class Lobby extends React.Component {
     constructor () {
@@ -98,21 +100,56 @@ class Lobby extends React.Component {
           <Container>
               <GameContainer>
                   <SmallLogo/>
-                  <BoxHeader>
-                      <span style={Colors.textOrange}>G</span>
-                      <span style={Colors.textRed}>a</span>
-                      <span style={Colors.textPink}>m</span>
-                      <span style={Colors.textViolet}>e </span>
-                      <span style={Colors.textBlue}>L</span>
-                      <span style={Colors.textGreen}>o</span>
-                      <span style={Colors.textYellow}>b</span>
-                      <span style={Colors.textBlack}>b</span>
-                      <span style={Colors.textOrange}>y</span>
-                      <LobbyIcon/>
-                      <LeaderboardIcon/>
-                      <ProfileIcon/>
-                      <LogoutIcon/>
-                  </BoxHeader>
+                  <Grid container
+                        justify={'center'}>
+                      <Grid item sm={8} md={8} lg={8}>
+                          <BoxHeader>
+                              <span style={Colors.textOrange}>G</span>
+                              <span style={Colors.textRed}>a</span>
+                              <span style={Colors.textPink}>m</span>
+                              <span style={Colors.textViolet}>e </span>
+                              <span style={Colors.textBlue}>L</span>
+                              <span style={Colors.textGreen}>o</span>
+                              <span style={Colors.textYellow}>b</span>
+                              <span style={Colors.textBlack}>b</span>
+                              <span style={Colors.textOrange}>y</span>
+                          </BoxHeader>
+                      </Grid>
+                      <Grid item sm={4}>
+                          <Grid
+                            container
+                            alignItems="center"
+                            justify={'center'}>
+                              <Grid item>
+                                  <LobbyIcon/>
+                              </Grid>
+                              <Grid item>
+                                  <LeaderboardIcon/>
+                              </Grid>
+                              <Grid item>
+                                  <ProfileIcon/>
+                              </Grid>
+                              <Grid item>
+                                  <LogoutIcon/>
+                              </Grid>
+                          </Grid>
+                      </Grid>
+                  </Grid>
+                      <Grid item>
+                          <WelcomeMessage>
+                              <span style={Colors.textOrange}>W</span>
+                              <span style={Colors.textRed}>e</span>
+                              <span style={Colors.textPink}>l</span>
+                              <span style={Colors.textViolet}>c</span>
+                              <span style={Colors.textBlue}>o</span>
+                              <span style={Colors.textGreen}>m</span>
+                              <span style={Colors.textYellow}>e</span>
+                              <span style={Colors.textBlack}>, </span>
+                              <span style={Colors.textBlack}>{this.props.userState.user.name}</span>
+                          <span style={Colors.textOrange}>!</span>
+                          </WelcomeMessage>
+                  </Grid>
+
                   {this.props.lobbyState.gamesList.length < 1 ? (
                     <ContainerRow style={{margin: 30}}>
                         <PacmanLoader color={'#00a4ea'}/>
@@ -155,7 +192,8 @@ class Lobby extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    lobbyState: state.lobbyReducer
+    lobbyState: state.lobbyReducer,
+    userState: state.userReducer
 });
 
 export default withRouter (
