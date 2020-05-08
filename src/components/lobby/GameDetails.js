@@ -46,6 +46,7 @@ const useStyles = (theme) => ({
     color: "#000000",
     fontSize: "16px",
     borderRadius: "5px",
+    height: "40px",
   },
   formControlName: {
     margin: theme.spacing(2),
@@ -165,16 +166,15 @@ class GameDetails extends React.Component {
             <div className={classes.margin}>
               <HashLoader size={70} color={Colors.blue} />
             </div>
-            <TextField
-              style={{ textAlign: "center" }}
-              className={classes.formControlName}
-              id="outlined-basic"
-              label="Game Name"
-              variant="outlined"
+
+            <TextInput
+              style={{ width: "510px" }}
               onChange={(e) => {
                 this.handleInputChange("gameName", e.target.value);
               }}
-            />
+              type="text"
+              placeholder="Game Name"
+            ></TextInput>
 
             <div className={classes.row}>
               <FormControl variant="outlined" className={classes.formControl}>
@@ -266,3 +266,16 @@ export default withRouter(
     connect(null, { createGame, joinGame, logoutUser })(GameDetails)
   )
 );
+
+/*
+<TextField
+              style={{ textAlign: "center" }}
+              className={classes.formControlName}
+              id="outlined-basic"
+              label="Game Name"
+              variant="outlined"
+              onChange={(e) => {
+                this.handleInputChange("gameName", e.target.value);
+              }}
+            />
+*/
