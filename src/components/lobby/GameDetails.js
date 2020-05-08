@@ -242,7 +242,7 @@ class GameDetails extends React.Component {
               </FormControl>
             </div>
             <Button
-              style={{ height: "56px" }}
+              style={{ height: "40px" }}
               onClick={() => {
                 this.createGame();
               }}
