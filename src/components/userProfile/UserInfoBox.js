@@ -83,7 +83,7 @@ class UserInfoBox extends React.Component {
         this.setState({
             name: this.props.user.name,
             username: this.props.user.username,
-            icon: this.props.user.icon
+            icon: this.props.user.icon ? this.props.user.icon : "male"
         })
     }
 
@@ -139,7 +139,7 @@ class UserInfoBox extends React.Component {
             case "butterfly":
                 return butterfly;
             default:
-                return robot;
+                return usermale;
         }
     }
 
@@ -197,12 +197,9 @@ class UserInfoBox extends React.Component {
                                     </td>
                                     <td>
                                         {this.state.editMode ? (
-                                            <div>
-                                            <ProfileTextInput onChange={e => {
+                                            <IconMenu initialIcon={this.state.icon} handleIconSelect={e => {
                                                 this.handleInputChange('icon', e.target.value);
-                                            }} type='text' placeholder='Icon' defaultValue={this.state.icon}></ProfileTextInput>
-                                            <IconMenu/>
-                                            </div>
+                                            }}/>
                                         ) : (
                                             this.state.icon
                                         )}

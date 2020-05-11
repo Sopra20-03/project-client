@@ -1,6 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import userfemale from "../../views/logos/user_female.png";
 import usermale from "../../views/logos/user_male.png";
@@ -14,74 +12,67 @@ import owl from "../../views/logos/007-owl.png";
 import bee from "../../views/logos/008-bee.png";
 import swan from "../../views/logos/009-swan.png";
 import butterfly from "../../views/logos/010-butterfly.png";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
 
-export default function IconMenu() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+export default function IconMenu(props) {
+    const [icon, setIcon] = React.useState(props.initialIcon);
 
-    const handleClickItem = (event, index) => {
-        setSelectedIndex(index);
-        setAnchorEl(null);
-        handleClose();
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
+    const handleChange = (event) => {
+        setIcon(event.target.value);
+        props.handleIconSelect(event);
     };
 
     return (
         <div>
-            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                Icons
-            </Button>
-            <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
+            <FormControl>
+            <InputLabel id="simple-select-label"/>
+            <Select
+                labelId="simple-select-label"
+                id="simple-select"
+                value={icon}
+                onChange={handleChange}
             >
-                <MenuItem onClick={handleClickItem}>
-                    <img alt="" src={swan} height="60rem" width="50rem"/>
-                </MenuItem>
-                <MenuItem onClick={handleClickItem}>
-                <img alt="" src={dog} height="60rem" width="50rem"/>
-            </MenuItem>
-                <MenuItem onClick={handleClickItem}>
-                    <img alt="" src={cat} height="60rem" width="50rem"/>
-                </MenuItem>
-                <MenuItem onClick={handleClickItem}>
-                    <img alt="" src={fish} height="60rem" width="50rem"/>
-                </MenuItem>
-                <MenuItem onClick={handleClickItem}>
-                    <img alt="" src={bird} height="60rem" width="50rem"/>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <img alt="" src={bee} height="60rem" width="50rem"/>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <img alt="" src={owl} height="60rem" width="50rem"/>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <img alt="" src={hen} height="60rem" width="50rem"/>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <img alt="" src={butterfly} height="60rem" width="50rem"/>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <img alt="" src={iguana} height="60rem" width="50rem"/>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <img alt="" src={userfemale} height="60rem" width="50rem"/>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <img alt="" src={usermale} height="60rem" width="50rem"/>
-                </MenuItem>
-            </Menu>
+                    <MenuItem value="swan">
+                        <img alt="" src={swan} height="60rem" width="50rem"/>
+                    </MenuItem>
+                    <MenuItem value="dog">
+                        <img alt="" src={dog} height="60rem" width="50rem"/>
+                    </MenuItem>
+                    <MenuItem value="cat">
+                        <img alt="" src={cat} height="60rem" width="50rem"/>
+                    </MenuItem>
+                    <MenuItem value="fish">
+                        <img alt="" src={fish} height="60rem" width="50rem"/>
+                    </MenuItem>
+                    <MenuItem value="bird">
+                        <img alt="" src={bird} height="60rem" width="50rem"/>
+                    </MenuItem>
+                    <MenuItem value="bee">
+                        <img alt="" src={bee} height="60rem" width="50rem"/>
+                    </MenuItem>
+                    <MenuItem value="owl">
+                        <img alt="" src={owl} height="60rem" width="50rem"/>
+                    </MenuItem>
+                    <MenuItem value="hen">
+                        <img alt="" src={hen} height="60rem" width="50rem"/>
+                    </MenuItem>
+                    <MenuItem value="butterfly">
+                        <img alt="" src={butterfly} height="60rem" width="50rem"/>
+                    </MenuItem>
+                    <MenuItem value="iguana">
+                        <img alt="" src={iguana} height="60rem" width="50rem"/>
+                    </MenuItem>
+                    <MenuItem value="female">
+                        <img alt="" src={userfemale} height="60rem" width="50rem"/>
+                    </MenuItem>
+                    <MenuItem value="male">
+                        <img alt="" src={usermale} height="60rem" width="50rem"/>
+                    </MenuItem>
+            </Select>
+        </FormControl>
         </div>
     );
 }
