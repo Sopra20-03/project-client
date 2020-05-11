@@ -22,6 +22,12 @@ class Register extends React.Component {
         }
     }
 
+    onEnterPress = (event) => {
+        if (event.key === 'Enter') {
+            this.register();
+        }
+    };
+
     async register () {
         try {
             const requestBody = {
@@ -66,7 +72,8 @@ class Register extends React.Component {
                       }} type='text' placeholder='Username'></TextInput>
                       <TextInput onChange={e => {
                           this.handleInputChange ('password', e.target.value);
-                      }} type='password' placeholder='Password'></TextInput>
+                      }} type='password' placeholder='Password' onKeyPress={this.onEnterPress}
+                      ></TextInput>
                       <br></br>
                       <Button
                         disabled={!this.state.name || !this.state.username || !this.state.password}

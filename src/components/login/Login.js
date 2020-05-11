@@ -97,7 +97,13 @@ class Login extends React.Component {
         };
     }
 
-    async login () {
+    onEnterPress = (event) => {
+            if (event.key === 'Enter') {
+                this.login();
+            }
+    };
+
+    login = async() => {
         try {
             const formData = new FormData ();
             formData.append ('username', this.state.username);
@@ -109,7 +115,7 @@ class Login extends React.Component {
         } catch (error) {
             alert (`Something went wrong during the login: \n${handleError (error)}`);
         }
-    }
+    };
 
     handleInputChange (key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
@@ -157,13 +163,12 @@ class Login extends React.Component {
                         }}
                         type="password"
                         placeholder="Password"
+                        onKeyPress={this.onEnterPress}
                       ></TextInput>
                       <br></br>
                       <Button
                         disabled={!this.state.username || !this.state.password}
-                        onClick={() => {
-                            this.login ();
-                        }}
+                        onClick={this.login}
                       >
                           Login
                       </Button>

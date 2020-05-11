@@ -45,11 +45,11 @@ function GameRow(props) {
       </LeaveButton>
     );
   } else if (gameChosen) {
-    rowButton = <PlayButton disabled>Join Game</PlayButton>;
+    rowButton = <PlayButton disabled>Join</PlayButton>;
   } else {
     rowButton = (
       <PlayButton onClick={() => props.onJoinGame(props.game.gameId)}>
-        Join Game
+        Join
       </PlayButton>
     );
   }

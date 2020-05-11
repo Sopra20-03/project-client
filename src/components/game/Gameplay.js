@@ -8,7 +8,7 @@ import { BaseContainer, GameContainer } from "../../helpers/layout";
 import AllPlayerBoxes from "./AllPlayerBoxes";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 import { withRouter } from "react-router-dom";
-import { handleError } from "../../helpers/api";
+import {api, handleError} from "../../helpers/api";
 import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 import GameStates from "../../redux/reducers/gameStates";
 //Redux
@@ -30,7 +30,6 @@ import {
   gameSubmitGuess,
   timerClear,
 } from "../../redux/actions/gameplayActions";
-import Button from "@material-ui/core/Button";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -57,6 +56,7 @@ class Gameplay extends Component {
     super(props);
     this.state = {
       showRolePopup: false,
+      icons: [],
     };
   }
 
@@ -98,8 +98,10 @@ class Gameplay extends Component {
       this.props.history.push(`/lobby`);
       return;
     } else {
-      //1. Get Players
+      //1. Get Players and icons
       await this.getPlayers();
+      if (this.props.gameState.gamePlayers && this.props.gameState.gamePlayers.length > 0)
+        await this.getPlayerUserDetails();
 
       //2. Update Role for each round
       await this.playerUpdateRole();
@@ -137,6 +139,27 @@ class Gameplay extends Component {
         )}`
       );
     }
+  }
+
+  async getPlayerUserDetails() {
+    let icons = ["dog", "butterfly", "owl", "bird"];
+    let players = this.props.gameState.gamePlayers.filter(
+        (x) => x.userId !== this.props.gameState.userId
+    );
+    try{
+      for (let i=0; i<players.length; i++){
+        const player = players[i];
+        const icon = await api.get(`/users/${player.userId}`, {
+          withCredentials: true,
+        }).then(res => res.data.icon);
+        if (icon) icons[i] = icon;
+      }
+      this.setState({icons: icons});
+    }
+    catch (error) {
+      alert(handleError(error));
+    }
+    console.log("Player Icons: ", icons);
   }
 
   async getGame() {
@@ -318,7 +341,7 @@ class Gameplay extends Component {
             <SmallLogo />
             <LogoutIcon />
             <div></div>
-            <AllPlayerBoxes players={this.props.gameState.gamePlayers} />
+            <AllPlayerBoxes players={this.props.gameState.gamePlayers} icons={this.state.icons} />
 
             <TableContainer>
               <Table
