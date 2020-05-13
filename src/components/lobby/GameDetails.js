@@ -13,14 +13,10 @@ import { createGame, joinGame } from "../../redux/actions/lobbyActions";
 import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
 
-import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import InputBase from "@material-ui/core/InputBase";
 import HashLoader from "react-spinners/HashLoader";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -89,7 +85,8 @@ class GameDetails extends React.Component {
     try {
       const requestBody = {
         gameName: this.state.gameName,
-        //gameMode: this.state.gameMode,
+        gameMode: this.state.gameMode,
+        botMode: this.state.botMode,
         creatorUsername: store.getState().userReducer.user.username,
       };
       await this.props.createGame(requestBody);
@@ -193,8 +190,8 @@ class GameDetails extends React.Component {
                   <MenuItem value={null}>
                     <em>Select</em>
                   </MenuItem>
-                  <MenuItem value={"normal"}>Normal</MenuItem>
-                  <MenuItem value={"rival"}>Rival</MenuItem>
+                  <MenuItem value={"STANDARD"}>Normal</MenuItem>
+                  <MenuItem value={"RIVAL"}>Rival</MenuItem>
                 </Select>
               </FormControl>
 
@@ -214,8 +211,8 @@ class GameDetails extends React.Component {
                   <MenuItem value={null}>
                     <em>Select</em>
                   </MenuItem>
-                  <MenuItem value={"friendly"}>Friendly</MenuItem>
-                  <MenuItem value={"malicious"}>Malicious</MenuItem>
+                  <MenuItem value={"FRIENDLY"}>Friendly</MenuItem>
+                  <MenuItem value={"MALICIOUS"}>Malicious</MenuItem>
                 </Select>
               </FormControl>
 
