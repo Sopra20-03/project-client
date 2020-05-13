@@ -89,7 +89,7 @@ class GameDetails extends React.Component {
     try {
       const requestBody = {
         gameName: this.state.gameName,
-        gameMode: this.state.gameMode,
+        //gameMode: this.state.gameMode,
         creatorUsername: store.getState().userReducer.user.username,
       };
       await this.props.createGame(requestBody);
