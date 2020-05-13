@@ -26,8 +26,8 @@ class LeaderboardTable extends React.Component {
             <TableRow>
               <TableCell align="center">Ranking</TableCell>
               <TableCell align="center">Username</TableCell>
-              <TableCell align="center">Join Date</TableCell>
-              <TableCell align="center">Score</TableCell>
+              <TableCell align="center"># Games Played</TableCell>
+              <TableCell align="center">Team Score</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

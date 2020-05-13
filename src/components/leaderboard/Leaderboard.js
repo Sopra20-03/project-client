@@ -40,7 +40,7 @@ class Leaderboard extends React.Component {
         console.log ('***API CALL - GET USERS***');
         try {
             const response = await api.get ('/users', {withCredentials: true});
-            this.setState ({sortedUsers: response.data.sort ((a, b) => a.id < b.id)});
+            this.setState ({sortedUsers: response.data.sort((a, b) => b.totalGameScore - a.totalGameScore)});
             console.log ('Sorted users: ', this.state.sortedUsers);
         } catch (error) {
             alert (

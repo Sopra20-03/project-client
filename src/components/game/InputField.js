@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {fade, makeStyles,} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-import Colors from "../../views/design/Colors";
 import {handleError} from "../../helpers/api";
 import {connect} from "react-redux";
 import {gameSubmitClue, gameSubmitGuess} from "../../redux/actions/gameplayActions";
 import GameStates from "../../redux/reducers/gameStates";
+import SubmitIcon from "../../views/design/Icons/SubmitIcon";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,11 +50,8 @@ function Guesser(props) {
     }
 
     return (
-        <CheckCircleOutlineIcon
-            style={{fontSize: 60, color: Colors.green}}
-            onClick={() => {
-                submitGuess();
-            }}
+        <SubmitIcon
+            handleSubmit={submitGuess}
         />
     );
 }
@@ -81,11 +77,8 @@ function ClueWriter(props) {
     }
 
     return (
-        <CheckCircleOutlineIcon
-            style={{fontSize: 60, color: Colors.green}}
-            onClick={() => {
-                submitClue();
-            }}
+        <SubmitIcon
+            handleSubmit={submitClue}
         />
     );
 }

@@ -1,11 +1,9 @@
-import React, { Component } from "react";
-import AppRouter from "./components/shared/routers/AppRouter";
-import Register from "./components/login/Register";
+import React, { Component } from 'react';
+import AppRouter from './components/shared/routers/AppRouter';
 //Redux
-import { store } from "./store";
-import { persistor } from "./store";
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/lib/integration/react";
+import { persistor, store } from './store';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/lib/integration/react';
 
 /**
  * React Template by Lucas Pelloni

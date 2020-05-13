@@ -5,9 +5,22 @@ import Colors from "../../views/design/Colors/Colors";
 import butterfly from '../../views/logos/010-butterfly.png';
 import Button from "../../views/design/Button";
 import {ContainerRow} from "../game/Gameplay";
+import IconMenu from "./IconMenu";
 import {api, handleError} from "../../helpers/api";
 import { connect } from "react-redux";
 import {getUserDetails} from "../../redux/actions/userActions";
+import userfemale from "../../views/logos/user_female.png";
+import usermale from "../../views/logos/user_male.png";
+import bird from "../../views/logos/001-bird.png";
+import dog from "../../views/logos/002-dog.png";
+import cat from "../../views/logos/003-cat.png";
+import fish from "../../views/logos/004-clown-fish.png";
+import iguana from "../../views/logos/005-iguana.png";
+import hen from "../../views/logos/006-hen.png";
+import owl from "../../views/logos/007-owl.png";
+import bee from "../../views/logos/008-bee.png";
+import swan from "../../views/logos/009-swan.png";
+import robot from "../../views/logos/robot.png";
 
 
 const UserInfoContainer = styled.div`
@@ -16,7 +29,7 @@ const UserInfoContainer = styled.div`
   border-radius: 5px 5px 5px 5px;
   padding: 10px;
   position: relative;
-  width: 40%;
+  width: 50%;
   border: 2px solid ${Colors.black};
 `;
 
@@ -70,7 +83,7 @@ class UserInfoBox extends React.Component {
         this.setState({
             name: this.props.user.name,
             username: this.props.user.username,
-            icon: "butterfly"
+            icon: this.props.user.icon ? this.props.user.icon : "male"
         })
     }
 
@@ -99,14 +112,45 @@ class UserInfoBox extends React.Component {
         this.setState({[key]: value});
     }
 
+    chooseIcon() {
+        switch(this.props.user.icon){
+            case "female":
+                return userfemale;
+            case "male":
+                return usermale;
+            case "bird":
+                return bird;
+            case "dog":
+                return dog;
+            case "cat":
+                return cat;
+            case "fish":
+                return fish;
+            case "iguana":
+                return iguana;
+            case "hen":
+                return hen;
+            case "owl":
+                return owl;
+            case "bee":
+                return bee;
+            case "swan":
+                return swan;
+            case "butterfly":
+                return butterfly;
+            default:
+                return usermale;
+        }
+    }
+
     render() {
         return (
             <ContainerRow>
                 <UserInfoContainer>
-                    <h3>WELCOME {this.props.user.name} !</h3>
+                    <h3 style={{"text-transform": "uppercase"}}>WELCOME {this.props.user.name} !</h3>
                     <UserInfoGrid>
                         <PlayerContainer style={{border: `2px solid ${Colors.blue}`, justifySelf: 'center', margin: 0}}>
-                            {<img alt="" src={butterfly} height="60rem" width="50rem"/>}
+                            {<img alt="" src={this.chooseIcon()} height="60rem" width="50rem"/>}
                             <h4 style={{margin: "0"}}>{this.props.user.username}</h4>
                         </PlayerContainer>
                         <div>
@@ -153,9 +197,9 @@ class UserInfoBox extends React.Component {
                                     </td>
                                     <td>
                                         {this.state.editMode ? (
-                                            <ProfileTextInput onChange={e => {
+                                            <IconMenu initialIcon={this.state.icon} handleIconSelect={e => {
                                                 this.handleInputChange('icon', e.target.value);
-                                            }} type='text' placeholder='Icon' defaultValue={this.state.icon}></ProfileTextInput>
+                                            }}/>
                                         ) : (
                                             this.state.icon
                                         )}
