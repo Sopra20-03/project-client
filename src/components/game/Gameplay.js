@@ -12,6 +12,8 @@ import { api, handleError } from "../../helpers/api";
 import Button from "@material-ui/core/Button";
 import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 import GameStates from "../../redux/reducers/gameStates";
+
+import RoundMessage from "./RoundMessage";
 //Redux
 import { connect } from "react-redux";
 import {
@@ -58,7 +60,18 @@ class Gameplay extends Component {
     this.state = {
       showRolePopup: false,
       icons: [],
+      infoBox: {
+        selectedWord: null,
+        userClue: null,
+        score: null,
+        guess: null,
+        mode: "round",
+        result: "success",
+        role: null,
+      },
     };
+
+    this.RoundMessageElement = React.createRef();
   }
 
   toggleRolePopup() {
@@ -103,11 +116,11 @@ class Gameplay extends Component {
     //DEMO: 3 Rounds
 
     if (this.props.gameState.roundNum > 3) {
-      alert("Game Over");
-      this.props.gameClearGame();
-      this.props.history.push(`/lobby`);
+      this.stopPolling();
       return;
     } else {
+      //3. Get Round
+      await this.getRound();
       //1. Get Players and icons
       await this.getPlayers();
       if (
@@ -115,12 +128,6 @@ class Gameplay extends Component {
         this.props.gameState.gamePlayers.length > 0
       )
         await this.getPlayerUserDetails();
-
-      //2. Update Role for each round
-      await this.playerUpdateRole();
-
-      //3. Get Round
-      await this.getRound();
 
       //4. Get Clues
       if (
@@ -215,19 +222,87 @@ class Gameplay extends Component {
     }
   }
 
+  gameOver() {
+    //Get Details
+    let pScore = this.props.gameState.score;
+    this.setState({
+      ...this.state,
+      infoBox: {
+        ...this.state.infoBox,
+        mode: "game",
+      },
+    });
+    //Display Message
+    this.RoundMessageElement.current.handleState(true);
+    setTimeout(() => {
+      this.RoundMessageElement.current.handleState(false);
+      //Clear State
+
+      setTimeout(() => {
+        //Push to Lobby
+        this.stopPolling();
+        this.props.gameClearGame();
+        this.props.history.push(`/lobby`);
+      }, 2000);
+    }, 10000);
+  }
+
+  roundOver(role, clues, word) {
+    //Get Details
+    //TODO Check Success
+    //TODO Check Points
+    let pUserClue = null;
+    if (role === "GUESSER") {
+      pUserClue = null;
+    } else {
+      pUserClue = clues.find(
+        (x) => x.ownerId === this.props.gameState.playerId
+      );
+      if (pUserClue != null) {
+        pUserClue = pUserClue.word;
+      }
+    }
+    let pScore = this.props.gameState.score;
+    let pResult = "success";
+    this.setState({
+      infoBox: {
+        selectedWord: word,
+        userClue: pUserClue,
+        score: pScore,
+        mode: "round",
+        result: pResult,
+        role: this.props.gameState.role,
+      },
+    });
+    //Display Message
+    this.RoundMessageElement.current.handleState(true);
+    setTimeout(() => {
+      this.RoundMessageElement.current.handleState(false);
+    }, 5000);
+  }
+
   async getRound() {
     //if round is over, advance to next round
     if (
       this.props.gameState.round &&
       this.props.gameState.round.roundStatus === "FINISHED"
     ) {
-      this.stopPolling();
-      this.props.timerStop();
-      alert("Round Finished");
-      this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
+      this.roundOver(
+        this.props.gameState.role,
+        this.props.gameState.clues,
+        this.props.gameState.round.wordCard.selectedWord
+      );
+      //Update Round
+      if (this.props.gameState.roundNum < 3) {
+        this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
+      } else {
+        this.stopPolling();
+        setTimeout(() => {
+          this.gameOver();
+        }, 6000);
+      }
     }
     // get round details
-
     try {
       const data = {
         gameId: this.props.gameState.gameId,
@@ -239,6 +314,9 @@ class Gameplay extends Component {
         `Something went wrong while fetching the round: \n${handleError(error)}`
       );
     }
+
+    //2. Update Role for each round
+    await this.playerUpdateRole();
   }
 
   async getClues() {
@@ -376,6 +454,8 @@ class Gameplay extends Component {
               color="primary"
               onClick={() => {
                 this.stopPolling();
+
+                this.props.timerClear();
               }}
             >
               Stop Polling
@@ -391,6 +471,19 @@ class Gameplay extends Component {
               Start Polling
             </Button>
 
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.RoundMessageElement.current.handleState(true);
+                setTimeout(() => {
+                  this.RoundMessageElement.current.handleState(false);
+                }, 5000);
+              }}
+            >
+              Show Dialog
+            </Button>
+
             <InfoContainer>
               <PointsInfo
                 score={
@@ -402,6 +495,17 @@ class Gameplay extends Component {
             </InfoContainer>
           </GameContainer>
         </BaseContainer>
+
+        <RoundMessage
+          ref={this.RoundMessageElement}
+          mode={this.state.infoBox.mode}
+          result={this.state.infoBox.result}
+          guess={this.state.infoBox.guess}
+          score={this.state.infoBox.score}
+          userClue={this.state.infoBox.userClue}
+          selectedWord={this.state.infoBox.selectedWord}
+          playerrole={this.state.infoBox.role}
+        />
       </div>
     );
   }

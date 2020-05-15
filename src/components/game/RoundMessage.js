@@ -1,9 +1,6 @@
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import SportsEsportsIcon from "@material-ui/icons/SportsEsports";
 
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
@@ -46,13 +43,15 @@ class RoundMessage extends Component {
   }
 
   handleState(bool) {
-    this.setState({ open: bool });
+    this.setState({
+      open: bool,
+    });
   }
 
   render() {
     const { classes } = this.props;
 
-    if (this.props.mode === "ROUND") {
+    if (this.props.mode === "round") {
       return (
         <div>
           <Dialog
@@ -87,7 +86,7 @@ class RoundMessage extends Component {
                     </div>
                     <div className={classes.row}>
                       <h1 style={Colors.textGreen}>
-                        Points: {this.props.points}
+                        Points: {this.props.score}
                       </h1>
                     </div>
                   </div>
@@ -99,9 +98,7 @@ class RoundMessage extends Component {
                       />
                     </div>
                     <div className={classes.row}>
-                      <h1 style={Colors.textRed}>
-                        Points: {this.props.points}
-                      </h1>
+                      <h1 style={Colors.textRed}>Points: {this.props.score}</h1>
                     </div>
                   </div>
                 )}
@@ -109,12 +106,23 @@ class RoundMessage extends Component {
                 <div className={classes.row}>
                   <h2>Word: {this.props.word}</h2>
                 </div>
-                <div className={classes.row}>
-                  <h2>Your Clue: {this.props.userClue}</h2>
-                </div>
-                <div className={classes.row}>
-                  <h2>Guesser's Guess: {this.props.guess}</h2>
-                </div>
+
+                {this.props.playerrole === "CLUE_WRITER" ? (
+                  <div className={classes.col}>
+                    <div className={classes.row}>
+                      <h2>Your Clue: {this.props.userClue}</h2>
+                    </div>
+                    <div className={classes.row}>
+                      <h2>Guesser's Guess: {this.props.guess}</h2>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={classes.col}>
+                    <div className={classes.row}>
+                      <h2>Your Guess: {this.props.guess}</h2>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <DialogActions>
@@ -163,7 +171,7 @@ class RoundMessage extends Component {
                   <Confetti />
                 </div>
                 <div className={classes.row}>
-                  <h1 style={Colors.textGreen}>Points: {this.props.points}</h1>
+                  <h1 style={Colors.textGreen}>Points: {this.props.score}</h1>
                 </div>
 
                 <div className={classes.row}>
