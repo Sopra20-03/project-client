@@ -8,7 +8,16 @@ import {
 } from "../redux/actions/gameplayActions";
 import { withRouter } from "react-router-dom";
 
+import RoundMessage from "./game/RoundMessage";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+
 class Test extends Component {
+  constructor(props) {
+    super(props);
+    this.RoundMessageElement = React.createRef();
+  }
+
   render() {
     return (
       <div>
@@ -38,6 +47,24 @@ class Test extends Component {
         >
           Timer Clear
         </button>
+
+        <button
+          onClick={() => {
+            this.RoundMessageElement.current.handleState(true);
+          }}
+        >
+          Show Dialog
+        </button>
+
+        <RoundMessage
+          ref={this.RoundMessageElement}
+          mode="GAME"
+          result="success"
+          word="test"
+          points="test"
+          userClue="test"
+          guess="test"
+        />
       </div>
     );
   }

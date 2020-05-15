@@ -3,7 +3,7 @@ import { FormHeader, TextInput } from "../login/Login";
 import { BaseContainer, GameContainer } from "../../helpers/layout";
 import { handleError } from "../../helpers/api";
 import { withRouter } from "react-router-dom";
-import Button from "../../views/design/Button";
+//import Button from "../../views/design/Button";
 import Colors from "../../views/design/Colors";
 //Redux
 import { connect } from "react-redux";
@@ -19,7 +19,10 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import HashLoader from "react-spinners/HashLoader";
 
+import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
+
+import Button from "@material-ui/core/Button";
 
 const useStyles = (theme) => ({
   col: {
@@ -56,6 +59,28 @@ const useStyles = (theme) => ({
     marginTop: theme.spacing(2),
   },
 });
+
+const PrimaryButton = withStyles((theme) => ({
+  root: {
+    color: "#ffffff",
+    backgroundColor: "#00a4ea",
+    "&:hover": {
+      backgroundColor: "#0d7bea",
+    },
+    margin: 20,
+  },
+}))(Button);
+
+const SecondaryButton = withStyles((theme) => ({
+  root: {
+    color: "#ffffff",
+    backgroundColor: "#de0006",
+    "&:hover": {
+      backgroundColor: "#7D0002",
+    },
+    margin: 20,
+  },
+}))(Button);
 
 /**
  * @Class
@@ -96,6 +121,10 @@ class GameDetails extends React.Component {
         `Something went wrong during the game creation: \n${handleError(error)}`
       );
     }
+  }
+
+  cancel() {
+    this.props.history.push(`/lobby`);
   }
 
   async addUserToGame() {
@@ -179,6 +208,7 @@ class GameDetails extends React.Component {
                   Game Mode
                 </InputLabel>
                 <Select
+                  style={{ height: "40px" }}
                   labelId="demo-simple-select-outlined-label"
                   id="demo-simple-select-outlined"
                   value={this.state.gameMode}
@@ -207,6 +237,7 @@ class GameDetails extends React.Component {
                     this.handleInputChange("botMode", e.target.value);
                   }}
                   label="Bot Mode"
+                  style={{ height: "40px" }}
                 >
                   <MenuItem value={null}>
                     <em>Select</em>
@@ -221,13 +252,14 @@ class GameDetails extends React.Component {
                   Duration
                 </InputLabel>
                 <Select
+                  style={{ height: "40px" }}
                   labelId="demo-simple-select-outlined-label"
                   id="demo-simple-select-outlined"
                   value={this.state.timer}
                   onChange={(e) => {
                     this.handleInputChange("timer", e.target.value);
                   }}
-                  label="Duration "
+                  label="Round Duration"
                 >
                   <MenuItem value={null}>
                     <em>Select</em>
@@ -238,14 +270,31 @@ class GameDetails extends React.Component {
                 </Select>
               </FormControl>
             </div>
-            <Button
-              style={{ height: "40px" }}
-              onClick={() => {
-                this.createGame();
-              }}
-            >
-              Create Game
-            </Button>
+
+            <div className={classes.row}>
+              <PrimaryButton
+                style={{
+                  height: "40px",
+                  width: "140px",
+                }}
+                onClick={() => {
+                  this.createGame();
+                }}
+              >
+                Create Game
+              </PrimaryButton>
+              <SecondaryButton
+                style={{
+                  height: "40px",
+                  width: "140px",
+                }}
+                onClick={() => {
+                  this.cancel();
+                }}
+              >
+                Cancel
+              </SecondaryButton>
+            </div>
           </div>
         </GameContainer>
       </BaseContainer>

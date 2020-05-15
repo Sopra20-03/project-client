@@ -8,7 +8,8 @@ import { BaseContainer, GameContainer } from "../../helpers/layout";
 import AllPlayerBoxes from "./AllPlayerBoxes";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 import { withRouter } from "react-router-dom";
-import {api, handleError} from "../../helpers/api";
+import { api, handleError } from "../../helpers/api";
+import Button from "@material-ui/core/Button";
 import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 import GameStates from "../../redux/reducers/gameStates";
 //Redux
@@ -82,7 +83,15 @@ class Gameplay extends Component {
     }
 
     //3. Start Polling
+    this.startPolling();
+  }
+
+  startPolling() {
     this.timer = setInterval(async () => await this.runGame(), 1000);
+  }
+
+  stopPolling() {
+    clearInterval(this.timer);
   }
 
   componentWillUnmount() {
@@ -94,13 +103,17 @@ class Gameplay extends Component {
     //DEMO: 3 Rounds
 
     if (this.props.gameState.roundNum > 3) {
+      alert("Game Over");
       this.props.gameClearGame();
       this.props.history.push(`/lobby`);
       return;
     } else {
       //1. Get Players and icons
       await this.getPlayers();
-      if (this.props.gameState.gamePlayers && this.props.gameState.gamePlayers.length > 0)
+      if (
+        this.props.gameState.gamePlayers &&
+        this.props.gameState.gamePlayers.length > 0
+      )
         await this.getPlayerUserDetails();
 
       //2. Update Role for each round
@@ -144,19 +157,20 @@ class Gameplay extends Component {
   async getPlayerUserDetails() {
     let icons = ["dog", "butterfly", "owl", "bird"];
     let players = this.props.gameState.gamePlayers.filter(
-        (x) => x.userId !== this.props.gameState.userId
+      (x) => x.userId !== this.props.gameState.userId
     );
-    try{
-      for (let i=0; i<players.length; i++){
+    try {
+      for (let i = 0; i < players.length; i++) {
         const player = players[i];
-        const icon = await api.get(`/users/${player.userId}`, {
-          withCredentials: true,
-        }).then(res => res.data.icon);
+        const icon = await api
+          .get(`/users/${player.userId}`, {
+            withCredentials: true,
+          })
+          .then((res) => res.data.icon);
         if (icon) icons[i] = icon;
       }
-      this.setState({icons: icons});
-    }
-    catch (error) {
+      this.setState({ icons: icons });
+    } catch (error) {
       alert(handleError(error));
     }
     console.log("Player Icons: ", icons);
@@ -207,6 +221,9 @@ class Gameplay extends Component {
       this.props.gameState.round &&
       this.props.gameState.round.roundStatus === "FINISHED"
     ) {
+      this.stopPolling();
+      this.props.timerStop();
+      alert("Round Finished");
       this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
     }
     // get round details
@@ -341,7 +358,10 @@ class Gameplay extends Component {
             <SmallLogo />
             <LogoutIcon />
             <div></div>
-            <AllPlayerBoxes players={this.props.gameState.gamePlayers} icons={this.state.icons} />
+            <AllPlayerBoxes
+              players={this.props.gameState.gamePlayers}
+              icons={this.state.icons}
+            />
 
             <TableContainer>
               <Table
@@ -351,6 +371,25 @@ class Gameplay extends Component {
                 )}
               />
             </TableContainer>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.stopPolling();
+              }}
+            >
+              Stop Polling
+            </Button>
+
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.startPolling();
+              }}
+            >
+              Start Polling
+            </Button>
 
             <InfoContainer>
               <PointsInfo
