@@ -247,38 +247,60 @@ class Gameplay extends Component {
     }, 10000);
   }
 
-  roundOver(role, clues, word) {
+  async roundOver() {
     //Get Details
     //TODO Check Success
     //TODO Check Points
-    let pUserClue = null;
-    if (role === "GUESSER") {
-      pUserClue = null;
-    } else {
-      pUserClue = clues.find(
-        (x) => x.ownerId === this.props.gameState.playerId
+    console.log("$$$$$$$$Round Over: " + this.props.gameState.roundNum);
+
+    try {
+      const data = {
+        gameId: this.props.gameState.gameId,
+        roundNum: this.props.gameState.roundNum,
+      };
+      const response = await api.get(
+        `/games/${data.gameId}/rounds/${data.roundNum}`,
+        {
+          withCredentials: true,
+        }
       );
-      if (pUserClue != null) {
-        pUserClue = pUserClue.word;
+      console.log(response.data);
+      let role = this.props.gameState.role;
+      let word = response.data.wordCard.selectedWord;
+      let clues = this.props.gameState.clues;
+      let pUserClue = null;
+
+      if (role === "GUESSER") {
+        pUserClue = null;
+      } else {
+        pUserClue = clues.find(
+          (x) => x.ownerId === this.props.gameState.playerId
+        );
+        if (pUserClue != null) {
+          pUserClue = pUserClue.word;
+        }
       }
+      let pScore = this.props.gameState.score;
+      let pResult = "success";
+      this.setState({
+        infoBox: {
+          selectedWord: word,
+          userClue: pUserClue,
+          score: pScore,
+          mode: "round",
+          result: pResult,
+          role: this.props.gameState.role,
+          guess: null,
+        },
+      });
+      //Display Message
+      this.RoundMessageElement.current.handleState(true);
+      setTimeout(() => {
+        this.RoundMessageElement.current.handleState(false);
+      }, 5000);
+    } catch (error) {
+      console.log(error);
     }
-    let pScore = this.props.gameState.score;
-    let pResult = "success";
-    this.setState({
-      infoBox: {
-        selectedWord: word,
-        userClue: pUserClue,
-        score: pScore,
-        mode: "round",
-        result: pResult,
-        role: this.props.gameState.role,
-      },
-    });
-    //Display Message
-    this.RoundMessageElement.current.handleState(true);
-    setTimeout(() => {
-      this.RoundMessageElement.current.handleState(false);
-    }, 5000);
   }
 
   async getRound() {
@@ -287,11 +309,7 @@ class Gameplay extends Component {
       this.props.gameState.round &&
       this.props.gameState.round.roundStatus === "FINISHED"
     ) {
-      this.roundOver(
-        this.props.gameState.role,
-        this.props.gameState.clues,
-        this.props.gameState.round.wordCard.selectedWord
-      );
+      this.roundOver();
       //Update Round
       if (this.props.gameState.roundNum < 3) {
         this.props.gameUpdateRound(this.props.gameState.roundNum + 1);

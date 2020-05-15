@@ -57,7 +57,13 @@ function Guesser(props) {
     }
   }
 
-  return <SubmitIcon handleSubmit={submitGuess} />;
+  return (
+    <SubmitIcon
+      handleSubmit={() => {
+        submitGuess();
+      }}
+    />
+  );
 }
 
 function ClueWriter(props) {
@@ -83,7 +89,13 @@ function ClueWriter(props) {
     }
   }
 
-  return <SubmitIcon handleSubmit={submitClue} />;
+  return (
+    <SubmitIcon
+      handleSubmit={() => {
+        submitClue();
+      }}
+    />
+  );
 }
 
 class InputField extends Component {

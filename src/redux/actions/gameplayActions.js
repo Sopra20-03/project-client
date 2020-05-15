@@ -160,6 +160,8 @@ export const gameSubmitClue = (data) => async (dispatch) => {
     });
   } catch (error) {
     alert(handleError(error));
+  } finally {
+    timerStop();
   }
 };
 
@@ -182,6 +184,8 @@ export const gameSubmitGuess = (data) => async (dispatch) => {
     });
   } catch (error) {
     console.log(handleError(error));
+  } finally {
+    timerStop();
   }
 };
 

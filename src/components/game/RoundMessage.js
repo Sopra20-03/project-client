@@ -104,7 +104,7 @@ class RoundMessage extends Component {
                 )}
 
                 <div className={classes.row}>
-                  <h2>Word: {this.props.word}</h2>
+                  <h2>Word: {this.props.selectedWord}</h2>
                 </div>
 
                 {this.props.playerrole === "CLUE_WRITER" ? (

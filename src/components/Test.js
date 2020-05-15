@@ -58,7 +58,7 @@ class Test extends Component {
 
         <RoundMessage
           ref={this.RoundMessageElement}
-          mode="GAME"
+          mode="game"
           result="success"
           word="test"
           points="test"
