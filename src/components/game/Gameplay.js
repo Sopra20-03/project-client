@@ -12,6 +12,7 @@ import { api, handleError } from "../../helpers/api";
 import Button from "@material-ui/core/Button";
 import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 import GameStates from "../../redux/reducers/gameStates";
+import dog from "../../views/logos/002-dog.png";
 
 import RoundMessage from "./RoundMessage";
 //Redux
@@ -33,6 +34,7 @@ import {
   gameSubmitGuess,
   timerClear,
 } from "../../redux/actions/gameplayActions";
+import ChatBox from "../chat/chatbox";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -524,6 +526,7 @@ class Gameplay extends Component {
           selectedWord={this.state.infoBox.selectedWord}
           playerrole={this.state.infoBox.role}
         />
+        <ChatBox icon={dog}/>
       </div>
     );
   }
