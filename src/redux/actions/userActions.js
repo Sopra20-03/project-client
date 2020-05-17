@@ -1,6 +1,6 @@
-import { USER_REGISTER, USER_LOGIN, GET_USER_DETAILS, USER_LOGOUT } from "./types";
-import { api, handleError } from "../../helpers/api";
-import User from "../../components/shared/models/User";
+import { GET_USER_DETAILS, USER_LOGIN, USER_LOGOUT, USER_REGISTER } from './types';
+import { api } from '../../helpers/api';
+import User from '../../components/shared/models/User';
 
 export const registerUser = (userData) => async (dispatch) => {
   try {
@@ -11,7 +11,7 @@ export const registerUser = (userData) => async (dispatch) => {
       payload: user,
     });
   } catch (error) {
-    alert(handleError(error));
+    throw error;
   }
 };
 
@@ -26,7 +26,7 @@ export const loginUser = (userData) => async (dispatch) => {
       payload: user,
     });
   } catch (error) {
-    alert(handleError(error));
+    throw error;
   }
 };
 
@@ -41,19 +41,19 @@ export const getUserDetails = (userId) => async (dispatch) => {
       payload: user,
     });
   } catch (error) {
-    alert(handleError(error));
+    throw error;
   }
 };
 
 export const logoutUser = () => async (dispatch) => {
   try {
-    const response = await api.post("/logout", {
+    await api.post("/logout", {
       withCredentials: true,
     });
     dispatch({
       type: USER_LOGOUT,
     });
   } catch (error) {
-    alert(handleError(error));
+    throw error;
   }
 };

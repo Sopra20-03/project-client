@@ -1,35 +1,36 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import TimerInfo from "./TimerInfo";
-import PointsInfo from "./PointsInfo";
-import RoleInfo from "./RoleInfo";
-import Table from "./Table";
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import AllPlayerBoxes from "./AllPlayerBoxes";
-import { SmallLogo } from "../../views/logos/SmallLogo";
-import { withRouter } from "react-router-dom";
-import {api, handleError} from "../../helpers/api";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
-import GameStates from "../../redux/reducers/gameStates";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import TimerInfo from './TimerInfo';
+import PointsInfo from './PointsInfo';
+import RoleInfo from './RoleInfo';
+import Table from './Table';
+import { BaseContainer, GameContainer } from '../../helpers/layout';
+import AllPlayerBoxes from './AllPlayerBoxes';
+import { SmallLogo } from '../../views/logos/SmallLogo';
+import { withRouter } from 'react-router-dom';
+import { api, handleError } from '../../helpers/api';
+import LogoutIcon from '../../views/design/Icons/LogoutIcon';
+import GameStates from '../../redux/reducers/gameStates';
 //Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import {
+  gameClearGame,
   gameGetClues,
   gameGetGame,
   gameGetRound,
   gameLoadGame,
-  guesserSelectWord,
-  gameSubmitClue,
   gameSetState,
-  gameUpdateRound,
-  gameClearGame,
-  getGamePlayers,
-  playerSetRole,
-  timerStart,
-  timerStop,
+  gameSubmitClue,
   gameSubmitGuess,
+  gameUpdateRound,
+  getGamePlayers,
+  guesserSelectWord,
+  playerSetRole,
   timerClear,
-} from "../../redux/actions/gameplayActions";
+  timerStart,
+  timerStop
+} from '../../redux/actions/gameplayActions';
+import { errorNotification } from '../../helpers/notifications/toasts';
 
 const InfoContainer = styled.div`
   display: flex;
@@ -133,7 +134,7 @@ class Gameplay extends Component {
         this.props.gameState.userId
       );
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while fetching the players: \n${handleError(
           error
         )}`
@@ -166,7 +167,7 @@ class Gameplay extends Component {
     try {
       await this.props.gameGetGame({ gameId: this.props.gameState.gameId });
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while fetching the game: \n${handleError(error)}`
       );
     }
@@ -218,7 +219,7 @@ class Gameplay extends Component {
       };
       await this.props.gameGetRound(data);
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while fetching the round: \n${handleError(error)}`
       );
     }

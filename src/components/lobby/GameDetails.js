@@ -1,29 +1,25 @@
-import React from "react";
-import { FormHeader, TextInput } from "../login/Login";
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import { handleError } from "../../helpers/api";
-import { withRouter } from "react-router-dom";
-import Button from "../../views/design/Button";
-import Colors from "../../views/design/Colors";
+import React from 'react';
+import { FormHeader, TextInput } from '../login/Login';
+import { BaseContainer, GameContainer } from '../../helpers/layout';
+import { handleError } from '../../helpers/api';
+import { withRouter } from 'react-router-dom';
+import Button from '../../views/design/Button';
+import Colors from '../../views/design/Colors';
 //Redux
-import { connect } from "react-redux";
-import { store } from "../../store";
-import { logoutUser } from "../../redux/actions/userActions";
-import { createGame, joinGame } from "../../redux/actions/lobbyActions";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
-import { SmallLogo } from "../../views/logos/SmallLogo";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
+import { connect } from 'react-redux';
+import { store } from '../../store';
+import { logoutUser } from '../../redux/actions/userActions';
+import { createGame, joinGame } from '../../redux/actions/lobbyActions';
+import LogoutIcon from '../../views/design/Icons/LogoutIcon';
+import { SmallLogo } from '../../views/logos/SmallLogo';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import HashLoader from 'react-spinners/HashLoader';
 
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import NativeSelect from "@material-ui/core/NativeSelect";
-import InputBase from "@material-ui/core/InputBase";
-import HashLoader from "react-spinners/HashLoader";
-
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from '@material-ui/core/styles';
+import { errorNotification } from '../../helpers/notifications/toasts';
 
 const useStyles = (theme) => ({
   col: {
@@ -95,7 +91,7 @@ class GameDetails extends React.Component {
       await this.props.createGame(requestBody);
       this.addUserToGame();
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong during the game creation: \n${handleError(error)}`
       );
     }
@@ -112,7 +108,7 @@ class GameDetails extends React.Component {
       await this.props.joinGame(gameId, requestBody);
       this.props.history.push(`/lobby`);
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while adding you to the game: \n${handleError(
           error
         )}`
