@@ -6,6 +6,8 @@ import Button from '@material-ui/core/Button';
 //Redux
 import { connect } from 'react-redux';
 import { logoutUser } from '../../../redux/actions/userActions';
+import { errorNotification } from '../../../helpers/notifications/toasts';
+import { handleError } from '../../../helpers/api';
 
 class LogoutIcon extends React.Component {
   constructor() {
@@ -13,8 +15,12 @@ class LogoutIcon extends React.Component {
   }
 
   async logout() {
-    await this.props.logoutUser();
-    this.props.history.push("/login");
+    try {
+      await this.props.logoutUser()
+      this.props.history.push("/login");
+    }catch (e) {
+      errorNotification (handleError (e));
+    }
   }
 
   render() {

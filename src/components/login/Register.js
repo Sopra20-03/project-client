@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { registerUser } from '../../redux/actions/userActions';
 import { LargeLogo } from '../../views/logos/LargeLogo';
+import { errorNotification, successNotification } from '../../helpers/notifications/toasts';
 
 class Register extends React.Component {
 
@@ -37,10 +38,12 @@ class Register extends React.Component {
             };
 
             await this.props.registerUser (requestBody);
-
+            successNotification (`Registration successful! Welcome ${requestBody.name}`, 3000);
             this.props.history.push (`/login`);
         } catch (error) {
-            alert (handleError (error));
+            this.props.history.push (`/register`);
+            errorNotification (handleError (error));
+
         }
     }
 

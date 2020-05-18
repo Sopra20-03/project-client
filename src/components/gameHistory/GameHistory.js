@@ -1,22 +1,22 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import {BaseContainer, GameContainer} from "../../helpers/layout";
-import {api, handleError} from "../../helpers/api";
-import Button from "../../views/design/Button";
-import {withRouter} from "react-router-dom";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
-import GameHistoryTable from "./GameHistoryTable";
-import Colors from "../../views/design/Colors";
-import {SmallLogo} from "../../views/logos/SmallLogo";
+import { BaseContainer, GameContainer } from '../../helpers/layout';
+import { api, handleError } from '../../helpers/api';
+import { withRouter } from 'react-router-dom';
+import LogoutIcon from '../../views/design/Icons/LogoutIcon';
+import GameHistoryTable from './GameHistoryTable';
+import Colors from '../../views/design/Colors';
+import { SmallLogo } from '../../views/logos/SmallLogo';
 //Redux
-import {connect} from "react-redux";
-import {getGames} from "../../redux/actions/lobbyActions";
-import {ContainerRow} from "../game/Gameplay";
-import PacmanLoader from "react-spinners/PacmanLoader";
-import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
-import ProfileIcon from "../../views/design/Icons/GameHistoryIcon";
-import LobbyIcon from "../../views/design/Icons/LobbyIcon";
+import { connect } from 'react-redux';
+import { getGames } from '../../redux/actions/lobbyActions';
+import { ContainerRow } from '../game/Gameplay';
+import PacmanLoader from 'react-spinners/PacmanLoader';
+import LeaderboardIcon from '../../views/design/Icons/LeaderboardIcon';
+import ProfileIcon from '../../views/design/Icons/GameHistoryIcon';
+import LobbyIcon from '../../views/design/Icons/LobbyIcon';
+import { errorNotification } from '../../helpers/notifications/toasts';
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -80,7 +80,7 @@ class GameHistory extends React.Component {
         try {
             await this.props.getGames();
         } catch (error) {
-            alert(
+            errorNotification(
                 `Something went wrong while fetching the games: \n${handleError(error)}`
             );
         }

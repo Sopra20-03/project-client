@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BaseContainer, LoginContainer } from '../../helpers/layout';
-import { handleError } from '../../helpers/api';
 import { withRouter } from 'react-router-dom';
 import Button from '../../views/design/Button';
 import Colors from '../../views/design/Colors';
 import PropTypes from 'prop-types';
+import { errorNotification } from '../../helpers/notifications/toasts';
 //Redux
 import { connect } from 'react-redux';
 import { loginUser } from '../../redux/actions/userActions';
@@ -113,8 +113,9 @@ class Login extends React.Component {
 
             this.props.history.push (`/lobby`);
         } catch (error) {
-            alert (`Something went wrong during the login: \n${handleError (error)}`);
+            errorNotification (error);
         }
+
     };
 
     handleInputChange (key, value) {
