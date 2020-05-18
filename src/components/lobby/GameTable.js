@@ -91,16 +91,18 @@ class GameTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.props.games.filter(x => x.gameStatus === "INITIALIZED").map((game) => (
-              <GameRow
-                key={game.gameId}
-                game={game}
-                numPlayers={game.playerCount}
-                onJoinGame={this.handleJoinGame}
-                onLeaveGame={this.handleLeaveGame}
-                onCancelGame={this.handleCancelGame}
-              />
-            ))}
+            {this.props.games
+              .filter((x) => x.gameStatus === "INITIALIZED")
+              .map((game) => (
+                <GameRow
+                  key={game.gameId}
+                  game={game}
+                  numPlayers={game.playerCount}
+                  onJoinGame={this.handleJoinGame}
+                  onLeaveGame={this.handleLeaveGame}
+                  onCancelGame={this.handleCancelGame}
+                />
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

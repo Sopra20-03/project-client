@@ -1,25 +1,29 @@
-import React from 'react';
-import { FormHeader, TextInput } from '../login/Login';
-import { BaseContainer, GameContainer } from '../../helpers/layout';
-import { handleError } from '../../helpers/api';
-import { withRouter } from 'react-router-dom';
-import Button from '../../views/design/Button';
-import Colors from '../../views/design/Colors';
+import React from "react";
+import { FormHeader, TextInput } from "../login/Login";
+import { BaseContainer, GameContainer } from "../../helpers/layout";
+import { handleError } from "../../helpers/api";
+import { withRouter } from "react-router-dom";
+//import Button from "../../views/design/Button";
+import Colors from "../../views/design/Colors";
 //Redux
-import { connect } from 'react-redux';
-import { store } from '../../store';
-import { logoutUser } from '../../redux/actions/userActions';
-import { createGame, joinGame } from '../../redux/actions/lobbyActions';
-import LogoutIcon from '../../views/design/Icons/LogoutIcon';
-import { SmallLogo } from '../../views/logos/SmallLogo';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import HashLoader from 'react-spinners/HashLoader';
+import { connect } from "react-redux";
+import { store } from "../../store";
+import { logoutUser } from "../../redux/actions/userActions";
+import { createGame, joinGame } from "../../redux/actions/lobbyActions";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
+import { SmallLogo } from "../../views/logos/SmallLogo";
+import InputLabel from "@material-ui/core/InputLabel";
 
-import { withStyles } from '@material-ui/core/styles';
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import HashLoader from "react-spinners/HashLoader";
+
+import styled from "styled-components";
+import { withStyles } from "@material-ui/core/styles";
 import { errorNotification } from '../../helpers/notifications/toasts';
+
+import Button from "@material-ui/core/Button";
 
 const useStyles = (theme) => ({
   col: {
@@ -57,6 +61,28 @@ const useStyles = (theme) => ({
   },
 });
 
+const PrimaryButton = withStyles((theme) => ({
+  root: {
+    color: "#ffffff",
+    backgroundColor: "#00a4ea",
+    "&:hover": {
+      backgroundColor: "#0d7bea",
+    },
+    margin: 20,
+  },
+}))(Button);
+
+const SecondaryButton = withStyles((theme) => ({
+  root: {
+    color: "#ffffff",
+    backgroundColor: "#de0006",
+    "&:hover": {
+      backgroundColor: "#7D0002",
+    },
+    margin: 20,
+  },
+}))(Button);
+
 /**
  * @Class
  */
@@ -85,7 +111,8 @@ class GameDetails extends React.Component {
     try {
       const requestBody = {
         gameName: this.state.gameName,
-        //gameMode: this.state.gameMode,
+        gameMode: this.state.gameMode,
+        botMode: this.state.botMode,
         creatorUsername: store.getState().userReducer.user.username,
       };
       await this.props.createGame(requestBody);
@@ -95,6 +122,10 @@ class GameDetails extends React.Component {
         `Something went wrong during the game creation: \n${handleError(error)}`
       );
     }
+  }
+
+  cancel() {
+    this.props.history.push(`/lobby`);
   }
 
   async addUserToGame() {
@@ -178,6 +209,7 @@ class GameDetails extends React.Component {
                   Game Mode
                 </InputLabel>
                 <Select
+                  style={{ height: "40px" }}
                   labelId="demo-simple-select-outlined-label"
                   id="demo-simple-select-outlined"
                   value={this.state.gameMode}
@@ -189,8 +221,8 @@ class GameDetails extends React.Component {
                   <MenuItem value={null}>
                     <em>Select</em>
                   </MenuItem>
-                  <MenuItem value={"normal"}>Normal</MenuItem>
-                  <MenuItem value={"rival"}>Rival</MenuItem>
+                  <MenuItem value={"STANDARD"}>Normal</MenuItem>
+                  <MenuItem value={"RIVAL"}>Rival</MenuItem>
                 </Select>
               </FormControl>
 
@@ -206,12 +238,13 @@ class GameDetails extends React.Component {
                     this.handleInputChange("botMode", e.target.value);
                   }}
                   label="Bot Mode"
+                  style={{ height: "40px" }}
                 >
                   <MenuItem value={null}>
                     <em>Select</em>
                   </MenuItem>
-                  <MenuItem value={"friendly"}>Friendly</MenuItem>
-                  <MenuItem value={"malicious"}>Malicious</MenuItem>
+                  <MenuItem value={"FRIENDLY"}>Friendly</MenuItem>
+                  <MenuItem value={"MALICIOUS"}>Malicious</MenuItem>
                 </Select>
               </FormControl>
 
@@ -220,13 +253,14 @@ class GameDetails extends React.Component {
                   Duration
                 </InputLabel>
                 <Select
+                  style={{ height: "40px" }}
                   labelId="demo-simple-select-outlined-label"
                   id="demo-simple-select-outlined"
                   value={this.state.timer}
                   onChange={(e) => {
                     this.handleInputChange("timer", e.target.value);
                   }}
-                  label="Duration "
+                  label="Round Duration"
                 >
                   <MenuItem value={null}>
                     <em>Select</em>
@@ -237,14 +271,31 @@ class GameDetails extends React.Component {
                 </Select>
               </FormControl>
             </div>
-            <Button
-              style={{ height: "40px" }}
-              onClick={() => {
-                this.createGame();
-              }}
-            >
-              Create Game
-            </Button>
+
+            <div className={classes.row}>
+              <PrimaryButton
+                style={{
+                  height: "40px",
+                  width: "140px",
+                }}
+                onClick={() => {
+                  this.createGame();
+                }}
+              >
+                Create Game
+              </PrimaryButton>
+              <SecondaryButton
+                style={{
+                  height: "40px",
+                  width: "140px",
+                }}
+                onClick={() => {
+                  this.cancel();
+                }}
+              >
+                Cancel
+              </SecondaryButton>
+            </div>
           </div>
         </GameContainer>
       </BaseContainer>

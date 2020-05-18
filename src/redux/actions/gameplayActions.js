@@ -160,6 +160,8 @@ export const gameSubmitClue = (data) => async (dispatch) => {
     });
   } catch (error) {
     errorNotification(handleError(error));
+  } finally {
+    timerStop();
   }
 };
 
@@ -182,6 +184,8 @@ export const gameSubmitGuess = (data) => async (dispatch) => {
     });
   } catch (error) {
     console.log(handleError(error));
+  } finally {
+    timerStop();
   }
 };
 
@@ -190,7 +194,6 @@ export const gameGetClues = (data) => async (dispatch) => {
     return null;
   }
   try {
-
     //Demo 3 Rounds
 
     if (data.roundNum > 3) {

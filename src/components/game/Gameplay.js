@@ -1,16 +1,20 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import TimerInfo from './TimerInfo';
-import PointsInfo from './PointsInfo';
-import RoleInfo from './RoleInfo';
-import Table from './Table';
-import { BaseContainer, GameContainer } from '../../helpers/layout';
-import AllPlayerBoxes from './AllPlayerBoxes';
-import { SmallLogo } from '../../views/logos/SmallLogo';
-import { withRouter } from 'react-router-dom';
-import { api, handleError } from '../../helpers/api';
-import LogoutIcon from '../../views/design/Icons/LogoutIcon';
-import GameStates from '../../redux/reducers/gameStates';
+import React, { Component } from "react";
+import styled from "styled-components";
+import TimerInfo from "./TimerInfo";
+import PointsInfo from "./PointsInfo";
+import RoleInfo from "./RoleInfo";
+import Table from "./Table";
+import { BaseContainer, GameContainer } from "../../helpers/layout";
+import AllPlayerBoxes from "./AllPlayerBoxes";
+import { SmallLogo } from "../../views/logos/SmallLogo";
+import { withRouter } from "react-router-dom";
+import { api, handleError } from "../../helpers/api";
+import Button from "@material-ui/core/Button";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
+import GameStates from "../../redux/reducers/gameStates";
+
+import RoundMessage from "./RoundMessage";
+
 //Redux
 import { connect } from 'react-redux';
 import {
@@ -58,7 +62,18 @@ class Gameplay extends Component {
     this.state = {
       showRolePopup: false,
       icons: [],
+      infoBox: {
+        selectedWord: null,
+        userClue: null,
+        score: null,
+        guess: null,
+        mode: "round",
+        result: "success",
+        role: null,
+      },
     };
+
+    this.RoundMessageElement = React.createRef();
   }
 
   toggleRolePopup() {
@@ -83,7 +98,15 @@ class Gameplay extends Component {
     }
 
     //3. Start Polling
+    this.startPolling();
+  }
+
+  startPolling() {
     this.timer = setInterval(async () => await this.runGame(), 1000);
+  }
+
+  stopPolling() {
+    clearInterval(this.timer);
   }
 
   componentWillUnmount() {
@@ -95,20 +118,18 @@ class Gameplay extends Component {
     //DEMO: 3 Rounds
 
     if (this.props.gameState.roundNum > 3) {
-      this.props.gameClearGame();
-      this.props.history.push(`/lobby`);
+      this.stopPolling();
       return;
     } else {
-      //1. Get Players and icons
-      await this.getPlayers();
-      if (this.props.gameState.gamePlayers && this.props.gameState.gamePlayers.length > 0)
-        await this.getPlayerUserDetails();
-
-      //2. Update Role for each round
-      await this.playerUpdateRole();
-
       //3. Get Round
       await this.getRound();
+      //1. Get Players and icons
+      await this.getPlayers();
+      if (
+        this.props.gameState.gamePlayers &&
+        this.props.gameState.gamePlayers.length > 0
+      )
+        await this.getPlayerUserDetails();
 
       //4. Get Clues
       if (
@@ -145,19 +166,20 @@ class Gameplay extends Component {
   async getPlayerUserDetails() {
     let icons = ["dog", "butterfly", "owl", "bird"];
     let players = this.props.gameState.gamePlayers.filter(
-        (x) => x.userId !== this.props.gameState.userId
+      (x) => x.userId !== this.props.gameState.userId
     );
-    try{
-      for (let i=0; i<players.length; i++){
+    try {
+      for (let i = 0; i < players.length; i++) {
         const player = players[i];
-        const icon = await api.get(`/users/${player.userId}`, {
-          withCredentials: true,
-        }).then(res => res.data.icon);
+        const icon = await api
+          .get(`/users/${player.userId}`, {
+            withCredentials: true,
+          })
+          .then((res) => res.data.icon);
         if (icon) icons[i] = icon;
       }
-      this.setState({icons: icons});
-    }
-    catch (error) {
+      this.setState({ icons: icons });
+    } catch (error) {
       alert(handleError(error));
     }
     console.log("Player Icons: ", icons);
@@ -202,16 +224,105 @@ class Gameplay extends Component {
     }
   }
 
+  gameOver() {
+    //Get Details
+    let pScore = this.props.gameState.score;
+    this.setState({
+      ...this.state,
+      infoBox: {
+        ...this.state.infoBox,
+        mode: "game",
+      },
+    });
+    //Display Message
+    this.RoundMessageElement.current.handleState(true);
+    setTimeout(() => {
+      this.RoundMessageElement.current.handleState(false);
+      //Clear State
+
+      setTimeout(() => {
+        //Push to Lobby
+        this.stopPolling();
+        this.props.gameClearGame();
+        this.props.history.push(`/lobby`);
+      }, 2000);
+    }, 10000);
+  }
+
+  async roundOver() {
+    //Get Details
+    //TODO Check Success
+    //TODO Check Points
+    console.log("$$$$$$$$Round Over: " + this.props.gameState.roundNum);
+
+    try {
+      const data = {
+        gameId: this.props.gameState.gameId,
+        roundNum: this.props.gameState.roundNum,
+      };
+      const response = await api.get(
+        `/games/${data.gameId}/rounds/${data.roundNum}`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response.data);
+      let role = this.props.gameState.role;
+      let word = response.data.wordCard.selectedWord;
+      let clues = this.props.gameState.clues;
+      let pUserClue = null;
+
+      if (role === "GUESSER") {
+        pUserClue = null;
+      } else {
+        pUserClue = clues.find(
+          (x) => x.ownerId === this.props.gameState.playerId
+        );
+        if (pUserClue != null) {
+          pUserClue = pUserClue.word;
+        }
+      }
+      let pScore = this.props.gameState.score;
+      let pResult = "success";
+      this.setState({
+        infoBox: {
+          selectedWord: word,
+          userClue: pUserClue,
+          score: pScore,
+          mode: "round",
+          result: pResult,
+          role: this.props.gameState.role,
+          guess: null,
+        },
+      });
+      //Display Message
+      this.RoundMessageElement.current.handleState(true);
+      setTimeout(() => {
+        this.RoundMessageElement.current.handleState(false);
+      }, 5000);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async getRound() {
     //if round is over, advance to next round
     if (
       this.props.gameState.round &&
       this.props.gameState.round.roundStatus === "FINISHED"
     ) {
-      this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
+      this.roundOver();
+      //Update Round
+      if (this.props.gameState.roundNum < 3) {
+        this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
+      } else {
+        this.stopPolling();
+        setTimeout(() => {
+          this.gameOver();
+        }, 6000);
+      }
     }
     // get round details
-
     try {
       const data = {
         gameId: this.props.gameState.gameId,
@@ -223,6 +334,9 @@ class Gameplay extends Component {
         `Something went wrong while fetching the round: \n${handleError(error)}`
       );
     }
+
+    //2. Update Role for each round
+    await this.playerUpdateRole();
   }
 
   async getClues() {
@@ -342,7 +456,10 @@ class Gameplay extends Component {
             <SmallLogo />
             <LogoutIcon />
             <div></div>
-            <AllPlayerBoxes players={this.props.gameState.gamePlayers} icons={this.state.icons} />
+            <AllPlayerBoxes
+              players={this.props.gameState.gamePlayers}
+              icons={this.state.icons}
+            />
 
             <TableContainer>
               <Table
@@ -352,6 +469,40 @@ class Gameplay extends Component {
                 )}
               />
             </TableContainer>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.stopPolling();
+
+                this.props.timerClear();
+              }}
+            >
+              Stop Polling
+            </Button>
+
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.startPolling();
+              }}
+            >
+              Start Polling
+            </Button>
+
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.RoundMessageElement.current.handleState(true);
+                setTimeout(() => {
+                  this.RoundMessageElement.current.handleState(false);
+                }, 5000);
+              }}
+            >
+              Show Dialog
+            </Button>
 
             <InfoContainer>
               <PointsInfo
@@ -364,6 +515,17 @@ class Gameplay extends Component {
             </InfoContainer>
           </GameContainer>
         </BaseContainer>
+
+        <RoundMessage
+          ref={this.RoundMessageElement}
+          mode={this.state.infoBox.mode}
+          result={this.state.infoBox.result}
+          guess={this.state.infoBox.guess}
+          score={this.state.infoBox.score}
+          userClue={this.state.infoBox.userClue}
+          selectedWord={this.state.infoBox.selectedWord}
+          playerrole={this.state.infoBox.role}
+        />
       </div>
     );
   }
