@@ -64,6 +64,7 @@ class Gameplay extends Component {
     this.state = {
       showRolePopup: false,
       icons: [],
+      messageList: null,
       infoBox: {
         selectedWord: null,
         userClue: null,
@@ -147,6 +148,9 @@ class Gameplay extends Component {
 
       //6. Get Score
       await this.getGame();
+
+      //7. Get Messages
+      await this.getMessages();
     }
   }
 
@@ -157,7 +161,7 @@ class Gameplay extends Component {
         this.props.gameState.userId
       );
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while fetching the players: \n${handleError(
           error
         )}`
@@ -182,7 +186,7 @@ class Gameplay extends Component {
       }
       this.setState({ icons: icons });
     } catch (error) {
-      alert(handleError(error));
+      errorNotification(handleError(error));
     }
     console.log("Player Icons: ", icons);
   }
@@ -383,6 +387,21 @@ class Gameplay extends Component {
     this.props.gameSetState(gameState);
   }
 
+  async getMessages(){
+    try {
+      const response = await api.get(
+          `/games/${this.props.gameState.gameId}/messages`,
+          {
+            withCredentials: true,
+          }
+      );
+      this.setState({messageList: response.data});
+      console.log('MessageList: ', response.data);
+    } catch (error) {
+      console.log(handleError(error));
+    }
+  };
+
   //Phase Change
   gamePhaseChange(gameState) {
     console.log("PhaseChange Timer Reset");
@@ -528,7 +547,7 @@ class Gameplay extends Component {
           selectedWord={this.state.infoBox.selectedWord}
           playerrole={this.state.infoBox.role}
         />
-        <ChatBox icon={dog}/>
+        <ChatBox messageList={this.state.messageList}/>
       </div>
     );
   }
