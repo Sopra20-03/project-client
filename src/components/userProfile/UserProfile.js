@@ -17,6 +17,7 @@ import { getGames } from '../../redux/actions/lobbyActions';
 import UserInfoBox from './UserInfoBox';
 import LobbyIcon from '../../views/design/Icons/LobbyIcon';
 import { BoxHeader } from '../lobby/Lobby';
+import { errorNotification } from '../../helpers/notifications/toasts';
 
 const Container = styled(BaseContainer)`
   color: ${Colors.black};
@@ -72,7 +73,7 @@ class UserProfile extends React.Component {
         try {
             await this.props.getGames ();
         } catch (error) {
-            alert (
+            errorNotification (
               `Something went wrong while fetching the games: \n${handleError (error)}`
             );
         }

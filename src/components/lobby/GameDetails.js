@@ -21,6 +21,7 @@ import HashLoader from "react-spinners/HashLoader";
 
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
+import { errorNotification } from '../../helpers/notifications/toasts';
 
 import Button from "@material-ui/core/Button";
 
@@ -117,7 +118,7 @@ class GameDetails extends React.Component {
       await this.props.createGame(requestBody);
       this.addUserToGame();
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong during the game creation: \n${handleError(error)}`
       );
     }
@@ -138,7 +139,7 @@ class GameDetails extends React.Component {
       await this.props.joinGame(gameId, requestBody);
       this.props.history.push(`/lobby`);
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while adding you to the game: \n${handleError(
           error
         )}`
