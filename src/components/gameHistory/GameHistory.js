@@ -70,7 +70,7 @@ class GameHistory extends React.Component {
             if (response.data.some(playerInGame) && !gameAlreadyInList)
                 this.state.userGames.push(game);
         } catch (error) {
-            alert(`Something went wrong while fetching the players: \n${handleError(error)}`);
+            errorNotification(`Something went wrong while fetching the players: \n${handleError(error)}`);
         }
     }
 

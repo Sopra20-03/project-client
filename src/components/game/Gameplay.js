@@ -1,20 +1,19 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import TimerInfo from "./TimerInfo";
-import PointsInfo from "./PointsInfo";
-import RoleInfo from "./RoleInfo";
-import Table from "./Table";
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import AllPlayerBoxes from "./AllPlayerBoxes";
-import { SmallLogo } from "../../views/logos/SmallLogo";
-import { withRouter } from "react-router-dom";
-import { api, handleError } from "../../helpers/api";
-import Button from "@material-ui/core/Button";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
-import GameStates from "../../redux/reducers/gameStates";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import TimerInfo from './TimerInfo';
+import PointsInfo from './PointsInfo';
+import RoleInfo from './RoleInfo';
+import Table from './Table';
+import { BaseContainer, GameContainer } from '../../helpers/layout';
+import AllPlayerBoxes from './AllPlayerBoxes';
+import { SmallLogo } from '../../views/logos/SmallLogo';
+import { withRouter } from 'react-router-dom';
+import { api, handleError } from '../../helpers/api';
+import Button from '@material-ui/core/Button';
+import LogoutIcon from '../../views/design/Icons/LogoutIcon';
+import GameStates from '../../redux/reducers/gameStates';
 
-import RoundMessage from "./RoundMessage";
-
+import RoundMessage from './RoundMessage';
 //Redux
 import { connect } from 'react-redux';
 import {
@@ -180,7 +179,7 @@ class Gameplay extends Component {
       }
       this.setState({ icons: icons });
     } catch (error) {
-      alert(handleError(error));
+      errorNotification(handleError(error));
     }
     console.log("Player Icons: ", icons);
   }
@@ -206,7 +205,7 @@ class Gameplay extends Component {
       };
       await this.props.gameSubmitClue(requestData);
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while submitting the clue: \n${handleError(
           error
         )}`
@@ -347,7 +346,7 @@ class Gameplay extends Component {
       };
       await this.props.gameGetClues(data);
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while fetching the clues: \n${handleError(error)}`
       );
     }

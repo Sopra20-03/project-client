@@ -13,6 +13,7 @@ import LeaderboardIcon from '../../views/design/Icons/LeaderboardIcon';
 import ProfileIcon from '../../views/design/Icons/GameHistoryIcon';
 import LobbyIcon from '../../views/design/Icons/LobbyIcon';
 import { BoxHeader } from '../lobby/Lobby';
+import { errorNotification } from '../../helpers/notifications/toasts';
 
 const Container = styled (BaseContainer)`
   color: white;
@@ -43,7 +44,7 @@ class Leaderboard extends React.Component {
             this.setState ({sortedUsers: response.data.sort((a, b) => b.totalGameScore - a.totalGameScore)});
             console.log ('Sorted users: ', this.state.sortedUsers);
         } catch (error) {
-            alert (
+            errorNotification (
               `Something went wrong while fetching the users: \n${handleError (error)}`
             );
         }

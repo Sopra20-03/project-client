@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { api, handleError } from '../../helpers/api';
 import GameStates from '../../redux/reducers/gameStates';
 import { ScaleLoader } from 'react-spinners';
+import { errorNotification } from '../../helpers/notifications/toasts';
 
 export const CardContainer = styled.div`
   background-color: white;
@@ -54,7 +55,7 @@ class ClueCard extends Component {
         });
       })
       .catch((e) => {
-        alert(handleError(e));
+        errorNotification(handleError(e));
       });
     console.log(this.props.gameState.clues);
   };

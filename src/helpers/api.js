@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getDomain } from './getDomain';
+import { errorNotification } from './notifications/toasts';
 
 export const api = axios.create({
   baseURL: getDomain(),
@@ -29,7 +30,7 @@ export const handleError = (error) => {
     return info;
   } else {
     if (error.message.match(/Network Error/)) {
-      alert("The server cannot be reached.\nDid you start it?");
+      errorNotification("The server cannot be reached.\nDid you start it?");
     }
 
     console.log("Something else happened.", error);
