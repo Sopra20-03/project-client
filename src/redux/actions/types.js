@@ -7,8 +7,8 @@ export const USER_LOGOUT = "USER_LOGOUT";
 //Lobby Actions
 export const GAME_CREATION = "GAME_CREATION";
 export const JOIN_GAME = "JOIN_GAME";
+export const GET_GAME = "GET_GAME";
 export const LEAVE_GAME = "LEAVE_GAME";
-
 export const CLEAR_JOINEDGAME = "CLEAR_JOINEDGAME";
 export const START_GAME = "START_GAME";
 export const CANCEL_GAME = "CANCEL_GAME";

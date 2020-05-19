@@ -14,6 +14,8 @@ import {
   getGames,
   startGame,
   clearJoinedGame,
+  cancelGame,
+  leaveGame,
 } from "../../redux/actions/lobbyActions";
 
 import { logoutUser } from "../../redux/actions/userActions";
@@ -56,12 +58,14 @@ class Lobby extends React.Component {
   componentDidMount() {
     this.timer = setInterval(async () => await this.loadLobby(), 1000);
     window.addEventListener("beforeunload", (event) => {
-      // Cancel the event as stated by the standard.
-      //event.preventDefault();
-      // Chrome requires returnValue to be set.
-      //event.returnValue = "This will log you out and clear your session.";
+      let data = {
+        isUserCreator: this.props.lobbyState.isUserCreator,
+        gameId: this.props.lobbyState.gameId,
+        userId: this.props.userState.user.id,
+      };
+      this.props.logoutUser(true, data);
+
       sessionStorage.clear();
-      this.props.logoutUser();
     });
   }
 
@@ -231,5 +235,7 @@ export default withRouter(
     startGame,
     logoutUser,
     clearJoinedGame,
+    cancelGame,
+    leaveGame,
   })(Lobby)
 );

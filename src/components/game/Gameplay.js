@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import TimerInfo from './TimerInfo';
-import PointsInfo from './PointsInfo';
-import RoleInfo from './RoleInfo';
-import Table from './Table';
-import { BaseContainer, GameContainer } from '../../helpers/layout';
-import AllPlayerBoxes from './AllPlayerBoxes';
-import { SmallLogo } from '../../views/logos/SmallLogo';
-import { withRouter } from 'react-router-dom';
-import { api, handleError } from '../../helpers/api';
-import Button from '@material-ui/core/Button';
-import LogoutIcon from '../../views/design/Icons/LogoutIcon';
-import GameStates from '../../redux/reducers/gameStates';
+import React, { Component } from "react";
+import styled from "styled-components";
+import TimerInfo from "./TimerInfo";
+import PointsInfo from "./PointsInfo";
+import RoleInfo from "./RoleInfo";
+import Table from "./Table";
+import { BaseContainer, GameContainer } from "../../helpers/layout";
+import AllPlayerBoxes from "./AllPlayerBoxes";
+import { SmallLogo } from "../../views/logos/SmallLogo";
+import { withRouter } from "react-router-dom";
+import { api, handleError } from "../../helpers/api";
+import Button from "@material-ui/core/Button";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
+import GameStates from "../../redux/reducers/gameStates";
 
-import RoundMessage from './RoundMessage';
+import RoundMessage from "./RoundMessage";
 //Redux
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import {
   gameClearGame,
   gameGetClues,
@@ -31,9 +31,12 @@ import {
   playerSetRole,
   timerClear,
   timerStart,
-  timerStop
-} from '../../redux/actions/gameplayActions';
-import { errorNotification } from '../../helpers/notifications/toasts';
+  timerStop,
+} from "../../redux/actions/gameplayActions";
+
+import { getGame } from "../../redux/actions/lobbyActions";
+
+import { errorNotification } from "../../helpers/notifications/toasts";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -115,6 +118,24 @@ class Gameplay extends Component {
   async runGame() {
     //Check Rounds
     //DEMO: 3 Rounds
+    // Check if Game exists
+    if (this.props.gameState.gameId != null) {
+      try {
+        let gameCheck = await this.props.getGame(this.props.gameState.gameId);
+
+        if (gameCheck == null) {
+          errorNotification(`Oops! Creator canceled the game!`);
+          this.props.history.push(`/lobby`);
+          this.props.gameClearGame();
+          return;
+        }
+      } catch (err) {
+        errorNotification(`Oops! Creator canceled the game!`);
+        this.props.history.push(`/lobby`);
+        this.props.gameClearGame();
+        return;
+      }
+    }
 
     if (this.props.gameState.roundNum > 3) {
       this.stopPolling();
@@ -553,5 +574,6 @@ export default withRouter(
     timerStop,
     timerClear,
     gameSubmitGuess,
+    getGame,
   })(Gameplay)
 );

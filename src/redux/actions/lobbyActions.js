@@ -7,6 +7,7 @@ import {
   PLAY_GAME,
   START_GAME,
   CLEAR_JOINEDGAME,
+  GET_GAME,
 } from "./types";
 
 import { api } from "../../helpers/api";
@@ -23,6 +24,28 @@ export const startGame = (gameId) => async (dispatch) => {
       type: START_GAME,
     });
     return 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getGame = (gameId) => async (dispatch) => {
+  try {
+    const response = await api.get(`/games/${gameId}`, {
+      withCredentials: true,
+    });
+    console.log("GETGAME");
+
+    console.log(response.headers["content-type"]);
+    console.log(response.data);
+    if (response.headers["content-type"] != "application/json") {
+      return false;
+    }
+    dispatch({
+      type: GET_GAME,
+    });
+
+    return response.data;
   } catch (error) {
     throw error;
   }
