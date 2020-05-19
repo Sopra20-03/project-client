@@ -276,9 +276,8 @@ class Gameplay extends Component {
     }, 10000);
   }
 
-  async roundOver() {
+  async roundOver(role) {
     //Get Details
-
     try {
       const data = {
         gameId: this.props.gameState.gameId,
@@ -294,7 +293,7 @@ class Gameplay extends Component {
       );
 
       console.log(response.data);
-      let role = this.props.gameState.role;
+      let pRole = role;
       let word = response.data.wordCard.selectedWord;
       let clues = this.props.gameState.clues;
       let pUserClue = null;
@@ -305,7 +304,7 @@ class Gameplay extends Component {
         guessWord = response.data.guess.word;
       }
 
-      if (role === "GUESSER") {
+      if (pRole === "GUESSER") {
         pUserClue = null;
       } else {
         pUserClue = clues.find(
@@ -323,7 +322,7 @@ class Gameplay extends Component {
           score: pScore,
           mode: "round",
           result: pResult,
-          role: this.props.gameState.role,
+          role: pRole,
           guess: guessWord,
         },
       });
@@ -343,10 +342,11 @@ class Gameplay extends Component {
       this.props.gameState.round &&
       this.props.gameState.round.roundStatus === "FINISHED"
     ) {
-      this.roundOver();
+      this.roundOver(this.props.gameState.role);
       //Update Round
       if (this.props.gameState.roundNum < 3) {
         this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
+        errorNotification(`Round Updated: ${this.props.gameState.roundNum}`);
       } else {
         this.stopPolling();
         setTimeout(() => {
