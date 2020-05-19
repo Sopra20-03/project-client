@@ -21,7 +21,7 @@ import HashLoader from "react-spinners/HashLoader";
 
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
-import { errorNotification } from '../../helpers/notifications/toasts';
+import { errorNotification } from "../../helpers/notifications/toasts";
 
 import Button from "@material-ui/core/Button";
 
@@ -98,7 +98,7 @@ class GameDetails extends React.Component {
       gameName: null,
       gameMode: null,
       botMode: null,
-      timer: null,
+      duration: "SHORT",
     };
   }
 
@@ -113,6 +113,7 @@ class GameDetails extends React.Component {
         gameName: this.state.gameName,
         gameMode: this.state.gameMode,
         botMode: this.state.botMode,
+        duration: this.state.duration,
         creatorUsername: store.getState().userReducer.user.username,
       };
       await this.props.createGame(requestBody);
@@ -258,16 +259,16 @@ class GameDetails extends React.Component {
                   id="demo-simple-select-outlined"
                   value={this.state.timer}
                   onChange={(e) => {
-                    this.handleInputChange("timer", e.target.value);
+                    this.handleInputChange("duration", e.target.value);
                   }}
                   label="Round Duration"
                 >
-                  <MenuItem value={null}>
+                  <MenuItem value={"SHORT"}>
                     <em>Select</em>
                   </MenuItem>
-                  <MenuItem value={30}>Short</MenuItem>
-                  <MenuItem value={60}>Medium</MenuItem>
-                  <MenuItem value={120}>Long</MenuItem>
+                  <MenuItem value={"SHORT"}>Short</MenuItem>
+                  <MenuItem value={"MEDIUM"}>Medium</MenuItem>
+                  <MenuItem value={"LONG"}>Long</MenuItem>
                 </Select>
               </FormControl>
             </div>

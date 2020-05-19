@@ -1,6 +1,17 @@
-import { GET_USER_DETAILS, USER_LOGIN, USER_LOGOUT, USER_REGISTER } from './types';
-import { api } from '../../helpers/api';
-import User from '../../components/shared/models/User';
+import {
+  GET_USER_DETAILS,
+  USER_LOGIN,
+  USER_LOGOUT,
+  USER_REGISTER,
+} from "./types";
+import { api } from "../../helpers/api";
+import User from "../../components/shared/models/User";
+
+import {
+  clearJoinedGame,
+  cancelGame,
+  leaveGame,
+} from "../../redux/actions/lobbyActions";
 
 export const registerUser = (userData) => async (dispatch) => {
   try {
@@ -45,7 +56,41 @@ export const getUserDetails = (userId) => async (dispatch) => {
   }
 };
 
-export const logoutUser = () => async (dispatch) => {
+export const logoutUser = (remove, data) => async (dispatch) => {
+  console.log("userActions Logout User");
+  console.log(remove);
+  console.log(data);
+  //Rmove player from game if true
+  if (remove == true) {
+    //
+    //Check if Creator
+    if (data.isUserCreator == true) {
+      //Delete the game
+      try {
+        const response = await api.delete(`/games/${data.gameId}`, {
+          withCredentials: true,
+        });
+      } catch (error) {
+        throw error;
+      }
+    } else {
+      //Not a creator
+      //Remove from game
+      try {
+        const response = await api.delete(
+          `/games/${data.gameId}/players/${data.userId}`,
+          {
+            withCredentials: true,
+          }
+        );
+      } catch (error) {
+        throw error;
+      }
+    }
+  }
+
+  //Logout
+  console.log("Logout User");
   try {
     await api.post("/logout", {
       withCredentials: true,
@@ -53,6 +98,7 @@ export const logoutUser = () => async (dispatch) => {
     dispatch({
       type: USER_LOGOUT,
     });
+    console.log("Logout User Success");
   } catch (error) {
     throw error;
   }

@@ -124,17 +124,6 @@ class RoundMessage extends Component {
                   </div>
                 )}
               </div>
-
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    this.handleState(false);
-                  }}
-                  color="primary"
-                >
-                  Close
-                </Button>
-              </DialogActions>
             </div>
           </Dialog>
         </div>
@@ -178,17 +167,6 @@ class RoundMessage extends Component {
                   <h1 style={Colors.textGreen}>Goodbye!</h1>
                 </div>
               </div>
-
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    this.handleState(false);
-                  }}
-                  color="primary"
-                >
-                  Close
-                </Button>
-              </DialogActions>
             </div>
           </Dialog>
         </div>

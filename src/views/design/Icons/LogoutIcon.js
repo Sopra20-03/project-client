@@ -1,13 +1,13 @@
-import React from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { withRouter } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import React from "react";
+import Tooltip from "@material-ui/core/Tooltip";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { withRouter } from "react-router-dom";
+import Button from "@material-ui/core/Button";
 //Redux
-import { connect } from 'react-redux';
-import { logoutUser } from '../../../redux/actions/userActions';
-import { errorNotification } from '../../../helpers/notifications/toasts';
-import { handleError } from '../../../helpers/api';
+import { connect } from "react-redux";
+import { logoutUser } from "../../../redux/actions/userActions";
+import { errorNotification } from "../../../helpers/notifications/toasts";
+import { handleError } from "../../../helpers/api";
 
 class LogoutIcon extends React.Component {
   constructor() {
@@ -16,10 +16,15 @@ class LogoutIcon extends React.Component {
 
   async logout() {
     try {
-      await this.props.logoutUser()
+      let data = {
+        isUserCreator: this.props.lobbyState.isUserCreator,
+        userId: this.props.userState.user.id,
+        gameId: this.props.lobbyState.gameId,
+      };
+      await this.props.logoutUser(true, data);
       this.props.history.push("/login");
-    }catch (e) {
-      errorNotification (handleError (e));
+    } catch (e) {
+      errorNotification(handleError(e));
     }
   }
 
@@ -42,4 +47,9 @@ class LogoutIcon extends React.Component {
   }
 }
 
-export default withRouter(connect(null, { logoutUser })(LogoutIcon));
+const mapStateToProps = (state) => ({
+  lobbyState: state.lobbyReducer,
+  userState: state.userReducer,
+});
+
+export default withRouter(connect(mapStateToProps, { logoutUser })(LogoutIcon));
