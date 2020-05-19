@@ -18,6 +18,7 @@ import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
 import { ContainerRow } from "../game/Gameplay";
 import PacmanLoader from "react-spinners/PacmanLoader";
 import LobbyIcon from "../../views/design/Icons/LobbyIcon";
+
 import Grid from "@material-ui/core/Grid";
 import { errorNotification } from "../../helpers/notifications/toasts";
 
