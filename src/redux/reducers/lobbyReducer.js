@@ -9,6 +9,7 @@ import {
   PLAY_GAME,
   USER_LOGOUT,
   GAME_CLEAR,
+  CLEAR_JOINEDGAME,
 } from "../actions/types";
 
 const initialState = {
@@ -33,6 +34,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         gamesList: action.payload,
+      };
+
+    case CLEAR_JOINEDGAME:
+      return {
+        ...state,
+        joinedGame: null,
       };
 
     case GAME_CLEAR:

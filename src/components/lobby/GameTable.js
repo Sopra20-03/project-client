@@ -1,16 +1,24 @@
-import React from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import GameRow from './GameRow';
+import React from "react";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import GameRow from "./GameRow";
 //redux imports
-import { connect } from 'react-redux';
-import { cancelGame, joinGame, leaveGame } from '../../redux/actions/lobbyActions';
-import { handleError } from '../../helpers/api';
-import { errorNotification, infoNotification } from '../../helpers/notifications/toasts';
+import { connect } from "react-redux";
+import {
+  cancelGame,
+  joinGame,
+  leaveGame,
+  clearJoinedGame,
+} from "../../redux/actions/lobbyActions";
+import { handleError } from "../../helpers/api";
+import {
+  errorNotification,
+  infoNotification,
+} from "../../helpers/notifications/toasts";
 
 class GameTable extends React.Component {
   constructor() {
@@ -24,7 +32,9 @@ class GameTable extends React.Component {
       };
       await this.props.joinGame(gameId, requestBody);
     } catch (error) {
-      errorNotification(`Something went wrong while joining game: \n${handleError(error)}`);
+      errorNotification(
+        `Something went wrong while joining game: \n${handleError(error)}`
+      );
     }
   }
 
@@ -51,7 +61,6 @@ class GameTable extends React.Component {
 
   async cancelGame(gameId) {
     try {
-      this.leaveGame();
       await this.props.cancelGame(gameId);
     } catch (error) {
       errorNotification(
@@ -63,10 +72,9 @@ class GameTable extends React.Component {
   }
 
   handleCancelGame = (gameId) => {
-    this.cancelGame(gameId)
-      .then(() => {
-        infoNotification ('Game canceled', 2000);
-      })
+    this.cancelGame(gameId).then(() => {
+      infoNotification("Game canceled", 2000);
+    });
   };
 
   render() {

@@ -6,6 +6,7 @@ import {
   LEAVE_GAME,
   PLAY_GAME,
   START_GAME,
+  CLEAR_JOINEDGAME,
 } from "./types";
 
 import { api } from "../../helpers/api";
@@ -33,20 +34,16 @@ export const getGames = () => async (dispatch) => {
       withCredentials: true,
     });
     console.log("GETGAMES");
+
+    console.log(response.headers["content-type"]);
     console.log(response.data);
-    //Check if data is JSON, else login authentication error
-    try {
-      const data = JSON.parse(response.text());
-      // Do your JSON handling here
-    } catch (err) {
-      // It is text, do you text handling here
-      return;
+    if (response.headers["content-type"] != "application/json") {
+      return false;
     }
-    if (response.data.s)
-      dispatch({
-        type: GET_GAMES,
-        payload: response.data,
-      });
+    dispatch({
+      type: GET_GAMES,
+      payload: response.data,
+    });
   } catch (error) {
     throw error;
   }
@@ -87,6 +84,12 @@ export const joinGame = (gameId, userData) => async (dispatch) => {
   } catch (error) {
     throw error;
   }
+};
+
+export const clearJoinedGame = () => async (dispatch) => {
+  dispatch({
+    type: CLEAR_JOINEDGAME,
+  });
 };
 
 //After joining a game, player waits for creater to start the game.
@@ -131,15 +134,11 @@ export const leaveGame = (gameId, userId) => async (dispatch) => {
 
 export const cancelGame = (gameId) => async (dispatch) => {
   try {
-    console.log("***API CALL : CANCEL GAME***");
+    console.log("***API CALL : CANCEL/DELETE GAME***");
+    console.log(gameId);
     const response = await api.delete(`/games/${gameId}`, {
       withCredentials: true,
     });
-    const game = new Game(response.data);
-    console.log("request to:", response.request.responseURL);
-    console.log("status code:", response.status);
-    console.log("status text:", response.statusText);
-    console.log("requested data:", response.data);
     dispatch({
       type: CANCEL_GAME,
     });
