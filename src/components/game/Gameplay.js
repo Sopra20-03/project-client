@@ -117,8 +117,6 @@ class Gameplay extends Component {
   }
 
   async runGame() {
-    //Check Rounds
-    //DEMO: 3 Rounds
     // Check if Game exists
     if (this.props.gameState.gameId != null) {
       try {
