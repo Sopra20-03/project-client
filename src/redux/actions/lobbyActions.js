@@ -43,6 +43,7 @@ export const getGame = (gameId) => async (dispatch) => {
     }
     dispatch({
       type: GET_GAME,
+      payload: response.data,
     });
 
     return response.data;

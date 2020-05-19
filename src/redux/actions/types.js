@@ -29,6 +29,8 @@ export const GAME_CLEAR = "GAME_CLEAR";
 export const GUESSER_SUBMITGUESS = "GUESSER_SUBMITGUESS";
 export const GAME_VALIDATECLUE = "GAME_VALIDATECLUE";
 export const GAME_SET_STATE = "GAME_SET_STATE";
+export const SET_SCORE = "SET_SCORE";
+
 //Timer Actions in GamePlay Actions
 export const TIMER_CLEAR = "TIMER_CLEAR";
 export const TIMER_START = "TIMER_START";

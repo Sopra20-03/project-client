@@ -14,11 +14,12 @@ import {
   TIMER_CLEAR,
   TIMER_DECREMENT,
   TIMER_START,
-  TIMER_STOP
-} from './types';
+  TIMER_STOP,
+  SET_SCORE,
+} from "./types";
 
-import { api, handleError } from '../../helpers/api';
-import { errorNotification } from '../../helpers/notifications/toasts';
+import { api, handleError } from "../../helpers/api";
+import { errorNotification } from "../../helpers/notifications/toasts";
 
 //Functions
 export const gameGetGame = (data) => async (dispatch) => {
@@ -125,6 +126,17 @@ export const playerSetRole = (role) => async (dispatch) => {
     dispatch({
       type: PLAYER_SET_ROLE,
       payload: role,
+    });
+  } catch (error) {
+    errorNotification(handleError(error));
+  }
+};
+
+export const setScore = (score) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SET_SCORE,
+      payload: score,
     });
   } catch (error) {
     errorNotification(handleError(error));

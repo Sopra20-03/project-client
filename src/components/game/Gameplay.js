@@ -32,6 +32,7 @@ import {
   timerClear,
   timerStart,
   timerStop,
+  setScore,
 } from "../../redux/actions/gameplayActions";
 
 import { getGame } from "../../redux/actions/lobbyActions";
@@ -141,9 +142,10 @@ class Gameplay extends Component {
       this.stopPolling();
       return;
     } else {
-      //3. Get Round
+      //Get Round
       await this.getRound();
-      //1. Get Players and icons
+
+      //Get Players and icons
       await this.getPlayers();
       if (
         this.props.gameState.gamePlayers &&
@@ -164,7 +166,22 @@ class Gameplay extends Component {
       await this.getGameState();
 
       //6. Get Score
-      await this.getGame();
+      await this.getScore();
+    }
+  }
+
+  async getScore() {
+    if (this.props.gameState.game != null) {
+      if (this.props.gameState.game.gameMode === "STANDARD") {
+        this.props.setScore(this.props.gameState.game.score);
+      } else {
+        //Rival Mode Individual Scores
+        let playerScore = this.props.gameState.gamePlayers.find(
+          (x) => x.userId === this.props.gameState.userId
+        ).score;
+
+        this.props.setScore(playerScore);
+      }
     }
   }
 
@@ -203,16 +220,6 @@ class Gameplay extends Component {
       errorNotification(handleError(error));
     }
     console.log("Player Icons: ", icons);
-  }
-
-  async getGame() {
-    try {
-      await this.props.gameGetGame({ gameId: this.props.gameState.gameId });
-    } catch (error) {
-      errorNotification(
-        `Something went wrong while fetching the game: \n${handleError(error)}`
-      );
-    }
   }
 
   async submitClue(clueId, word) {
@@ -265,32 +272,38 @@ class Gameplay extends Component {
         this.stopPolling();
         this.props.gameClearGame();
         this.props.history.push(`/lobby`);
-      }, 2000);
+      }, 1000);
     }, 10000);
   }
 
   async roundOver() {
     //Get Details
-    //TODO Check Success
-    //TODO Check Points
-    console.log("$$$$$$$$Round Over: " + this.props.gameState.roundNum);
 
     try {
       const data = {
         gameId: this.props.gameState.gameId,
         roundNum: this.props.gameState.roundNum,
       };
+
+      console.log(data);
       const response = await api.get(
         `/games/${data.gameId}/rounds/${data.roundNum}`,
         {
           withCredentials: true,
         }
       );
+
       console.log(response.data);
       let role = this.props.gameState.role;
       let word = response.data.wordCard.selectedWord;
       let clues = this.props.gameState.clues;
       let pUserClue = null;
+      let pResult = "success";
+      let guessWord = "N/A";
+      if (response.data.guess != null) {
+        pResult = response.data.guess.isValid == true ? "success" : "fail";
+        guessWord = response.data.guess.word;
+      }
 
       if (role === "GUESSER") {
         pUserClue = null;
@@ -303,7 +316,6 @@ class Gameplay extends Component {
         }
       }
       let pScore = this.props.gameState.score;
-      let pResult = "success";
       this.setState({
         infoBox: {
           selectedWord: word,
@@ -312,7 +324,7 @@ class Gameplay extends Component {
           mode: "round",
           result: pResult,
           role: this.props.gameState.role,
-          guess: null,
+          guess: guessWord,
         },
       });
       //Display Message
@@ -374,6 +386,9 @@ class Gameplay extends Component {
   }
 
   async getGameState() {
+    if (this.props.gameState.role == null) {
+      return;
+    }
     let gameState;
     if (!this.props.gameState.round.wordCard.selectedWord) {
       gameState = GameStates.SELECT_WORD;
@@ -403,7 +418,31 @@ class Gameplay extends Component {
 
   //Phase Change
   gamePhaseChange(gameState) {
-    console.log("PhaseChange Timer Reset");
+    let timeout = {
+      selectWord: 30,
+      submitClue: 45,
+      submitGuess: 60,
+    };
+
+    if (this.props.gameState.game.duration === "SHORT") {
+      timeout = {
+        selectWord: 30,
+        submitClue: 30,
+        submitGuess: 30,
+      };
+    } else if (this.props.gameState.game.duration === "MEDIUM") {
+      timeout = {
+        selectWord: 45,
+        submitClue: 45,
+        submitGuess: 45,
+      };
+    } else if (this.props.gameState.game.duration === "LONG") {
+      timeout = {
+        selectWord: 60,
+        submitClue: 60,
+        submitGuess: 60,
+      };
+    }
 
     if (gameState === GameStates.SELECT_WORD) {
       let timeoutFunction = () => {
@@ -419,7 +458,7 @@ class Gameplay extends Component {
       };
 
       if (this.props.gameState.role === "GUESSER") {
-        this.props.timerStart(30, timeoutFunction);
+        this.props.timerStart(timeout.selectWord, timeoutFunction);
       } else {
         this.props.timerClear();
       }
@@ -443,7 +482,7 @@ class Gameplay extends Component {
       };
 
       if (this.props.gameState.role === "CLUE_WRITER") {
-        this.props.timerStart(45, timeoutFunction);
+        this.props.timerStart(timeout.submitClue, timeoutFunction);
       } else {
         this.props.timerClear();
       }
@@ -461,7 +500,7 @@ class Gameplay extends Component {
         }
       };
       if (this.props.gameState.role === "GUESSER") {
-        this.props.timerStart(60, timeoutFunction);
+        this.props.timerStart(timeout.submitGuess, timeoutFunction);
       } else {
         this.props.timerClear();
       }
@@ -489,40 +528,6 @@ class Gameplay extends Component {
                 )}
               />
             </TableContainer>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                this.stopPolling();
-
-                this.props.timerClear();
-              }}
-            >
-              Stop Polling
-            </Button>
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                this.startPolling();
-              }}
-            >
-              Start Polling
-            </Button>
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                this.RoundMessageElement.current.handleState(true);
-                setTimeout(() => {
-                  this.RoundMessageElement.current.handleState(false);
-                }, 5000);
-              }}
-            >
-              Show Dialog
-            </Button>
 
             <InfoContainer>
               <PointsInfo
@@ -572,6 +577,7 @@ export default withRouter(
     gameGetGame,
     timerStart,
     timerStop,
+    setScore,
     timerClear,
     gameSubmitGuess,
     getGame,

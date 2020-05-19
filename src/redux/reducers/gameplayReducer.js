@@ -17,11 +17,14 @@ import {
   TIMER_DECREMENT,
   GAME_CLEAR,
   USER_LOGOUT,
+  GET_GAME,
+  SET_SCORE,
 } from "../actions/types";
 import GameStates from "./gameStates";
 
 const initialState = {
   gameId: null,
+  game: null,
   userId: null,
   playerId: null,
   gamePlayers: [],
@@ -48,10 +51,22 @@ export default function (state = initialState, action) {
         userId: action.payload.userId,
       };
 
+    case GET_GAME:
+      return {
+        ...state,
+        game: action.payload,
+      };
+
     case GAME_GETGAME:
       return {
         ...state,
         score: action.payload.score,
+      };
+
+    case SET_SCORE:
+      return {
+        ...state,
+        score: action.payload,
       };
 
     case GAME_CLEAR:
