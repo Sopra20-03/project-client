@@ -1,6 +1,11 @@
-import { GET_USER_DETAILS, USER_LOGIN, USER_LOGOUT, USER_REGISTER } from './types';
-import { api } from '../../helpers/api';
-import User from '../../components/shared/models/User';
+import {
+  GET_USER_DETAILS,
+  USER_LOGIN,
+  USER_LOGOUT,
+  USER_REGISTER,
+} from "./types";
+import { api } from "../../helpers/api";
+import User from "../../components/shared/models/User";
 
 export const registerUser = (userData) => async (dispatch) => {
   try {
@@ -46,13 +51,15 @@ export const getUserDetails = (userId) => async (dispatch) => {
 };
 
 export const logoutUser = () => async (dispatch) => {
+  console.log("Logout User");
   try {
-    await api.post("/logout", {
+    await api.post("/logout", null, {
       withCredentials: true,
     });
     dispatch({
       type: USER_LOGOUT,
     });
+    console.log("Logout User Success");
   } catch (error) {
     throw error;
   }

@@ -1,7 +1,15 @@
-import { CANCEL_GAME, GAME_CREATION, GET_GAMES, JOIN_GAME, LEAVE_GAME, PLAY_GAME, START_GAME } from './types';
+import {
+  CANCEL_GAME,
+  GAME_CREATION,
+  GET_GAMES,
+  JOIN_GAME,
+  LEAVE_GAME,
+  PLAY_GAME,
+  START_GAME,
+} from "./types";
 
-import { api } from '../../helpers/api';
-import Game from '../../components/shared/models/Game';
+import { api } from "../../helpers/api";
+import Game from "../../components/shared/models/Game";
 
 export const startGame = (gameId) => async (dispatch) => {
   try {
@@ -26,10 +34,19 @@ export const getGames = () => async (dispatch) => {
     });
     console.log("GETGAMES");
     console.log(response.data);
-    dispatch({
-      type: GET_GAMES,
-      payload: response.data,
-    });
+    //Check if data is JSON, else login authentication error
+    try {
+      const data = JSON.parse(response.text());
+      // Do your JSON handling here
+    } catch (err) {
+      // It is text, do you text handling here
+      return;
+    }
+    if (response.data.s)
+      dispatch({
+        type: GET_GAMES,
+        payload: response.data,
+      });
   } catch (error) {
     throw error;
   }

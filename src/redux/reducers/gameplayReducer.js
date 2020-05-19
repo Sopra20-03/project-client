@@ -85,6 +85,8 @@ export default function (state = initialState, action) {
 
     case USER_LOGOUT:
       clearInterval(state.timer);
+
+      console.log("gameplayReducer Logout");
       return {
         //Clear the state
         gameId: null,

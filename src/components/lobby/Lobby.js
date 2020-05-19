@@ -1,23 +1,25 @@
-import React from 'react';
-import styled from 'styled-components';
-import { BaseContainer, GameContainer } from '../../helpers/layout';
-import { handleError } from '../../helpers/api';
-import Button from '../../views/design/Button';
-import { withRouter } from 'react-router-dom';
-import LogoutIcon from '../../views/design/Icons/LogoutIcon';
-import GameTable from './GameTable';
-import Colors from '../../views/design/Colors';
-import { SmallLogo } from '../../views/logos/SmallLogo';
+import React from "react";
+import styled from "styled-components";
+import { BaseContainer, GameContainer } from "../../helpers/layout";
+import { handleError } from "../../helpers/api";
+import Button from "../../views/design/Button";
+import { withRouter } from "react-router-dom";
+import LogoutIcon from "../../views/design/Icons/LogoutIcon";
+import GameTable from "./GameTable";
+import Colors from "../../views/design/Colors";
+import { SmallLogo } from "../../views/logos/SmallLogo";
 //Redux
-import { connect } from 'react-redux';
-import { getGames, startGame } from '../../redux/actions/lobbyActions';
-import ProfileIcon from '../../views/design/Icons/GameHistoryIcon';
-import LeaderboardIcon from '../../views/design/Icons/LeaderboardIcon';
-import { ContainerRow } from '../game/Gameplay';
-import PacmanLoader from 'react-spinners/PacmanLoader';
-import LobbyIcon from '../../views/design/Icons/LobbyIcon';
-import Grid from '@material-ui/core/Grid';
-import { errorNotification } from '../../helpers/notifications/toasts';
+import { connect } from "react-redux";
+import { getGames, startGame } from "../../redux/actions/lobbyActions";
+
+import { logoutUser } from "../../redux/actions/userActions";
+import ProfileIcon from "../../views/design/Icons/GameHistoryIcon";
+import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
+import { ContainerRow } from "../game/Gameplay";
+import PacmanLoader from "react-spinners/PacmanLoader";
+import LobbyIcon from "../../views/design/Icons/LobbyIcon";
+import Grid from "@material-ui/core/Grid";
+import { errorNotification } from "../../helpers/notifications/toasts";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -44,6 +46,14 @@ class Lobby extends React.Component {
 
   componentDidMount() {
     this.timer = setInterval(async () => await this.loadLobby(), 1000);
+    window.addEventListener("beforeunload", (event) => {
+      // Cancel the event as stated by the standard.
+      //event.preventDefault();
+      // Chrome requires returnValue to be set.
+      //event.returnValue = "This will log you out and clear your session.";
+      sessionStorage.clear();
+      this.props.logoutUser();
+    });
   }
 
   componentWillUnmount() {
@@ -196,5 +206,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, { getGames, startGame })(Lobby)
+  connect(mapStateToProps, { getGames, startGame, logoutUser })(Lobby)
 );
