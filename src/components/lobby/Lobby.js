@@ -10,13 +10,27 @@ import Colors from "../../views/design/Colors";
 import { SmallLogo } from "../../views/logos/SmallLogo";
 //Redux
 import { connect } from "react-redux";
-import { getGames, startGame } from "../../redux/actions/lobbyActions";
+import {
+  getGames,
+  startGame,
+  clearJoinedGame,
+  cancelGame,
+  leaveGame,
+} from "../../redux/actions/lobbyActions";
+
+import { logoutUser } from "../../redux/actions/userActions";
 import ProfileIcon from "../../views/design/Icons/GameHistoryIcon";
 import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
 import { ContainerRow } from "../game/Gameplay";
 import PacmanLoader from "react-spinners/PacmanLoader";
 import LobbyIcon from "../../views/design/Icons/LobbyIcon";
+
 import Grid from "@material-ui/core/Grid";
+
+import {
+  errorNotification,
+  infoNotification,
+} from "../../helpers/notifications/toasts";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -43,6 +57,16 @@ class Lobby extends React.Component {
 
   componentDidMount() {
     this.timer = setInterval(async () => await this.loadLobby(), 1000);
+    window.addEventListener("beforeunload", (event) => {
+      let data = {
+        isUserCreator: this.props.lobbyState.isUserCreator,
+        gameId: this.props.lobbyState.gameId,
+        userId: this.props.userState.user.id,
+      };
+      this.props.logoutUser(true, data);
+
+      sessionStorage.clear();
+    });
   }
 
   componentWillUnmount() {
@@ -55,15 +79,26 @@ class Lobby extends React.Component {
 
     //2. If Player has joined a game, check if the creator has started it
     if (this.props.lobbyState.joinedGame != null) {
-      const game = this.props.lobbyState.gamesList.find(
-        ({ gameId }) => gameId === this.props.lobbyState.joinedGame.gameId
-      );
+      // If gamesList doesn't have the joined game, it means the creator has deleted the game.
 
-      if (game.gameStatus === "RUNNING") {
-        console.log("Loading Game");
-        this.props.history.push(`/gameplay`);
+      if (
+        this.props.lobbyState.gamesList.find(
+          ({ gameId }) => gameId === this.props.lobbyState.joinedGame.gameId
+        )
+      ) {
+        const game = this.props.lobbyState.gamesList.find(
+          ({ gameId }) => gameId === this.props.lobbyState.joinedGame.gameId
+        );
+        if (game.gameStatus === "RUNNING") {
+          console.log("Loading Game");
+          this.props.history.push(`/gameplay`);
+        } else {
+          //Game not yet started
+        }
       } else {
-        //Game not yet started
+        //Creator has deleted the game
+        this.props.clearJoinedGame();
+        infoNotification("Game canceled by Creator", 2000);
       }
     }
   }
@@ -74,7 +109,7 @@ class Lobby extends React.Component {
     try {
       await this.props.getGames();
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while fetching the games: \n${handleError(error)}`
       );
     }
@@ -88,7 +123,7 @@ class Lobby extends React.Component {
         this.props.history.push(`/gameplay`);
       }
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while starting the game: \n${handleError(error)}`
       );
     }
@@ -195,5 +230,12 @@ const mapStateToProps = (state) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, { getGames, startGame })(Lobby)
+  connect(mapStateToProps, {
+    getGames,
+    startGame,
+    logoutUser,
+    clearJoinedGame,
+    cancelGame,
+    leaveGame,
+  })(Lobby)
 );

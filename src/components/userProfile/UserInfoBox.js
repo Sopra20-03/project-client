@@ -1,27 +1,26 @@
-import React from "react";
-import styled from "styled-components";
-import {PlayerContainer} from "../game/PlayerBox";
-import Colors from "../../views/design/Colors/Colors";
+import React from 'react';
+import styled from 'styled-components';
+import { PlayerContainer } from '../game/PlayerBox';
+import Colors from '../../views/design/Colors/Colors';
 import butterfly from '../../views/logos/010-butterfly.png';
-import Button from "../../views/design/Button";
-import {ContainerRow} from "../game/Gameplay";
-import IconMenu from "./IconMenu";
-import {api, handleError} from "../../helpers/api";
-import { connect } from "react-redux";
-import {getUserDetails} from "../../redux/actions/userActions";
-import userfemale from "../../views/logos/user_female.png";
-import usermale from "../../views/logos/user_male.png";
-import bird from "../../views/logos/001-bird.png";
-import dog from "../../views/logos/002-dog.png";
-import cat from "../../views/logos/003-cat.png";
-import fish from "../../views/logos/004-clown-fish.png";
-import iguana from "../../views/logos/005-iguana.png";
-import hen from "../../views/logos/006-hen.png";
-import owl from "../../views/logos/007-owl.png";
-import bee from "../../views/logos/008-bee.png";
-import swan from "../../views/logos/009-swan.png";
-import robot from "../../views/logos/robot.png";
-
+import Button from '../../views/design/Button';
+import { ContainerRow } from '../game/Gameplay';
+import IconMenu from './IconMenu';
+import { api, handleError } from '../../helpers/api';
+import { connect } from 'react-redux';
+import { getUserDetails } from '../../redux/actions/userActions';
+import userfemale from '../../views/logos/user_female.png';
+import usermale from '../../views/logos/user_male.png';
+import bird from '../../views/logos/001-bird.png';
+import dog from '../../views/logos/002-dog.png';
+import cat from '../../views/logos/003-cat.png';
+import fish from '../../views/logos/004-clown-fish.png';
+import iguana from '../../views/logos/005-iguana.png';
+import hen from '../../views/logos/006-hen.png';
+import owl from '../../views/logos/007-owl.png';
+import bee from '../../views/logos/008-bee.png';
+import swan from '../../views/logos/009-swan.png';
+import { errorNotification } from '../../helpers/notifications/toasts';
 
 const UserInfoContainer = styled.div`
   background-color: #f3ead8;
@@ -100,7 +99,7 @@ class UserInfoBox extends React.Component {
             this.setState({editMode: false});
             await this.props.getUserDetails(this.props.user.id);
         } catch (error) {
-            alert(handleError(error));
+            errorNotification(handleError(error));
         }
     }
 

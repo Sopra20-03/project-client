@@ -1,10 +1,10 @@
-import React from 'react';
-import TableCell from '@material-ui/core/TableCell';
-import { withStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
-import TableRow from '@material-ui/core/TableRow';
+import React from "react";
+import TableCell from "@material-ui/core/TableCell";
+import { withStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
+import TableRow from "@material-ui/core/TableRow";
 //Redux
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 const PlayButton = withStyles((theme) => ({
   root: {
@@ -35,7 +35,7 @@ function GameRow(props) {
   if (userIsCreator && thisGameSelected) {
     rowButton = (
       <LeaveButton onClick={() => props.onCancelGame(props.game.gameId)}>
-        Cancel
+        Delete
       </LeaveButton>
     );
   } else if (thisGameSelected) {

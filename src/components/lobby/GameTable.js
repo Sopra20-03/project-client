@@ -12,9 +12,13 @@ import {
   cancelGame,
   joinGame,
   leaveGame,
+  clearJoinedGame,
 } from "../../redux/actions/lobbyActions";
-import { store } from "../../store";
 import { handleError } from "../../helpers/api";
+import {
+  errorNotification,
+  infoNotification,
+} from "../../helpers/notifications/toasts";
 
 class GameTable extends React.Component {
   constructor() {
@@ -28,7 +32,9 @@ class GameTable extends React.Component {
       };
       await this.props.joinGame(gameId, requestBody);
     } catch (error) {
-      alert(`Something went wrong while joining game: \n${handleError(error)}`);
+      errorNotification(
+        `Something went wrong while joining game: \n${handleError(error)}`
+      );
     }
   }
 
@@ -43,7 +49,7 @@ class GameTable extends React.Component {
         this.props.userState.user.id
       );
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while leaving the game: \n${handleError(error)}`
       );
     }
@@ -55,10 +61,9 @@ class GameTable extends React.Component {
 
   async cancelGame(gameId) {
     try {
-      this.leaveGame();
       await this.props.cancelGame(gameId);
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while cancelling the game: \n${handleError(
           error
         )}`
@@ -67,7 +72,9 @@ class GameTable extends React.Component {
   }
 
   handleCancelGame = (gameId) => {
-    this.cancelGame(gameId);
+    this.cancelGame(gameId).then(() => {
+      infoNotification("Game canceled", 2000);
+    });
   };
 
   render() {
@@ -92,16 +99,18 @@ class GameTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.props.games.filter(x => x.gameStatus === "INITIALIZED").map((game) => (
-              <GameRow
-                key={game.gameId}
-                game={game}
-                numPlayers={game.playerCount}
-                onJoinGame={this.handleJoinGame}
-                onLeaveGame={this.handleLeaveGame}
-                onCancelGame={this.handleCancelGame}
-              />
-            ))}
+            {this.props.games
+              .filter((x) => x.gameStatus === "INITIALIZED")
+              .map((game) => (
+                <GameRow
+                  key={game.gameId}
+                  game={game}
+                  numPlayers={game.playerCount}
+                  onJoinGame={this.handleJoinGame}
+                  onLeaveGame={this.handleLeaveGame}
+                  onCancelGame={this.handleCancelGame}
+                />
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

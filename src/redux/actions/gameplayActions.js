@@ -1,5 +1,6 @@
 import {
   CLUEWRITER_SUBMITCLUE,
+  GAME_CLEAR,
   GAME_GETCLUES,
   GAME_GETGAME,
   GAME_GETROUND,
@@ -10,15 +11,15 @@ import {
   GUESSER_SELECTWORD,
   GUESSER_SUBMITGUESS,
   PLAYER_SET_ROLE,
-  TIMER_DECREMENT,
   TIMER_CLEAR,
+  TIMER_DECREMENT,
   TIMER_START,
   TIMER_STOP,
-  GAME_CLEAR,
+  SET_SCORE,
 } from "./types";
 
 import { api, handleError } from "../../helpers/api";
-import GameStates from "../reducers/gameStates";
+import { errorNotification } from "../../helpers/notifications/toasts";
 
 //Functions
 export const gameGetGame = (data) => async (dispatch) => {
@@ -34,7 +35,7 @@ export const gameGetGame = (data) => async (dispatch) => {
       payload: response.data,
     });
   } catch (error) {
-    alert(handleError(error));
+    throw error;
   }
 };
 
@@ -57,7 +58,7 @@ export const getGamePlayers = (gameId, userId) => async (dispatch) => {
       payload: { players: response.data, playerId: currentPlayerId },
     });
   } catch (error) {
-    alert(handleError(error));
+    throw error;
   }
 };
 
@@ -84,7 +85,7 @@ export const gameGetRound = (data) => async (dispatch) => {
       payload: response.data,
     });
   } catch (error) {
-    alert(handleError(error));
+    throw error;
   }
 };
 
@@ -95,7 +96,7 @@ export const gameUpdateRound = (roundNum) => async (dispatch) => {
       payload: roundNum,
     });
   } catch (error) {
-    alert(handleError(error));
+    errorNotification(handleError(error));
   }
 };
 
@@ -116,7 +117,7 @@ export const guesserSelectWord = (data) => async (dispatch) => {
       payload: null,
     });
   } catch (error) {
-    alert(handleError(error));
+    errorNotification(handleError(error));
   }
 };
 
@@ -127,7 +128,18 @@ export const playerSetRole = (role) => async (dispatch) => {
       payload: role,
     });
   } catch (error) {
-    alert(handleError(error));
+    errorNotification(handleError(error));
+  }
+};
+
+export const setScore = (score) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SET_SCORE,
+      payload: score,
+    });
+  } catch (error) {
+    errorNotification(handleError(error));
   }
 };
 
@@ -138,7 +150,7 @@ export const gameSetState = (gameState) => async (dispatch) => {
       payload: gameState,
     });
   } catch (e) {
-    alert(handleError(e));
+    errorNotification(handleError(e));
   }
 };
 
@@ -159,7 +171,9 @@ export const gameSubmitClue = (data) => async (dispatch) => {
       payload: response.data,
     });
   } catch (error) {
-    alert(handleError(error));
+    errorNotification(handleError(error));
+  } finally {
+    timerStop();
   }
 };
 
@@ -182,6 +196,8 @@ export const gameSubmitGuess = (data) => async (dispatch) => {
     });
   } catch (error) {
     console.log(handleError(error));
+  } finally {
+    timerStop();
   }
 };
 
@@ -190,7 +206,6 @@ export const gameGetClues = (data) => async (dispatch) => {
     return null;
   }
   try {
-
     //Demo 3 Rounds
 
     if (data.roundNum > 3) {
@@ -212,7 +227,7 @@ export const gameGetClues = (data) => async (dispatch) => {
       payload: payload,
     });
   } catch (error) {
-    alert(handleError(error));
+    errorNotification(handleError(error));
   }
 };
 
@@ -223,7 +238,7 @@ export const gameLoadGame = (data) => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
-    alert(handleError(error));
+    errorNotification(handleError(error));
   }
 };
 
@@ -234,7 +249,7 @@ export const gameClearGame = () => async (dispatch) => {
       payload: null,
     });
   } catch (error) {
-    alert(handleError(error));
+    errorNotification(handleError(error));
   }
 };
 
@@ -248,7 +263,7 @@ export const timerStart = (data, func) => async (dispatch) => {
       payload: data,
     });
   } catch (e) {
-    alert(handleError(e));
+    errorNotification(handleError(e));
   }
 
   //Set New Timer
@@ -271,7 +286,7 @@ export const timerStart = (data, func) => async (dispatch) => {
       payload: timerData,
     });
   } catch (e) {
-    alert(handleError(e));
+    errorNotification(handleError(e));
   }
 };
 
@@ -283,7 +298,7 @@ export const timerStop = () => async (dispatch) => {
       payload: null,
     });
   } catch (e) {
-    alert(handleError(e));
+    errorNotification(handleError(e));
   }
 };
 
@@ -295,6 +310,6 @@ export const timerClear = () => async (dispatch) => {
       payload: null,
     });
   } catch (e) {
-    alert(handleError(e));
+    errorNotification(handleError(e));
   }
 };

@@ -257,7 +257,8 @@ class WordCard extends Component {
   render() {
     if (
       this.props.gameState.round == null ||
-      this.props.gameState.round.wordCard == null
+      this.props.gameState.round.wordCard == null ||
+      this.props.gameState.role == null
     ) {
       return <h1>Loading..</h1>;
     }
