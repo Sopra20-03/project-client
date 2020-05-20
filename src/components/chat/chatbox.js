@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React, {Component} from "react";
 import {
     ThemeProvider,
-    Avatar,
     Message,
     MessageGroup,
     MessageList,
@@ -15,7 +14,7 @@ import MinimizeIcon from '@material-ui/icons/Minimize';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import {api, handleError} from "../../helpers/api";
 import {connect} from "react-redux";
-import userIcons, {chooseIcon} from '../../views/design/UserIcons';
+import {chooseIcon} from '../../views/design/UserIcons';
 import Colors from "../../views/design/Colors/Colors";
 
 export const ChatContainer = styled.div`
@@ -23,10 +22,10 @@ export const ChatContainer = styled.div`
   position: fixed;
   bottom: 0;
   right: 0;
-  background-color: rgba(255,123,0,0.5);
+  background-color: #ffd70057;
   --webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 5px 5px 5px 5px;
-  border: 2px solid ${Colors.orange};
+  border: 2px solid ${Colors.yellow};
   padding: 1.2rem;
   padding-bottom: 6rem;
   width: 500px;
@@ -38,10 +37,10 @@ export const MiniChatContainer = styled.div`
   position: fixed;
   bottom: 0;
   right: 0;
-  background-color: rgba(255,123,0,0.5);
+  background-color: #ffd70057;
   --webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 5px 5px 5px 5px;
-  border: 2px solid ${Colors.orange};
+  border: 2px solid ${Colors.yellow};
   width: 100px;
 `;
 
@@ -57,6 +56,15 @@ export const TextField = styled.input`
   width: 85%;
   border: 2px solid;
   border-radius: 5px;
+`;
+
+export const CustomMessage = styled(Message)`
+     background-color: 'white';
+     border-radius: '30px';
+     padding-left: '10px';
+     padding-right: '10px';
+     padding-top: '5px';
+     padding-bottom: '5px;
 `;
 
 class ChatBox extends Component {
@@ -146,7 +154,6 @@ class ChatBox extends Component {
 
     minimizeMessages = () => {
         this.setState({minimized: true});
-        console.log('*********************************Minimized chat');
     };
 
     maximizeMessages = () => {
@@ -159,6 +166,7 @@ class ChatBox extends Component {
                 <MiniChatContainer>
                     <ThemeProvider vars={this.state.theme.vars}>
                             <IconButton onClick={this.maximizeMessages}>
+                                Open Chat
                                 <ChatBubbleIcon style={{color: Colors.blue}}/>
                             </IconButton>
                     </ThemeProvider>
@@ -172,6 +180,7 @@ class ChatBox extends Component {
                             <ThemeProvider vars={this.state.theme.vars}>
                                 <Row reverse>
                                     <IconButton onClick={this.minimizeMessages}>
+                                        Close
                                         <MinimizeIcon style={{color: Colors.blue}}/>
                                     </IconButton>
                                 </Row>
@@ -184,14 +193,12 @@ class ChatBox extends Component {
                                                 <Message date={this.getTime(message.timeCreated)}
                                                          isOwn={this.isOwner(message.username)}
                                                          authorName={message.username}
-                                                         style={{
-                                                             backgroundColor: 'white',
-                                                             borderRadius: '30px',
-                                                             paddingLeft: '10px',
-                                                             paddingRight: '10px',
-                                                             paddingTop: '5px',
-                                                             paddingBottom: '5px'
-                                                         }}>
+                                                        style={{     backgroundColor: 'white',
+                                                            borderRadius: '30px',
+                                                            paddingLeft: '10px',
+                                                            paddingRight: '10px',
+                                                            paddingTop: '5px',
+                                                            paddingBottom: '5px'}}>
                                                     <MessageText style={{padding: 0}}>{message.text}</MessageText>
                                                 </Message>
                                             </MessageGroup>

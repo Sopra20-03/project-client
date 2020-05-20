@@ -1,5 +1,10 @@
 //Import Actions
-import {USER_REGISTER, USER_LOGIN, USER_LOGOUT, GET_USER_DETAILS} from "../actions/types";
+import {
+  USER_REGISTER,
+  USER_LOGIN,
+  USER_LOGOUT,
+  GET_USER_DETAILS,
+} from "../actions/types";
 
 const initialState = {
   user: {},
@@ -27,6 +32,7 @@ export default function (state = initialState, action) {
       };
 
     case USER_LOGOUT:
+      console.log("userReducer Logout");
       return {
         //Clear the state
         user: {},

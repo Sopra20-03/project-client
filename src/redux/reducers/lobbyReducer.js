@@ -9,6 +9,8 @@ import {
   PLAY_GAME,
   USER_LOGOUT,
   GAME_CLEAR,
+  CLEAR_JOINEDGAME,
+  GET_GAME,
 } from "../actions/types";
 
 const initialState = {
@@ -21,6 +23,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case USER_LOGOUT:
+      console.log("lobbyReducer Logout");
       return {
         //Clear the state
         gameId: {},
@@ -32,6 +35,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         gamesList: action.payload,
+      };
+    case GET_GAME:
+      return {
+        ...state,
+      };
+
+    case CLEAR_JOINEDGAME:
+      return {
+        ...state,
+        joinedGame: null,
+
+        gameId: {},
       };
 
     case GAME_CLEAR:

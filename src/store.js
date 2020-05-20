@@ -2,13 +2,14 @@ import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import rootReducer from "./redux/reducers";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+//import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import storageSession from "redux-persist/lib/storage/session"; // session storage
 
 const initialState = {};
 
 const persistConfig = {
   key: "root",
-  storage,
+  storage: storageSession,
 };
 
 const reducers = persistReducer(persistConfig, rootReducer);

@@ -1,15 +1,12 @@
-import React, { Component } from "react";
-import { fade, makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import { handleError } from "../../helpers/api";
-import { connect } from "react-redux";
-import {
-  gameSubmitClue,
-  gameSubmitGuess,
-  timerStop,
-} from "../../redux/actions/gameplayActions";
-import GameStates from "../../redux/reducers/gameStates";
-import SubmitIcon from "../../views/design/Icons/SubmitIcon";
+import React, { Component } from 'react';
+import { fade, makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import { handleError } from '../../helpers/api';
+import { connect } from 'react-redux';
+import { gameSubmitClue, gameSubmitGuess, timerStop } from '../../redux/actions/gameplayActions';
+import GameStates from '../../redux/reducers/gameStates';
+import SubmitIcon from '../../views/design/Icons/SubmitIcon';
+import { errorNotification } from '../../helpers/notifications/toasts';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +46,7 @@ function Guesser(props) {
       };
       await props.gameSubmitGuess(requestData);
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while submitting the guess: \n${handleError(
           error
         )}`
@@ -81,7 +78,7 @@ function ClueWriter(props) {
       };
       await props.gameSubmitClue(requestData);
     } catch (error) {
-      alert(
+      errorNotification(
         `Something went wrong while submitting the clue: \n${handleError(
           error
         )}`
