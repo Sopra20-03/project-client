@@ -12,6 +12,7 @@ import { api, handleError } from "../../helpers/api";
 import Button from "@material-ui/core/Button";
 import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 import GameStates from "../../redux/reducers/gameStates";
+import dog from "../../views/logos/002-dog.png";
 
 import RoundMessage from "./RoundMessage";
 //Redux
@@ -28,16 +29,14 @@ import {
   gameUpdateRound,
   getGamePlayers,
   guesserSelectWord,
-  playerSetRole,
+  playerSetRole, setScore,
   timerClear,
   timerStart,
-  timerStop,
-  setScore,
-} from "../../redux/actions/gameplayActions";
-
+  timerStop
+} from '../../redux/actions/gameplayActions';
+import { errorNotification } from '../../helpers/notifications/toasts';
+import ChatBox from "../chat/chatbox";
 import { getGame } from "../../redux/actions/lobbyActions";
-
-import { errorNotification } from "../../helpers/notifications/toasts";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -65,6 +64,7 @@ class Gameplay extends Component {
     this.state = {
       showRolePopup: false,
       icons: [],
+      messageList: null,
       infoBox: {
         selectedWord: null,
         userClue: null,
@@ -149,7 +149,7 @@ class Gameplay extends Component {
         this.props.gameState.gamePlayers &&
         this.props.gameState.gamePlayers.length > 0
       )
-        await this.getPlayerUserDetails();
+            await this.getPlayerUserDetails();
 
       //4. Get Clues
       if (
@@ -165,6 +165,11 @@ class Gameplay extends Component {
 
       //6. Get Score
       await this.getScore();
+
+      //7. Get Messages
+      await this.getMessages();
+
+
     }
   }
 
@@ -298,7 +303,7 @@ class Gameplay extends Component {
       let pResult = "success";
       let guessWord = "N/A";
       if (response.data.guess != null) {
-        pResult = response.data.guess.isValid == true ? "success" : "fail";
+        pResult = response.data.guess.isValid === true ? "success" : "fail";
         guessWord = response.data.guess.word;
       }
 
@@ -413,6 +418,21 @@ class Gameplay extends Component {
     }
     this.props.gameSetState(gameState);
   }
+
+  async getMessages(){
+    try {
+      const response = await api.get(
+          `/games/${this.props.gameState.gameId}/messages`,
+          {
+            withCredentials: true,
+          }
+      );
+      this.setState({messageList: response.data});
+      console.log('MessageList: ', response.data);
+    } catch (error) {
+      console.log(handleError(error));
+    }
+  };
 
   //Phase Change
   gamePhaseChange(gameState) {
@@ -549,6 +569,7 @@ class Gameplay extends Component {
           selectedWord={this.state.infoBox.selectedWord}
           playerrole={this.state.infoBox.role}
         />
+        <ChatBox messageList={this.state.messageList}/>
       </div>
     );
   }
