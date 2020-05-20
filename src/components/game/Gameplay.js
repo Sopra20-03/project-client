@@ -349,7 +349,7 @@ class Gameplay extends Component {
       //Update Round
       if (this.props.gameState.roundNum < 3) {
         this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
-        infoNotification(`Round Updated: ${this.props.gameState.roundNum}`);
+        infoNotification(`Round ${this.props.gameState.roundNum} started!`);
       } else {
         this.stopPolling();
         setTimeout(() => {
