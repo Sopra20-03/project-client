@@ -1,6 +1,5 @@
 import React from "react";
 import Tooltip from "@material-ui/core/Tooltip";
-import ListIcon from "@material-ui/icons/List";
 import HomeIcon from "@material-ui/icons/Home";
 import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";

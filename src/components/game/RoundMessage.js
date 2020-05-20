@@ -1,6 +1,4 @@
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
 import SportsEsportsIcon from "@material-ui/icons/SportsEsports";
 
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
@@ -8,13 +6,11 @@ import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 
 import Confetti from "react-confetti";
 
-import { FormHeader, TextInput } from "../login/Login";
+import { FormHeader } from "../login/Login";
 
 import Colors from "../../views/design/Colors";
 
 import React, { Component } from "react";
-
-import PacmanLoader from "react-spinners/PacmanLoader";
 
 import { withStyles } from "@material-ui/core/styles";
 
