@@ -1,22 +1,21 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import TimerInfo from "./TimerInfo";
-import PointsInfo from "./PointsInfo";
-import RoleInfo from "./RoleInfo";
-import Table from "./Table";
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import AllPlayerBoxes from "./AllPlayerBoxes";
-import { SmallLogo } from "../../views/logos/SmallLogo";
-import { withRouter } from "react-router-dom";
-import { api, handleError } from "../../helpers/api";
-import Button from "@material-ui/core/Button";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
-import GameStates from "../../redux/reducers/gameStates";
-import dog from "../../views/logos/002-dog.png";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import TimerInfo from './TimerInfo';
+import PointsInfo from './PointsInfo';
+import RoleInfo from './RoleInfo';
+import Table from './Table';
+import { BaseContainer, GameContainer } from '../../helpers/layout';
+import AllPlayerBoxes from './AllPlayerBoxes';
+import { SmallLogo } from '../../views/logos/SmallLogo';
+import { withRouter } from 'react-router-dom';
+import { api, handleError } from '../../helpers/api';
+import LogoutIcon from '../../views/design/Icons/LogoutIcon';
+import GameStates from '../../redux/reducers/gameStates';
+import dog from '../../views/logos/002-dog.png';
 
-import RoundMessage from "./RoundMessage";
+import RoundMessage from './RoundMessage';
 //Redux
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import {
   gameClearGame,
   gameGetClues,
@@ -29,14 +28,15 @@ import {
   gameUpdateRound,
   getGamePlayers,
   guesserSelectWord,
-  playerSetRole, setScore,
+  playerSetRole,
+  setScore,
   timerClear,
   timerStart,
   timerStop
 } from '../../redux/actions/gameplayActions';
-import { errorNotification } from '../../helpers/notifications/toasts';
-import ChatBox from "../chat/chatbox";
-import { getGame } from "../../redux/actions/lobbyActions";
+import { errorNotification, infoNotification } from '../../helpers/notifications/toasts';
+import ChatBox from '../chat/chatbox';
+import { getGame } from '../../redux/actions/lobbyActions';
 
 const InfoContainer = styled.div`
   display: flex;
@@ -349,7 +349,7 @@ class Gameplay extends Component {
       //Update Round
       if (this.props.gameState.roundNum < 3) {
         this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
-        errorNotification(`Round Updated: ${this.props.gameState.roundNum}`);
+        infoNotification(`Round Updated: ${this.props.gameState.roundNum}`);
       } else {
         this.stopPolling();
         setTimeout(() => {
