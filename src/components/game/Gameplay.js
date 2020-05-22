@@ -38,6 +38,7 @@ import {errorNotification, infoNotification} from '../../helpers/notifications/t
 import ChatBox from '../chat/chatbox';
 import {getGame} from '../../redux/actions/lobbyActions';
 import InstructionsIcon from "../../views/design/Icons/HelpIcon";
+import Grid from "@material-ui/core/Grid";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -532,8 +533,18 @@ class Gameplay extends Component {
         <BaseContainer>
           <GameContainer>
             <SmallLogo />
-            <InstructionsIcon />
-            <LogoutIcon />
+            <Grid container justify={"center"}>
+              <Grid item sm={2}>
+                <Grid container alignItems="center" justify={"center"}>
+                  <Grid item>
+                    <InstructionsIcon />
+                  </Grid>
+                  <Grid item>
+                    <LogoutIcon />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
             <div></div>
             <AllPlayerBoxes
               players={this.props.gameState.gamePlayers}
