@@ -134,13 +134,6 @@ class UserProfile extends React.Component {
           </Grid>
 
           <UserInfoBox user={this.props.userState.user} />
-          <Button
-            onClick={() => {
-              this.props.history.push(`/lobby`);
-            }}
-          >
-            Back to Lobby
-          </Button>
           <h1>Game History</h1>
           {this.state.userGames.length < 1 ? (
             <ContainerRow style={{ margin: 30 }}>
@@ -149,6 +142,13 @@ class UserProfile extends React.Component {
           ) : (
             <GameHistoryTable games={this.state.userGames} />
           )}
+          <Button
+              onClick={() => {
+                this.props.history.push(`/lobby`);
+              }}
+          >
+            Back to Lobby
+          </Button>
         </GameContainer>
       </Container>
     );
