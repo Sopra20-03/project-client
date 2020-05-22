@@ -5,7 +5,7 @@ import {handleError} from "../../helpers/api";
 import Button from "../../views/design/Button";
 import {withRouter} from "react-router-dom";
 import LogoutIcon from "../../views/design/Icons/LogoutIcon";
-import InstructionsIcon from "../../views/design/Icons/HelpIcon";
+import InstructionsIcon from "../../views/design/Icons/Instructions";
 import GameTable from "./GameTable";
 import Colors from "../../views/design/Colors";
 import {SmallLogo} from "../../views/logos/SmallLogo";

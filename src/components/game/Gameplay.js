@@ -37,7 +37,7 @@ import {
 import {errorNotification, infoNotification} from '../../helpers/notifications/toasts';
 import ChatBox from '../chat/chatbox';
 import {getGame} from '../../redux/actions/lobbyActions';
-import InstructionsIcon from "../../views/design/Icons/HelpIcon";
+import InstructionsIcon from "../../views/design/Icons/Instructions";
 import Grid from "@material-ui/core/Grid";
 
 const InfoContainer = styled.div`

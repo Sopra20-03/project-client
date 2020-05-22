@@ -16,7 +16,7 @@ import {BoxHeader} from "../lobby/Lobby";
 import {errorNotification} from "../../helpers/notifications/toasts";
 
 import Button from "../../views/design/Button";
-import InstructionsIcon from "../../views/design/Icons/HelpIcon";
+import InstructionsIcon from "../../views/design/Icons/Instructions";
 import Grid from "@material-ui/core/Grid";
 
 const Container = styled(BaseContainer)`
