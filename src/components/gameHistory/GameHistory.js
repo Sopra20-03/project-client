@@ -1,24 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import { api, handleError } from "../../helpers/api";
-import { withRouter } from "react-router-dom";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
+import {BaseContainer, GameContainer} from "../../helpers/layout";
+import {api, handleError} from "../../helpers/api";
+import {withRouter} from "react-router-dom";
+import LogoutIcon from "../../views/design/Menu/LogoutIcon";
 import GameHistoryTable from "./GameHistoryTable";
 import Colors from "../../views/design/Colors";
-import { SmallLogo } from "../../views/logos/SmallLogo";
+import {SmallLogo} from "../../views/logos/SmallLogo";
 //Redux
-import { connect } from "react-redux";
-import { getGames } from "../../redux/actions/lobbyActions";
-import { ContainerRow } from "../game/Gameplay";
+import {connect} from "react-redux";
+import {getGames} from "../../redux/actions/lobbyActions";
+import {ContainerRow} from "../game/Gameplay";
 import PacmanLoader from "react-spinners/PacmanLoader";
-import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
-import ProfileIcon from "../../views/design/Icons/GameHistoryIcon";
-import LobbyIcon from "../../views/design/Icons/LobbyIcon";
-import { errorNotification } from "../../helpers/notifications/toasts";
-
-import Button from "../../views/design/Button";
+import LeaderboardIcon from "../../views/design/Menu/LeaderboardIcon";
+import ProfileIcon from "../../views/design/Menu/GameHistoryIcon";
+import LobbyIcon from "../../views/design/Menu/LobbyIcon";
+import {errorNotification} from "../../helpers/notifications/toasts";
 
 const Container = styled(BaseContainer)`
   color: white;

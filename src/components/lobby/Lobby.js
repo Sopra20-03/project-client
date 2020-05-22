@@ -4,8 +4,6 @@ import {BaseContainer, GameContainer} from "../../helpers/layout";
 import {handleError} from "../../helpers/api";
 import Button from "../../views/design/Button";
 import {withRouter} from "react-router-dom";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
-import InstructionsIcon from "../../views/design/Icons/Instructions";
 import GameTable from "./GameTable";
 import Colors from "../../views/design/Colors";
 import {SmallLogo} from "../../views/logos/SmallLogo";
@@ -14,15 +12,13 @@ import {connect} from "react-redux";
 import {cancelGame, clearJoinedGame, getGames, leaveGame, startGame,} from "../../redux/actions/lobbyActions";
 
 import {logoutUser} from "../../redux/actions/userActions";
-import ProfileIcon from "../../views/design/Icons/GameHistoryIcon";
-import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
 import {ContainerRow} from "../game/Gameplay";
 import PacmanLoader from "react-spinners/PacmanLoader";
-import LobbyIcon from "../../views/design/Icons/LobbyIcon";
 
 import Grid from "@material-ui/core/Grid";
 
 import {errorNotification, infoNotification,} from "../../helpers/notifications/toasts";
+import MenuBar from "../../views/design/Menu/MenuBar";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -127,25 +123,7 @@ class Lobby extends React.Component {
         <GameContainer>
           <SmallLogo />
           <Grid container justify={"center"}>
-            <Grid item sm={5}>
-              <Grid container alignItems="center" justify={"center"}>
-                <Grid item>
-                  <LobbyIcon />
-                </Grid>
-                <Grid item>
-                  <LeaderboardIcon />
-                </Grid>
-                <Grid item>
-                  <ProfileIcon />
-                </Grid>
-                <Grid item>
-                  <InstructionsIcon />
-                </Grid>
-                <Grid item>
-                  <LogoutIcon />
-                </Grid>
-              </Grid>
-            </Grid>
+            <MenuBar/>
             <Grid container alignItems="center" justify={"center"}>
               <Grid item sm={8} md={8} lg={8}>
                 <BoxHeader>

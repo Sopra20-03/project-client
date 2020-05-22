@@ -9,7 +9,7 @@ import AllPlayerBoxes from './AllPlayerBoxes';
 import {SmallLogo} from '../../views/logos/SmallLogo';
 import {withRouter} from 'react-router-dom';
 import {api, handleError} from '../../helpers/api';
-import LogoutIcon from '../../views/design/Icons/LogoutIcon';
+import LogoutIcon from '../../views/design/Menu/LogoutIcon';
 import GameStates from '../../redux/reducers/gameStates';
 
 import RoundMessage from './RoundMessage';
@@ -36,7 +36,7 @@ import {
 import {errorNotification} from '../../helpers/notifications/toasts';
 import ChatBox from '../chat/chatbox';
 import {getGame} from '../../redux/actions/lobbyActions';
-import InstructionsIcon from "../../views/design/Icons/Instructions";
+import InstructionsIcon from "../../views/design/Menu/Instructions";
 import Grid from "@material-ui/core/Grid";
 
 const InfoContainer = styled.div`

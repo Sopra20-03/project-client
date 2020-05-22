@@ -1,13 +1,13 @@
 import React from "react";
 import Tooltip from "@material-ui/core/Tooltip";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 //Redux
-import { connect } from "react-redux";
-import { logoutUser } from "../../../redux/actions/userActions";
-import { errorNotification } from "../../../helpers/notifications/toasts";
-import { handleError } from "../../../helpers/api";
+import {connect} from "react-redux";
+import {logoutUser} from "../../../redux/actions/userActions";
+import {errorNotification} from "../../../helpers/notifications/toasts";
+import {handleError} from "../../../helpers/api";
 
 class LogoutIcon extends React.Component {
   constructor() {
