@@ -47,7 +47,7 @@ class Leaderboard extends React.Component {
       const response = await api.get("/users", { withCredentials: true });
       this.setState({
         sortedUsers: response.data.sort(
-          (a, b) => b.totalGameScore - a.totalGameScore
+          (a, b) => b.totalIndividualScore - a.totalIndividualScore
         ),
       });
       console.log("Sorted users: ", this.state.sortedUsers);
