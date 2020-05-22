@@ -11,7 +11,6 @@ import {withRouter} from 'react-router-dom';
 import {api, handleError} from '../../helpers/api';
 import LogoutIcon from '../../views/design/Icons/LogoutIcon';
 import GameStates from '../../redux/reducers/gameStates';
-import dog from '../../views/logos/002-dog.png';
 
 import RoundMessage from './RoundMessage';
 //Redux
@@ -34,7 +33,7 @@ import {
   timerStart,
   timerStop
 } from '../../redux/actions/gameplayActions';
-import {errorNotification, infoNotification} from '../../helpers/notifications/toasts';
+import {errorNotification} from '../../helpers/notifications/toasts';
 import ChatBox from '../chat/chatbox';
 import {getGame} from '../../redux/actions/lobbyActions';
 import InstructionsIcon from "../../views/design/Icons/Instructions";
@@ -206,7 +205,7 @@ class Gameplay extends Component {
   }
 
   async getPlayerUserDetails() {
-    let icons = ["dog", "butterfly", "owl", "bird"];
+    let icons = [];
     let players = this.props.gameState.gamePlayers.filter(
       (x) => x.userId !== this.props.gameState.userId
     );
@@ -219,6 +218,7 @@ class Gameplay extends Component {
           })
           .then((res) => res.data.icon);
         if (icon) icons[i] = icon;
+        else icons[i] = 'male';
       }
       this.setState({ icons: icons });
     } catch (error) {
@@ -351,7 +351,6 @@ class Gameplay extends Component {
       //Update Round
       if (this.props.gameState.roundNum < 3) {
         this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
-        infoNotification(`Round ${this.props.gameState.roundNum} started!`);
       } else {
         this.stopPolling();
         setTimeout(() => {
