@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 import {store} from "../../store";
 import {logoutUser} from "../../redux/actions/userActions";
 import {createGame, joinGame} from "../../redux/actions/lobbyActions";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
+import LogoutIcon from "../../views/design/Menu/LogoutIcon";
 import {SmallLogo} from "../../views/logos/SmallLogo";
 import InputLabel from "@material-ui/core/InputLabel";
 
@@ -229,7 +229,7 @@ class GameDetails extends React.Component {
                   <MenuItem value={null}>
                     <em>Select</em>
                   </MenuItem>
-                  <MenuItem value={"STANDARD"}>Normal</MenuItem>
+                  <MenuItem value={"STANDARD"}>Standard</MenuItem>
                   <MenuItem value={"RIVAL"}>Rival</MenuItem>
                 </Select>
               </FormControl>

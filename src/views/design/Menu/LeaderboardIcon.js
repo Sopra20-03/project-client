@@ -1,7 +1,7 @@
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 
 class LeaderboardIcon extends React.Component {

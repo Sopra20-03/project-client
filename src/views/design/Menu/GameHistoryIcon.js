@@ -1,7 +1,7 @@
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import PersonIcon from '@material-ui/icons/Person';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 
 class ProfileIcon extends React.Component {
