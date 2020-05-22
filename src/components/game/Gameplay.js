@@ -1,22 +1,20 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import TimerInfo from "./TimerInfo";
-import PointsInfo from "./PointsInfo";
-import RoleInfo from "./RoleInfo";
-import Table from "./Table";
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import AllPlayerBoxes from "./AllPlayerBoxes";
-import { SmallLogo } from "../../views/logos/SmallLogo";
-import { withRouter } from "react-router-dom";
-import { api, handleError } from "../../helpers/api";
-import Button from "@material-ui/core/Button";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
-import GameStates from "../../redux/reducers/gameStates";
-import dog from "../../views/logos/002-dog.png";
+import React, {Component} from 'react';
+import styled from 'styled-components';
+import TimerInfo from './TimerInfo';
+import PointsInfo from './PointsInfo';
+import RoleInfo from './RoleInfo';
+import Table from './Table';
+import {BaseContainer, GameContainer} from '../../helpers/layout';
+import AllPlayerBoxes from './AllPlayerBoxes';
+import {SmallLogo} from '../../views/logos/SmallLogo';
+import {withRouter} from 'react-router-dom';
+import {api, handleError} from '../../helpers/api';
+import LogoutIcon from '../../views/design/Menu/LogoutIcon';
+import GameStates from '../../redux/reducers/gameStates';
 
-import RoundMessage from "./RoundMessage";
+import RoundMessage from './RoundMessage';
 //Redux
-import { connect } from "react-redux";
+import {connect} from 'react-redux';
 import {
   gameClearGame,
   gameGetClues,
@@ -29,14 +27,17 @@ import {
   gameUpdateRound,
   getGamePlayers,
   guesserSelectWord,
-  playerSetRole, setScore,
+  playerSetRole,
+  setScore,
   timerClear,
   timerStart,
   timerStop
 } from '../../redux/actions/gameplayActions';
-import { errorNotification } from '../../helpers/notifications/toasts';
-import ChatBox from "../chat/chatbox";
-import { getGame } from "../../redux/actions/lobbyActions";
+import {errorNotification} from '../../helpers/notifications/toasts';
+import ChatBox from '../chat/chatbox';
+import {getGame} from '../../redux/actions/lobbyActions';
+import InstructionsIcon from "../../views/design/Menu/Instructions";
+import Grid from "@material-ui/core/Grid";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -204,7 +205,7 @@ class Gameplay extends Component {
   }
 
   async getPlayerUserDetails() {
-    let icons = ["dog", "butterfly", "owl", "bird"];
+    let icons = [];
     let players = this.props.gameState.gamePlayers.filter(
       (x) => x.userId !== this.props.gameState.userId
     );
@@ -217,6 +218,7 @@ class Gameplay extends Component {
           })
           .then((res) => res.data.icon);
         if (icon) icons[i] = icon;
+        else icons[i] = 'male';
       }
       this.setState({ icons: icons });
     } catch (error) {
@@ -349,7 +351,6 @@ class Gameplay extends Component {
       //Update Round
       if (this.props.gameState.roundNum < 3) {
         this.props.gameUpdateRound(this.props.gameState.roundNum + 1);
-        errorNotification(`Round Updated: ${this.props.gameState.roundNum}`);
       } else {
         this.stopPolling();
         setTimeout(() => {
@@ -531,7 +532,18 @@ class Gameplay extends Component {
         <BaseContainer>
           <GameContainer>
             <SmallLogo />
-            <LogoutIcon />
+            <Grid container justify={"center"}>
+              <Grid item sm={2}>
+                <Grid container alignItems="center" justify={"center"}>
+                  <Grid item>
+                    <InstructionsIcon />
+                  </Grid>
+                  <Grid item>
+                    <LogoutIcon />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
             <div></div>
             <AllPlayerBoxes
               players={this.props.gameState.gamePlayers}
