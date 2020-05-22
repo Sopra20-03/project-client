@@ -229,7 +229,7 @@ class GameDetails extends React.Component {
                   <MenuItem value={null}>
                     <em>Select</em>
                   </MenuItem>
-                  <MenuItem value={"STANDARD"}>Normal</MenuItem>
+                  <MenuItem value={"STANDARD"}>Standard</MenuItem>
                   <MenuItem value={"RIVAL"}>Rival</MenuItem>
                 </Select>
               </FormControl>

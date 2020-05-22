@@ -7,18 +7,10 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import GameRow from "./GameRow";
 //redux imports
-import { connect } from "react-redux";
-import {
-  cancelGame,
-  joinGame,
-  leaveGame,
-  clearJoinedGame,
-} from "../../redux/actions/lobbyActions";
-import { handleError } from "../../helpers/api";
-import {
-  errorNotification,
-  infoNotification,
-} from "../../helpers/notifications/toasts";
+import {connect} from "react-redux";
+import {cancelGame, joinGame, leaveGame,} from "../../redux/actions/lobbyActions";
+import {handleError} from "../../helpers/api";
+import {errorNotification, infoNotification,} from "../../helpers/notifications/toasts";
 
 class GameTable extends React.Component {
   constructor() {
@@ -93,6 +85,7 @@ class GameTable extends React.Component {
             <TableRow>
               <TableCell align="center">Game Id</TableCell>
               <TableCell align="center">Game Name</TableCell>
+              <TableCell align="center">Game Mode</TableCell>
               <TableCell align="center">Creator</TableCell>
               <TableCell align="center">Players</TableCell>
               <TableCell align="center">*</TableCell>

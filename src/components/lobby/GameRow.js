@@ -1,10 +1,10 @@
 import React from "react";
 import TableCell from "@material-ui/core/TableCell";
-import { withStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import {withStyles} from "@material-ui/core/styles";
+import {Button} from "@material-ui/core";
 import TableRow from "@material-ui/core/TableRow";
 //Redux
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 
 const PlayButton = withStyles((theme) => ({
   root: {
@@ -64,6 +64,7 @@ function GameRow(props) {
         {props.game.gameId}{" "}
       </TableCell>
       <TableCell align="center"> {props.game.gameName} </TableCell>
+      <TableCell align="center"> {props.game.gameMode} </TableCell>
       <TableCell align="center"> {props.game.creatorUsername} </TableCell>
       <TableCell align="center">{props.numPlayers} </TableCell>
       <TableCell align="center">{rowButton} </TableCell>
