@@ -1,25 +1,27 @@
 import React from "react";
 import styled from "styled-components";
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import { api, handleError } from "../../helpers/api";
-import { withRouter } from "react-router-dom";
+import {BaseContainer, GameContainer} from "../../helpers/layout";
+import {api, handleError} from "../../helpers/api";
+import {withRouter} from "react-router-dom";
 
 import Button from "../../views/design/Button";
 import Colors from "../../views/design/Colors";
 //Redux
-import { connect } from "react-redux";
-import { SmallLogo } from "../../views/logos/SmallLogo";
+import {connect} from "react-redux";
+import {SmallLogo} from "../../views/logos/SmallLogo";
 import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
-import GameHistoryIcon from "../../views/design/Icons/GameHistoryIcon";
+import ProfileIcon from "../../views/design/Icons/GameHistoryIcon";
 import LogoutIcon from "../../views/design/Icons/LogoutIcon";
 import GameHistoryTable from "../gameHistory/GameHistoryTable";
-import { ContainerRow } from "../game/Gameplay";
+import {ContainerRow} from "../game/Gameplay";
 import PacmanLoader from "react-spinners/PacmanLoader";
-import { getGames } from "../../redux/actions/lobbyActions";
+import {getGames} from "../../redux/actions/lobbyActions";
 import UserInfoBox from "./UserInfoBox";
 import LobbyIcon from "../../views/design/Icons/LobbyIcon";
-import { BoxHeader } from "../lobby/Lobby";
-import { errorNotification } from "../../helpers/notifications/toasts";
+import {BoxHeader} from "../lobby/Lobby";
+import {errorNotification} from "../../helpers/notifications/toasts";
+import InstructionsIcon from "../../views/design/Icons/HelpIcon";
+import Grid from "@material-ui/core/Grid";
 
 const Container = styled(BaseContainer)`
   color: ${Colors.black};
@@ -95,20 +97,41 @@ class UserProfile extends React.Component {
       <Container>
         <GameContainer>
           <SmallLogo />
-          <BoxHeader>
-            <span style={Colors.textOrange}>P</span>
-            <span style={Colors.textRed}>r</span>
-            <span style={Colors.textPink}>o</span>
-            <span style={Colors.textViolet}>f</span>
-            <span style={Colors.textBlue}>i</span>
-            <span style={Colors.textGreen}>l</span>
-            <span style={Colors.textYellow}>e</span>
 
-            <LobbyIcon />
-            <LeaderboardIcon />
-            <GameHistoryIcon />
-            <LogoutIcon />
-          </BoxHeader>
+          <Grid container justify={"center"}>
+            <Grid item sm={5}>
+              <Grid container alignItems="center" justify={"center"}>
+                <Grid item>
+                  <LobbyIcon />
+                </Grid>
+                <Grid item>
+                  <LeaderboardIcon />
+                </Grid>
+                <Grid item>
+                  <ProfileIcon />
+                </Grid>
+                <Grid item>
+                  <InstructionsIcon />
+                </Grid>
+                <Grid item>
+                  <LogoutIcon />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid container alignItems="center" justify={"center"}>
+              <Grid item sm={8} md={8} lg={8}>
+                <BoxHeader>
+                  <span style={Colors.textOrange}>P</span>
+                  <span style={Colors.textRed}>r</span>
+                  <span style={Colors.textPink}>o</span>
+                  <span style={Colors.textViolet}>f</span>
+                  <span style={Colors.textBlue}>i</span>
+                  <span style={Colors.textGreen}>l</span>
+                  <span style={Colors.textYellow}>e</span>
+                </BoxHeader>
+              </Grid>
+            </Grid>
+          </Grid>
 
           <UserInfoBox user={this.props.userState.user} />
           <Button

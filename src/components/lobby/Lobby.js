@@ -1,36 +1,28 @@
 import React from "react";
 import styled from "styled-components";
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import { handleError } from "../../helpers/api";
+import {BaseContainer, GameContainer} from "../../helpers/layout";
+import {handleError} from "../../helpers/api";
 import Button from "../../views/design/Button";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import LogoutIcon from "../../views/design/Icons/LogoutIcon";
+import InstructionsIcon from "../../views/design/Icons/HelpIcon";
 import GameTable from "./GameTable";
 import Colors from "../../views/design/Colors";
-import { SmallLogo } from "../../views/logos/SmallLogo";
+import {SmallLogo} from "../../views/logos/SmallLogo";
 //Redux
-import { connect } from "react-redux";
-import {
-  getGames,
-  startGame,
-  clearJoinedGame,
-  cancelGame,
-  leaveGame,
-} from "../../redux/actions/lobbyActions";
+import {connect} from "react-redux";
+import {cancelGame, clearJoinedGame, getGames, leaveGame, startGame,} from "../../redux/actions/lobbyActions";
 
-import { logoutUser } from "../../redux/actions/userActions";
+import {logoutUser} from "../../redux/actions/userActions";
 import ProfileIcon from "../../views/design/Icons/GameHistoryIcon";
 import LeaderboardIcon from "../../views/design/Icons/LeaderboardIcon";
-import { ContainerRow } from "../game/Gameplay";
+import {ContainerRow} from "../game/Gameplay";
 import PacmanLoader from "react-spinners/PacmanLoader";
 import LobbyIcon from "../../views/design/Icons/LobbyIcon";
 
 import Grid from "@material-ui/core/Grid";
 
-import {
-  errorNotification,
-  infoNotification,
-} from "../../helpers/notifications/toasts";
+import {errorNotification, infoNotification,} from "../../helpers/notifications/toasts";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -42,7 +34,6 @@ export const BoxHeader = styled.div`
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.25em;
-  margin-left: 50px;
 `;
 
 const WelcomeMessage = styled.h2`
@@ -136,20 +127,7 @@ class Lobby extends React.Component {
         <GameContainer>
           <SmallLogo />
           <Grid container justify={"center"}>
-            <Grid item sm={8} md={8} lg={8}>
-              <BoxHeader>
-                <span style={Colors.textOrange}>G</span>
-                <span style={Colors.textRed}>a</span>
-                <span style={Colors.textPink}>m</span>
-                <span style={Colors.textViolet}>e </span>
-                <span style={Colors.textBlue}>L</span>
-                <span style={Colors.textGreen}>o</span>
-                <span style={Colors.textYellow}>b</span>
-                <span style={Colors.textBlack}>b</span>
-                <span style={Colors.textOrange}>y</span>
-              </BoxHeader>
-            </Grid>
-            <Grid item sm={4}>
+            <Grid item sm={5}>
               <Grid container alignItems="center" justify={"center"}>
                 <Grid item>
                   <LobbyIcon />
@@ -161,8 +139,26 @@ class Lobby extends React.Component {
                   <ProfileIcon />
                 </Grid>
                 <Grid item>
+                  <InstructionsIcon />
+                </Grid>
+                <Grid item>
                   <LogoutIcon />
                 </Grid>
+              </Grid>
+            </Grid>
+            <Grid container alignItems="center" justify={"center"}>
+              <Grid item sm={8} md={8} lg={8}>
+                <BoxHeader>
+                  <span style={Colors.textOrange}>G</span>
+                  <span style={Colors.textRed}>a</span>
+                  <span style={Colors.textPink}>m</span>
+                  <span style={Colors.textViolet}>e </span>
+                  <span style={Colors.textBlue}>L</span>
+                  <span style={Colors.textGreen}>o</span>
+                  <span style={Colors.textYellow}>b</span>
+                  <span style={Colors.textBlack}>b</span>
+                  <span style={Colors.textOrange}>y</span>
+                </BoxHeader>
               </Grid>
             </Grid>
           </Grid>

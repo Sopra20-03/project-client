@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import styled from 'styled-components';
 import TimerInfo from './TimerInfo';
 import PointsInfo from './PointsInfo';
 import RoleInfo from './RoleInfo';
 import Table from './Table';
-import { BaseContainer, GameContainer } from '../../helpers/layout';
+import {BaseContainer, GameContainer} from '../../helpers/layout';
 import AllPlayerBoxes from './AllPlayerBoxes';
-import { SmallLogo } from '../../views/logos/SmallLogo';
-import { withRouter } from 'react-router-dom';
-import { api, handleError } from '../../helpers/api';
+import {SmallLogo} from '../../views/logos/SmallLogo';
+import {withRouter} from 'react-router-dom';
+import {api, handleError} from '../../helpers/api';
 import LogoutIcon from '../../views/design/Icons/LogoutIcon';
 import GameStates from '../../redux/reducers/gameStates';
 import dog from '../../views/logos/002-dog.png';
 
 import RoundMessage from './RoundMessage';
 //Redux
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {
   gameClearGame,
   gameGetClues,
@@ -34,9 +34,10 @@ import {
   timerStart,
   timerStop
 } from '../../redux/actions/gameplayActions';
-import { errorNotification, infoNotification } from '../../helpers/notifications/toasts';
+import {errorNotification, infoNotification} from '../../helpers/notifications/toasts';
 import ChatBox from '../chat/chatbox';
-import { getGame } from '../../redux/actions/lobbyActions';
+import {getGame} from '../../redux/actions/lobbyActions';
+import InstructionsIcon from "../../views/design/Icons/HelpIcon";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -531,6 +532,7 @@ class Gameplay extends Component {
         <BaseContainer>
           <GameContainer>
             <SmallLogo />
+            <InstructionsIcon />
             <LogoutIcon />
             <div></div>
             <AllPlayerBoxes
