@@ -1,16 +1,16 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { BaseContainer, LoginContainer } from '../../helpers/layout';
-import { FormContainer, FormHeader, Link, TextInput } from './Login';
+import {withRouter} from 'react-router-dom';
+import {BaseContainer, LoginContainer} from '../../helpers/layout';
+import {FormContainer, FormHeader, Link, TextInput} from './Login';
 import Colors from '../../views/design/Colors';
 import Button from '../../views/design/Button';
-import { handleError } from '../../helpers/api';
+import {handleError} from '../../helpers/api';
 import PropTypes from 'prop-types';
 //Redux
-import { connect } from 'react-redux';
-import { registerUser } from '../../redux/actions/userActions';
-import { LargeLogo } from '../../views/logos/LargeLogo';
-import { errorNotification, successNotification } from '../../helpers/notifications/toasts';
+import {connect} from 'react-redux';
+import {registerUser} from '../../redux/actions/userActions';
+import {LargeLogo} from '../../views/logos/LargeLogo';
+import {errorNotification, successNotification} from '../../helpers/notifications/toasts';
 
 class Register extends React.Component {
 
@@ -19,7 +19,8 @@ class Register extends React.Component {
         this.state = {
             name: null,
             username: null,
-            password: null
+            password: null,
+            validUsername: true
         }
     }
 
@@ -30,25 +31,33 @@ class Register extends React.Component {
     };
 
     async register () {
-        try {
-            const requestBody = {
-                name: this.state.name,
-                username: this.state.username,
-                password: this.state.password
-            };
+        if (!this.state.validUsername) {
+            errorNotification ('Your username is too long. The maximum character limit is 20.');
+        }
+        else {
+            try {
+                const requestBody = {
+                    name: this.state.name,
+                    username: this.state.username,
+                    password: this.state.password
+                };
+                await this.props.registerUser (requestBody);
+                successNotification (`Registration successful! Welcome ${requestBody.name}`, 3000);
+                this.props.history.push (`/login`);
+            } catch (error) {
+                this.props.history.push (`/register`);
+                errorNotification (handleError (error));
 
-            await this.props.registerUser (requestBody);
-            successNotification (`Registration successful! Welcome ${requestBody.name}`, 3000);
-            this.props.history.push (`/login`);
-        } catch (error) {
-            this.props.history.push (`/register`);
-            errorNotification (handleError (error));
-
+            }
         }
     }
 
     handleInputChange (key, value) {
         this.setState ({[key]: value});
+        if (key === 'username' && value.length > 20)
+            this.setState({validUsername: false});
+        else if (key === 'username')
+            this.setState({validUsername: true})
     }
 
     render () {

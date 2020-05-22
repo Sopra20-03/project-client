@@ -1,27 +1,25 @@
 import React from "react";
-import { FormHeader, TextInput } from "../login/Login";
-import { BaseContainer, GameContainer } from "../../helpers/layout";
-import { handleError } from "../../helpers/api";
-import { withRouter } from "react-router-dom";
+import {FormHeader, TextInput} from "../login/Login";
+import {BaseContainer, GameContainer} from "../../helpers/layout";
+import {handleError} from "../../helpers/api";
+import {withRouter} from "react-router-dom";
 //import Button from "../../views/design/Button";
 import Colors from "../../views/design/Colors";
 //Redux
-import { connect } from "react-redux";
-import { store } from "../../store";
-import { logoutUser } from "../../redux/actions/userActions";
-import { createGame, joinGame } from "../../redux/actions/lobbyActions";
-import LogoutIcon from "../../views/design/Icons/LogoutIcon";
-import { SmallLogo } from "../../views/logos/SmallLogo";
+import {connect} from "react-redux";
+import {store} from "../../store";
+import {logoutUser} from "../../redux/actions/userActions";
+import {createGame, joinGame} from "../../redux/actions/lobbyActions";
+import LogoutIcon from "../../views/design/Menu/LogoutIcon";
+import {SmallLogo} from "../../views/logos/SmallLogo";
 import InputLabel from "@material-ui/core/InputLabel";
 
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import HashLoader from "react-spinners/HashLoader";
-
-import styled from "styled-components";
-import { withStyles } from "@material-ui/core/styles";
-import { errorNotification } from "../../helpers/notifications/toasts";
+import {withStyles} from "@material-ui/core/styles";
+import {errorNotification} from "../../helpers/notifications/toasts";
 
 import Button from "@material-ui/core/Button";
 
@@ -99,6 +97,7 @@ class GameDetails extends React.Component {
       gameMode: null,
       botMode: null,
       duration: "SHORT",
+      validGameName: true,
     };
   }
 
@@ -108,20 +107,24 @@ class GameDetails extends React.Component {
    * and its token is stored in the localStorage.
    */
   async createGame() {
-    try {
-      const requestBody = {
-        gameName: this.state.gameName,
-        gameMode: this.state.gameMode,
-        botMode: this.state.botMode,
-        duration: this.state.duration,
-        creatorUsername: store.getState().userReducer.user.username,
-      };
-      await this.props.createGame(requestBody);
-      this.addUserToGame();
-    } catch (error) {
-      errorNotification(
-        `Something went wrong during the game creation: \n${handleError(error)}`
-      );
+    if (!this.state.validGameName) {
+      errorNotification ('Your game name is too long. The maximum character limit is 20.');
+    } else {
+      try {
+        const requestBody = {
+          gameName: this.state.gameName,
+          gameMode: this.state.gameMode,
+          botMode: this.state.botMode,
+          duration: this.state.duration,
+          creatorUsername: store.getState().userReducer.user.username,
+        };
+        await this.props.createGame(requestBody);
+        this.addUserToGame();
+      } catch (error) {
+        errorNotification(
+            `Something went wrong during the game creation: \n${handleError(error)}`
+        );
+      }
     }
   }
 
@@ -157,6 +160,10 @@ class GameDetails extends React.Component {
     // Example: if the key is gameName, this statement is the equivalent to the following one:
     // this.setState({'gameName': value});
     this.setState({ [key]: value });
+    if (key==='gameName' && value.length > 20)
+      this.setState({validGameName : false});
+    else if (key==='gameName')
+      this.setState({validGameName : true});
   }
 
   /**
@@ -222,7 +229,7 @@ class GameDetails extends React.Component {
                   <MenuItem value={null}>
                     <em>Select</em>
                   </MenuItem>
-                  <MenuItem value={"STANDARD"}>Normal</MenuItem>
+                  <MenuItem value={"STANDARD"}>Standard</MenuItem>
                   <MenuItem value={"RIVAL"}>Rival</MenuItem>
                 </Select>
               </FormControl>

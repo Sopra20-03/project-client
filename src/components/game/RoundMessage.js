@@ -6,17 +6,20 @@ import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 
 import Confetti from "react-confetti";
 
-import { FormHeader } from "../login/Login";
+import {FormHeader} from "../login/Login";
 
 import Colors from "../../views/design/Colors";
 
-import React, { Component } from "react";
+import React, {Component} from "react";
 
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 
 const useStyles = (theme) => ({
   box: {
     width: "600px",
+    maeight: "600px",
+    margin: "0px",
+    padding: "10px"
   },
   col: {
     display: "flex",
@@ -78,7 +81,7 @@ class RoundMessage extends Component {
                   <div className={classes.col}>
                     <div className={classes.row}>
                       <ThumbUpIcon style={{ fontSize: 60, color: "#00a839" }} />
-                      <Confetti />
+                      <Confetti style={{width: 600}}/>
                     </div>
                     <div className={classes.row}>
                       <h1 style={Colors.textGreen}>
@@ -148,17 +151,15 @@ class RoundMessage extends Component {
                     <span style={Colors.textOrange}>r</span>
                   </FormHeader>
                 </div>
-
                 <div className={classes.row}>
                   <SportsEsportsIcon
                     style={{ fontSize: 60, color: "#00a839" }}
                   />
-                  <Confetti />
+                  <Confetti style={{width: 600}}/>
                 </div>
                 <div className={classes.row}>
                   <h1 style={Colors.textGreen}>Points: {this.props.score}</h1>
                 </div>
-
                 <div className={classes.row}>
                   <h1 style={Colors.textGreen}>Goodbye!</h1>
                 </div>

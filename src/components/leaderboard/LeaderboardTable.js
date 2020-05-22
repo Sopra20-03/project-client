@@ -6,7 +6,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import LeaderboardRow from "./LeaderboardRow";
-import PacmanLoader from 'react-spinners/PacmanLoader';
 
 class LeaderboardTable extends React.Component {
   constructor() {
@@ -28,6 +27,7 @@ class LeaderboardTable extends React.Component {
               <TableCell align="center">Username</TableCell>
               <TableCell align="center"># Games Played</TableCell>
               <TableCell align="center">Team Score</TableCell>
+              <TableCell align="center">Individual Score</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

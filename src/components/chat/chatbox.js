@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import React, {Component} from "react";
 import {
-    ThemeProvider,
+    IconButton,
     Message,
     MessageGroup,
     MessageList,
     MessageText,
-    TextComposer,
     Row,
-    IconButton, SendIcon
+    SendIcon,
+    TextComposer,
+    ThemeProvider
 } from "@livechat/ui-kit";
 import MinimizeIcon from '@material-ui/icons/Minimize';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
@@ -187,7 +188,7 @@ class ChatBox extends Component {
                                 <MessageList active style={{backgroundColor: 'transparent', color: 'black'}}>
                                     {this.props.messageList.map((message) => (
                                         <Row reverse={this.isOwner(message.username)}>
-                                            <MessageGroup avatar={chooseIcon(message.icon ? message.icon : "dog")}
+                                            <MessageGroup avatar={chooseIcon(message.icon ? message.icon : "male")}
                                                           isOwn={this.isOwner(message.username)}
                                                           style={{marginBottom: 0}}>
                                                 <Message date={this.getTime(message.timeCreated)}

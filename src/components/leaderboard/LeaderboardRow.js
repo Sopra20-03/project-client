@@ -11,6 +11,7 @@ function LeaderboardRow(props) {
             <TableCell align="center"> {props.user.username} </TableCell>
             <TableCell align="center"> {props.user.nrOfPlayedGames} </TableCell>
             <TableCell align="center">{props.user.totalGameScore ? props.user.totalGameScore : 0} </TableCell>
+            <TableCell align="center">{props.user.totalIndividualScore ? props.user.totalIndividualScore : 0} </TableCell>
         </TableRow>
     );
 }
