@@ -90,17 +90,44 @@ The lobbyscreen is the one of the main views of the game. From here players can 
 Pressing the "Start Game" button takes the user to the gameplay views. 
 
 ##### Gameplay
-![alt text](./screenshots/gameplayClue.PNG "Lobby Screen")
-![alt text](./screenshots/gameplayChat.PNG "Lobby Screen")
+![alt text](./screenshots/gameplayClue.PNG "Gameplay Screen")
+![alt text](./screenshots/gameplayChat.PNG "Chat")
 
-This is the 
+The Gameplayscreen is the main view of the game itself. Here, they can choose a word and make a guess if they're the 
+guesser. If they're a cluewriter for a given round they can enter their clue here.
+
+Players can also chat with the other players in the game as seen on the chat view.
+
+When the game has finished, the final score is displayed on the screen as seen here:
+
+![alt text](./screenshots/gameOverScreen.PNG)
+
+After showing for a couple of seconds the player is taken back to the lobby screen where they can start or join new games. 
+
 
 
 ## Roadmap
-Rodadasdfasd
 
+Contributions are very welcome. 
+
+Features that have been planned out but not implemented yet are:
+
+* Letting players vote on clues
+* Adding other users as friends
+* Having private games that are invite-only
+
+If you want to contribute, please open an issue first to discuss further procedure.
 
 ## Authors and Acknowledgement
+
+This project wouldn't have been possible without our developers: 
+* [Taylor McCants](https://github.com/taylor-mccants)
+* [Hannah Rohe](https://github.com/hanuta27)
+* [Shubhankar Joshi](https://github.com/ShobuXtrme)
+* [Tom Wartmann](https://github.com/TomWartm)
+* [Jonas Wittwer](https://github.com/j94wittwer)
+
+And our tutor [Nik Zaugg](https://github.com/nikzaugg)
 
 
 ## License
