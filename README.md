@@ -23,7 +23,7 @@ profile page and view the game history. After creating a game users wait for oth
 If they join a game they have to wait for the creator to start the game. This takes them to the gameplay component.
 
 ### Gameplay
-The gameplay component is where the actual gameplay happens (duh)
+The gameplay component is where the actual gameplay happens.
 
 ## Prerequisites and Installation
 
