@@ -34,7 +34,7 @@ different game phases, tracks points, clues and guesses and displays the other g
 
 ## Prerequisites and Installation
 
-###Installation and Development
+### Installation and Development
 
 First, clone this repository to your machine by running:
 ```shell script
