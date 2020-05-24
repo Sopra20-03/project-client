@@ -135,4 +135,4 @@ And our tutor [Nik Zaugg](https://github.com/nikzaugg)
 ## License
 >Check out the full licence [here](./LICENSE "MIT License")
 
-We chose to license our project under the terms of the **MIT** license. 
+We chose to license our project under the terms of the **MIT** license.
