@@ -15,7 +15,7 @@ at the University of Zurich.
 
 ##  Main Components
 
-The app's entry point is in [Index.js](/src/index.js).
+Once you have done all of this, in the template there are two main external dependencies that you should look at:
 
 ###  Registration/Login
 The [Registration](/src/components/login/Register.js) and [Login](/src/components/login/Login.js) pages are the entry point for every user that opens the game. Users can create a new account
@@ -133,7 +133,6 @@ And our tutor [Nik Zaugg](https://github.com/nikzaugg)
 
 
 ## License
-
 >Check out the full licence [here](./LICENSE "MIT License")
 
 We chose to license our project under the terms of the **MIT** license. 
