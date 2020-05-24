@@ -1,16 +1,16 @@
-import React from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import GameRow from "./GameRow";
+import React from 'react';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import GameRow from './GameRow';
 //redux imports
-import {connect} from "react-redux";
-import {cancelGame, joinGame, leaveGame,} from "../../redux/actions/lobbyActions";
-import {handleError} from "../../helpers/api";
-import {errorNotification, infoNotification,} from "../../helpers/notifications/toasts";
+import { connect } from 'react-redux';
+import { cancelGame, joinGame, leaveGame } from '../../redux/actions/lobbyActions';
+import { handleError } from '../../helpers/api';
+import { errorNotification, infoNotification, successNotification } from '../../helpers/notifications/toasts';
 
 class GameTable extends React.Component {
   constructor() {
@@ -32,6 +32,7 @@ class GameTable extends React.Component {
 
   handleJoinGame = (gameId) => {
     this.joinGame(gameId);
+    successNotification ('Joined game! It will start soon 😎', 3000);
   };
 
   async leaveGame() {
@@ -49,6 +50,7 @@ class GameTable extends React.Component {
 
   handleLeaveGame = () => {
     this.leaveGame();
+    infoNotification ('Left game');
   };
 
   async cancelGame(gameId) {

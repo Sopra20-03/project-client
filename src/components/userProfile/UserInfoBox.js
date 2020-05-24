@@ -20,7 +20,7 @@ import hen from '../../views/logos/006-hen.png';
 import owl from '../../views/logos/007-owl.png';
 import bee from '../../views/logos/008-bee.png';
 import swan from '../../views/logos/009-swan.png';
-import { errorNotification } from '../../helpers/notifications/toasts';
+import { errorNotification, infoNotification } from '../../helpers/notifications/toasts';
 
 const UserInfoContainer = styled.div`
   background-color: #f3ead8;
@@ -96,6 +96,7 @@ class UserInfoBox extends React.Component {
             const response = await api.put(`/users/${this.props.user.id}`, requestBody, {
                 withCredentials: true,
             });
+            infoNotification("User information was updated! ✔", 2000)
             this.setState({editMode: false});
             await this.props.getUserDetails(this.props.user.id);
         } catch (error) {

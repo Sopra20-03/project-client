@@ -1,17 +1,7 @@
-import {
-  GET_USER_DETAILS,
-  USER_LOGIN,
-  USER_LOGOUT,
-  USER_REGISTER,
-} from "./types";
-import { api } from "../../helpers/api";
-import User from "../../components/shared/models/User";
-
-import {
-  clearJoinedGame,
-  cancelGame,
-  leaveGame,
-} from "../../redux/actions/lobbyActions";
+import { GET_USER_DETAILS, USER_LOGIN, USER_LOGOUT, USER_REGISTER } from './types';
+import { api } from '../../helpers/api';
+import User from '../../components/shared/models/User';
+import { infoNotification } from '../../helpers/notifications/toasts';
 
 export const registerUser = (userData) => async (dispatch) => {
   try {
@@ -92,13 +82,15 @@ export const logoutUser = (remove, data) => async (dispatch) => {
   //Logout
   console.log("Logout User");
   try {
+    infoNotification ('Goodbye, see you next time! 😊👋', 2000);
     await api.post("/logout", {
       withCredentials: true,
-    });
+    })
     dispatch({
       type: USER_LOGOUT,
     });
     console.log("Logout User Success");
+
   } catch (error) {
     throw error;
   }
