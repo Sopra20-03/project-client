@@ -46,7 +46,7 @@ For your local development environment you'll need Node.js >= 8.10. You can down
 ```shell script
 $ npm install
 ```
-This has to be done before starting the application for the first time (only once).
+This has to be done before starting the application for the first time or when new dependencies have been added.
 
 ```shell script
 $ npm run dev
@@ -59,7 +59,9 @@ The page will reload if you make edits.<br>
 You will also see any lint errors in the console (use Google Chrome!).
 
 In order for the application to run completely, also make sure you have an instance of the 
-[backend](https://github.com/Sopra20-03/project-server) of the game running on your machine.
+[backend](https://github.com/Sopra20-03/project-server) of the game running on your machine. By default, the Spring backend 
+runs on port 8080. However, if you come by problems when running the application check the [getDomain.js](./src/helpers/getDomain.js)
+file and put in the correct server URL. 
 
 ### Releases
 To create a release, push a production-ready code base to the master branch and it will automatically deploy to 
