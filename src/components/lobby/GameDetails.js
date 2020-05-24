@@ -1,27 +1,27 @@
-import React from "react";
-import {FormHeader, TextInput} from "../login/Login";
-import {BaseContainer, GameContainer} from "../../helpers/layout";
-import {handleError} from "../../helpers/api";
-import {withRouter} from "react-router-dom";
+import React from 'react';
+import { FormHeader, TextInput } from '../login/Login';
+import { BaseContainer, GameContainer } from '../../helpers/layout';
+import { handleError } from '../../helpers/api';
+import { withRouter } from 'react-router-dom';
 //import Button from "../../views/design/Button";
-import Colors from "../../views/design/Colors";
+import Colors from '../../views/design/Colors';
 //Redux
-import {connect} from "react-redux";
-import {store} from "../../store";
-import {logoutUser} from "../../redux/actions/userActions";
-import {createGame, joinGame} from "../../redux/actions/lobbyActions";
-import LogoutIcon from "../../views/design/Menu/LogoutIcon";
-import {SmallLogo} from "../../views/logos/SmallLogo";
-import InputLabel from "@material-ui/core/InputLabel";
+import { connect } from 'react-redux';
+import { store } from '../../store';
+import { logoutUser } from '../../redux/actions/userActions';
+import { createGame, joinGame } from '../../redux/actions/lobbyActions';
+import LogoutIcon from '../../views/design/Menu/LogoutIcon';
+import { SmallLogo } from '../../views/logos/SmallLogo';
+import InputLabel from '@material-ui/core/InputLabel';
 
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import HashLoader from "react-spinners/HashLoader";
-import {withStyles} from "@material-ui/core/styles";
-import {errorNotification} from "../../helpers/notifications/toasts";
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import HashLoader from 'react-spinners/HashLoader';
+import { withStyles } from '@material-ui/core/styles';
+import { errorNotification, infoNotification } from '../../helpers/notifications/toasts';
 
-import Button from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
 
 const useStyles = (theme) => ({
   col: {
@@ -118,7 +118,8 @@ class GameDetails extends React.Component {
           duration: this.state.duration,
           creatorUsername: store.getState().userReducer.user.username,
         };
-        await this.props.createGame(requestBody);
+        await this.props.createGame(requestBody)
+        infoNotification(`Game ${this.state.gameName} created with mode: ${this.state.gameMode}\n🥳`)
         this.addUserToGame();
       } catch (error) {
         errorNotification(

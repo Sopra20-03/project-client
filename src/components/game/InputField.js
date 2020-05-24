@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import {fade, makeStyles} from '@material-ui/core/styles';
+import React, { Component } from 'react';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {handleError} from '../../helpers/api';
-import {connect} from 'react-redux';
-import {gameSubmitClue, gameSubmitGuess, timerStop} from '../../redux/actions/gameplayActions';
+import { handleError } from '../../helpers/api';
+import { connect } from 'react-redux';
+import { gameSubmitClue, gameSubmitGuess, timerStop } from '../../redux/actions/gameplayActions';
 import GameStates from '../../redux/reducers/gameStates';
 import SubmitIcon from '../../views/design/Menu/SubmitIcon';
-import {errorNotification} from '../../helpers/notifications/toasts';
+import { errorNotification, infoNotification } from '../../helpers/notifications/toasts';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,7 +76,10 @@ function ClueWriter(props) {
         clueId: clueId,
         word: props.clue,
       };
-      await props.gameSubmitClue(requestData);
+      await props.gameSubmitClue (requestData)
+        .then (
+          infoNotification ('Clue was submitted! 💡', 2000)
+        );
     } catch (error) {
       errorNotification(
         `Something went wrong while submitting the clue: \n${handleError(
