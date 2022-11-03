@@ -70,6 +70,8 @@ To create a release, push a production-ready code base to the master branch and 
 
 ## Illustrations
 
+Complete Figma designs can be found [here](https://www.figma.com/file/fG5hoY7oSynYGsEL3njulD/JustOne-Game?node-id=0%3A1).
+
 ##### Register- / Loginscreen 
 ![alt text](./screenshots/registerScreen.PNG "Register Screen")
 ![alt text](./screenshots/loginScreen.PNG "Login Screen")
